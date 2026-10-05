@@ -287,9 +287,6 @@ msgstr "Elegir fecha"
 msgid "Choose an image"
 msgstr "Elige una imagen"
 
-msgid "City, state, country"
-msgstr "Ciudad, estado, país"
-
 msgid "Clear the search"
 msgstr "Quitar la búsqueda"
 
@@ -1004,6 +1001,9 @@ msgstr "Espacio"
 msgid "Status"
 msgstr "Estado"
 
+msgid "Street, city, state, ZIP"
+msgstr "Calle, ciudad, estado, código postal"
+
 msgid "Style"
 msgstr "Estilo"
 
@@ -1064,8 +1064,8 @@ msgstr "Ese suscriptor ya no existe."
 msgid "That time has already passed."
 msgstr "Esa hora ya pasó."
 
-msgid "The CAN-SPAM law in the US requires it in every marketing email. City and state is enough for many."
-msgstr "La ley CAN-SPAM de EE. UU. la exige en cada correo de marketing. A muchos les basta con ciudad y estado."
+msgid "The CAN-SPAM law in the US requires a real postal address in every marketing email: a street address, a PO box or a private mailbox."
+msgstr "La ley CAN-SPAM de EE. UU. exige una dirección postal real en cada correo de marketing: calle, apartado de correos o buzón privado."
 
 msgid "The WordPress email"
 msgstr "El correo de WordPress"

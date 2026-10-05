@@ -287,9 +287,6 @@ msgstr ""
 msgid "Choose an image"
 msgstr ""
 
-msgid "City, state, country"
-msgstr ""
-
 msgid "Clear the search"
 msgstr ""
 
@@ -1004,6 +1001,9 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
+msgid "Street, city, state, ZIP"
+msgstr ""
+
 msgid "Style"
 msgstr ""
 
@@ -1064,7 +1064,7 @@ msgstr ""
 msgid "That time has already passed."
 msgstr ""
 
-msgid "The CAN-SPAM law in the US requires it in every marketing email. City and state is enough for many."
+msgid "The CAN-SPAM law in the US requires a real postal address in every marketing email: a street address, a PO box or a private mailbox."
 msgstr ""
 
 msgid "The WordPress email"

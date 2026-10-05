@@ -3,7 +3,7 @@
  * Plugin Name:       Dox Newsletter
  * Plugin URI:        https://doxstudio.com
  * Description:       Newsletters and email campaigns from your own WordPress: subscription forms with double opt-in, a block editor, sending in batches through the site's email, and opens, clicks and unsubscribes in every report.
- * Version:           0.1.0
+ * Version:           0.1.1
  * Author:            Dox Studio
  * Author URI:        https://doxstudio.com
  * License:           GPL v2 or later
@@ -18,7 +18,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'DXN_VERSION', '0.1.0' );
+define( 'DXN_VERSION', '0.1.1' );
 define( 'DXN_FILE', __FILE__ );
 define( 'DXN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'DXN_URL', plugin_dir_url( __FILE__ ) );
