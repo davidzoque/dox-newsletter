@@ -2,37 +2,37 @@
 /**
  * Tablas y puesta al día.
  *
- * Todo lo del plugin vive en tablas propias con el prefijo `dxn_`: los
+ * Todo lo del plugin vive en tablas propias con el prefijo `dxo_`: los
  * suscriptores, sus listas, las campañas, cada correo enviado (recipients),
  * los enlaces de cada campaña y los eventos (aperturas, clics, bajas).
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class DXN_Install {
+class DXO_Install {
 
 	/** Sube con cualquier cambio de esquema: maybe_upgrade() vuelve a pasar dbDelta. */
 	const DB_VERSION = '1';
 
 	public static function table( $name ) {
 		global $wpdb;
-		return $wpdb->prefix . 'dxn_' . $name;
+		return $wpdb->prefix . 'dxo_' . $name;
 	}
 
 	public static function activate() {
 		self::create_tables();
-		DXN_Lists::ensure_default();
-		DXN_Sender::schedule();
+		DXO_Lists::ensure_default();
+		DXO_Sender::schedule();
 	}
 
 	public static function deactivate() {
-		wp_clear_scheduled_hook( DXN_Sender::HOOK );
+		wp_clear_scheduled_hook( DXO_Sender::HOOK );
 	}
 
 	public static function maybe_upgrade() {
-		if ( get_option( 'dxn_db_version' ) !== self::DB_VERSION ) {
+		if ( get_option( 'dxo_db_version' ) !== self::DB_VERSION ) {
 			self::create_tables();
-			DXN_Lists::ensure_default();
+			DXO_Lists::ensure_default();
 		}
 	}
 
@@ -157,6 +157,6 @@ class DXN_Install {
 			dbDelta( $q );
 		}
 
-		update_option( 'dxn_db_version', self::DB_VERSION, false );
+		update_option( 'dxo_db_version', self::DB_VERSION, false );
 	}
 }

@@ -1,14 +1,14 @@
-/* Dox Newsletter: el panel.
+/* Dox Orbit: el panel.
    Sin dependencias (solo wp.media para elegir imágenes). Nada de alert(),
    confirm() ni prompt(): bloquean la pestaña. Avisos con toast y <dialog>. */
 (function () {
 	'use strict';
 
-	var D = window.DXN || {};
+	var D = window.DXO || {};
 	var T = D.i18n || {};
 	var $ = function (s, c) { return (c || document).querySelector(s); };
 	var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
-	var app = $('#dxn-app');
+	var app = $('#dxo-app');
 	if (!app) return;
 
 	function fmt(str) {
@@ -30,7 +30,7 @@
 				else if (v !== undefined && v !== null) body.append(k, v);
 			});
 		}
-		body.append('action', 'dxn_' + action);
+		body.append('action', 'dxo_' + action);
 		body.append('nonce', D.nonce);
 		return fetch(D.ajax, { method: 'POST', body: body, credentials: 'same-origin' })
 			.then(function (r) { return r.json().catch(function () { return { success: false, data: { message: T.error } }; }); })
@@ -47,7 +47,7 @@
 	// ─── Aviso ───
 	var toastTimer;
 	function toast(msg, bad) {
-		var el = $('#dxn-toast');
+		var el = $('#dxo-toast');
 		if (!el) return;
 		el.textContent = msg;
 		el.classList.toggle('bad', !!bad);
@@ -59,7 +59,7 @@
 	// ─── Diálogo ───
 	// buttons: [{ label, kind: 'dark'|'gray'|'danger', onClick(dlg) → false para no cerrar }]
 	function modal(opts) {
-		var dlg = $('#dxn-modal');
+		var dlg = $('#dxo-modal');
 		$('.hd h3', dlg).textContent = opts.title || '';
 		var bd = $('.bd', dlg);
 		bd.innerHTML = '';
@@ -70,7 +70,7 @@
 		(opts.buttons || [{ label: T.cancel, kind: 'gray' }]).forEach(function (b) {
 			var btn = document.createElement('button');
 			btn.type = 'button';
-			btn.className = 'dxn-btn dxn-btn-' + (b.kind || 'gray');
+			btn.className = 'dxo-btn dxo-btn-' + (b.kind || 'gray');
 			btn.textContent = b.label;
 			btn.addEventListener('click', function () {
 				var r = b.onClick ? b.onClick(dlg, btn) : true;
@@ -111,16 +111,16 @@
 	// ─── Filas que llevan a otra pantalla ───
 	app.addEventListener('click', function (e) {
 		var row = e.target.closest('tr[data-href]');
-		if (row && !e.target.closest('a,button,.dxn-menu,input,label')) location.href = row.getAttribute('data-href');
+		if (row && !e.target.closest('a,button,.dxo-menu,input,label')) location.href = row.getAttribute('data-href');
 	});
 
 	// ─── Menús de fila ───
 	document.addEventListener('click', function (e) {
 		var trigger = e.target.closest('[data-menu]');
-		$$('.dxn-menu.open').forEach(function (m) { if (!trigger || m !== trigger.parentNode) m.classList.remove('open'); });
+		$$('.dxo-menu.open').forEach(function (m) { if (!trigger || m !== trigger.parentNode) m.classList.remove('open'); });
 		if (trigger) { e.preventDefault(); trigger.parentNode.classList.toggle('open'); }
 	});
-	document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $$('.dxn-menu.open').forEach(function (m) { m.classList.remove('open'); }); });
+	document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $$('.dxo-menu.open').forEach(function (m) { m.classList.remove('open'); }); });
 
 	// ─── Acciones sobre campañas (menús, informe) ───
 	app.addEventListener('click', function (e) {
@@ -160,12 +160,12 @@
 	});
 	document.addEventListener('keydown', function (e) {
 		if (e.key !== '/' || /input|textarea|select/i.test(document.activeElement.tagName) || document.activeElement.isContentEditable) return;
-		var s = $('.dxn-search input[type=search]', app);
+		var s = $('.dxo-search input[type=search]', app);
 		if (s) { e.preventDefault(); s.focus(); }
 	});
 
 	// ─── Franja del envío en curso: al día cada 20 s ───
-	var bar = $('#dxn-status');
+	var bar = $('#dxo-status');
 	if (bar) {
 		var paint = function (st) {
 			if (!st || !st.active) {
@@ -208,7 +208,7 @@
 	// Editor de campañas
 	// ═══════════════════════════════════════════════════════════════════════
 	function editor() {
-		var dataEl = $('#dxn-data');
+		var dataEl = $('#dxo-data');
 		if (!dataEl) return;
 		var C = JSON.parse(dataEl.textContent);
 		var S = C.strings, L = S.labels;
@@ -216,9 +216,9 @@
 		var selected = -1;
 		var dirty = false, saving = false, lastSaved = '';
 		var saveTimer, previewTimer;
-		var subj = $('#dxn-subject'), pre = $('#dxn-preheader');
-		var list = $('#dxn-blocks'), frame = $('#dxn-frame');
-		var stateEl = $('#dxn-save-state');
+		var subj = $('#dxo-subject'), pre = $('#dxo-preheader');
+		var list = $('#dxo-blocks'), frame = $('#dxo-frame');
+		var stateEl = $('#dxo-save-state');
 		var ICON = {
 			heading: '<path d="M4 7V5h16v2M9 19h6M12 5v14"/>', text: '<path d="M4 6h16M4 11h16M4 16h10"/>',
 			image: '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-8 8"/>',
@@ -257,21 +257,21 @@
 		// ── Campos ──
 		function field(label, control, hint) {
 			var w = document.createElement('div');
-			w.className = 'dxn-field';
+			w.className = 'dxo-field';
 			w.innerHTML = '<span class="lbl">' + esc(label) + '</span><div></div>';
 			w.lastChild.appendChild(control);
-			if (hint) { var h = document.createElement('div'); h.className = 'dxn-hint'; h.innerHTML = '<span>' + esc(hint) + '</span>'; w.lastChild.appendChild(h); }
+			if (hint) { var h = document.createElement('div'); h.className = 'dxo-hint'; h.innerHTML = '<span>' + esc(hint) + '</span>'; w.lastChild.appendChild(h); }
 			return w;
 		}
 		function input(b, key, ph, type) {
 			var i = document.createElement('input');
-			i.className = 'dxn-input'; i.type = type || 'text'; i.value = b[key] || ''; if (ph) i.placeholder = ph;
+			i.className = 'dxo-input'; i.type = type || 'text'; i.value = b[key] || ''; if (ph) i.placeholder = ph;
 			i.addEventListener('input', function () { b[key] = i.value; changed(true); });
 			return i;
 		}
 		function seg(b, key, opts) {
 			var s = document.createElement('div');
-			s.className = 'dxn-seg';
+			s.className = 'dxo-seg';
 			opts.forEach(function (o) {
 				var btn = document.createElement('button');
 				btn.type = 'button'; btn.textContent = o[1];
@@ -290,9 +290,9 @@
 		function rte(b) {
 			var wrap = document.createElement('div');
 			var barEl = document.createElement('div');
-			barEl.className = 'dxn-rte-bar';
+			barEl.className = 'dxo-rte-bar';
 			var ed = document.createElement('div');
-			ed.className = 'dxn-rte'; ed.contentEditable = 'true'; ed.innerHTML = b.html || '<p><br></p>';
+			ed.className = 'dxo-rte'; ed.contentEditable = 'true'; ed.innerHTML = b.html || '<p><br></p>';
 			[['bold', 'B', L.bold], ['italic', 'I', L.italic], ['insertUnorderedList', '•', L.list], ['link', '↗', L.add_link]].forEach(function (c) {
 				var btn = document.createElement('button');
 				btn.type = 'button'; btn.textContent = c[1]; btn.title = c[2]; btn.setAttribute('aria-label', c[2]);
@@ -323,7 +323,7 @@
 			var range = sel.rangeCount ? sel.getRangeAt(0).cloneRange() : null;
 			var box = document.createElement('div');
 			var i = document.createElement('input');
-			i.className = 'dxn-input'; i.type = 'url'; i.placeholder = 'https://';
+			i.className = 'dxo-input'; i.type = 'url'; i.placeholder = 'https://';
 			box.appendChild(field(L.link_prompt, i));
 			modal({
 				title: L.add_link, body: box,
@@ -341,9 +341,9 @@
 
 		function mediaPicker(b, key, onPick) {
 			var wrap = document.createElement('div');
-			wrap.className = 'dxn-imgpick';
+			wrap.className = 'dxo-imgpick';
 			var img = document.createElement('img'); img.alt = '';
-			var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'dxn-btn dxn-btn-gray dxn-btn-sm';
+			var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'dxo-btn dxo-btn-gray dxo-btn-sm';
 			var paint = function () { img.hidden = !b[key]; if (b[key]) img.src = b[key]; btn.textContent = b[key] ? L.change : L.choose; };
 			btn.addEventListener('click', function () {
 				if (!window.wp || !wp.media) return;
@@ -364,10 +364,10 @@
 
 		function postPicker(b) {
 			var wrap = document.createElement('div');
-			wrap.className = 'dxn-postpick';
+			wrap.className = 'dxo-postpick';
 			var i = document.createElement('input');
-			i.className = 'dxn-input'; i.type = 'search'; i.placeholder = L.search;
-			var res = document.createElement('div'); res.className = 'dxn-postres'; res.hidden = true;
+			i.className = 'dxo-input'; i.type = 'search'; i.placeholder = L.search;
+			var res = document.createElement('div'); res.className = 'dxo-postres'; res.hidden = true;
 			var t;
 			var search = function () {
 				ajax('posts', { q: i.value }).then(function (posts) {
@@ -395,7 +395,7 @@
 
 		function body(b) {
 			var f = document.createElement('div');
-			f.className = 'dxn-blk-b';
+			f.className = 'dxo-blk-b';
 			switch (b.type) {
 				case 'heading':
 					f.appendChild(field(L.text, input(b, 'text')));
@@ -422,7 +422,7 @@
 					f.appendChild(field(L.post, postPicker(b)));
 					if (b.url) {
 						f.appendChild(field(L.text, input(b, 'title')));
-						var ta = document.createElement('textarea'); ta.className = 'dxn-input'; ta.rows = 3; ta.value = b.excerpt || '';
+						var ta = document.createElement('textarea'); ta.className = 'dxo-input'; ta.rows = 3; ta.value = b.excerpt || '';
 						ta.addEventListener('input', function () { b.excerpt = ta.value; changed(true); });
 						f.appendChild(field('', ta));
 						f.appendChild(field(L.cta, input(b, 'cta')));
@@ -444,16 +444,16 @@
 			list.innerHTML = '';
 			blocks.forEach(function (b, i) {
 				var el = document.createElement('div');
-				el.className = 'dxn-blk' + (i === selected ? ' sel' : '');
-				el.innerHTML = '<div class="dxn-blk-h"><span class="grip" draggable="true" title="⇅">' + svg('grip') + '</span><span class="ic">' + svg(b.type) + '</span>'
+				el.className = 'dxo-blk' + (i === selected ? ' sel' : '');
+				el.innerHTML = '<div class="dxo-blk-h"><span class="grip" draggable="true" title="⇅">' + svg('grip') + '</span><span class="ic">' + svg(b.type) + '</span>'
 					+ '<span class="nm"><b>' + esc(T.block[b.type]) + '</b><span>' + esc(summary(b)) + '</span></span>'
 					+ '<span class="tools">'
-					+ (i > 0 ? '<button type="button" class="dxn-iconbtn" data-t="up" title="' + esc(L.move_up) + '" aria-label="' + esc(L.move_up) + '">' + svg('up') + '</button>' : '')
-					+ (i < blocks.length - 1 ? '<button type="button" class="dxn-iconbtn" data-t="down" title="' + esc(L.move_dn) + '" aria-label="' + esc(L.move_dn) + '">' + svg('down') + '</button>' : '')
-					+ '<button type="button" class="dxn-iconbtn" data-t="del" title="' + esc(L.remove) + '" aria-label="' + esc(L.remove) + '">' + svg('trash') + '</button></span></div>';
+					+ (i > 0 ? '<button type="button" class="dxo-iconbtn" data-t="up" title="' + esc(L.move_up) + '" aria-label="' + esc(L.move_up) + '">' + svg('up') + '</button>' : '')
+					+ (i < blocks.length - 1 ? '<button type="button" class="dxo-iconbtn" data-t="down" title="' + esc(L.move_dn) + '" aria-label="' + esc(L.move_dn) + '">' + svg('down') + '</button>' : '')
+					+ '<button type="button" class="dxo-iconbtn" data-t="del" title="' + esc(L.remove) + '" aria-label="' + esc(L.remove) + '">' + svg('trash') + '</button></span></div>';
 				var bd = body(b);
 				if (bd) el.appendChild(bd);
-				$('.dxn-blk-h', el).addEventListener('click', function (e) {
+				$('.dxo-blk-h', el).addEventListener('click', function (e) {
 					var t = e.target.closest('[data-t]');
 					if (t) {
 						var a = t.getAttribute('data-t');
@@ -465,7 +465,7 @@
 					selected = selected === i ? -1 : i;
 					renderList();
 					// El bloque se acaba de pintar de nuevo: el campo está en el elemento nuevo.
-					if (selected === i) { var f = $('.dxn-blk-b input:not([type=search]), .dxn-blk-b .dxn-rte', list.children[i]); if (f) f.focus(); }
+					if (selected === i) { var f = $('.dxo-blk-b input:not([type=search]), .dxo-blk-b .dxo-rte', list.children[i]); if (f) f.focus(); }
 				});
 				// Arrastrar desde el asa para reordenar.
 				var grip = $('.grip', el);
@@ -497,20 +497,20 @@
 
 		// ── Asunto, texto previo y vista de la bandeja ──
 		function inbox() {
-			$('#dxn-inbox-subject').textContent = subj.value || '(…)';
-			$('#dxn-inbox-pre').textContent = pre.value;
+			$('#dxo-inbox-subject').textContent = subj.value || '(…)';
+			$('#dxo-inbox-pre').textContent = pre.value;
 			var n = subj.value.length;
-			var cnt = $('#dxn-subject-count');
+			var cnt = $('#dxo-subject-count');
 			cnt.textContent = fmt(T.chars, n);
 			cnt.className = n > 60 ? 'warn' : '';
-			if (subj.value) $('#dxn-title').textContent = subj.value;
+			if (subj.value) $('#dxo-title').textContent = subj.value;
 		}
 		subj.addEventListener('input', function () { inbox(); changed(true); });
 		pre.addEventListener('input', function () { inbox(); changed(true); });
 		inbox();
 
 		// ── Listas ──
-		var lists = $('#dxn-lists');
+		var lists = $('#dxo-lists');
 		if (lists) lists.addEventListener('change', function () { changed(false, true); });
 		function chosenLists() { return lists ? $$('input:checked', lists).map(function (i) { return i.value; }) : null; }
 
@@ -542,7 +542,7 @@
 				saving = false; lastSaved = key;
 				if (JSON.stringify(payload()) === key) { dirty = false; stateEl.textContent = T.saved; }
 				C.problems = r.problems || [];
-				var pill = $('#dxn-audience');
+				var pill = $('#dxo-audience');
 				if (pill && r.audience !== undefined) { C.audience = r.audience; pill.textContent = fmt(r.audience === 1 ? S.person : S.people, num(r.audience)); }
 				checklist();
 			}).catch(function (e) { saving = false; stateEl.textContent = e.message; toast(e.message, true); });
@@ -566,16 +566,16 @@
 		lastSaved = JSON.stringify(payload());
 
 		// ── Dispositivo ──
-		$$('#dxn-device button').forEach(function (b) {
+		$$('#dxo-device button').forEach(function (b) {
 			b.addEventListener('click', function () {
-				$$('#dxn-device button').forEach(function (x) { x.classList.toggle('on', x === b); });
-				$('#dxn-stage').classList.toggle('mobile', b.getAttribute('data-d') === 'mobile');
+				$$('#dxo-device button').forEach(function (x) { x.classList.toggle('on', x === b); });
+				$('#dxo-stage').classList.toggle('mobile', b.getAttribute('data-d') === 'mobile');
 			});
 		});
 
 		// ── Antes de enviar ──
 		function checklist() {
-			var box = $('#dxn-checklist');
+			var box = $('#dxo-checklist');
 			var rows = [];
 			var ok = function (html) { rows.push('<div class="ok"><svg viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></svg><span>' + html + '</span></div>'); };
 			var warn = function (html) { rows.push('<div class="wa"><svg viewBox="0 0 24 24"><path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg><span>' + html + '</span></div>'); };
@@ -594,7 +594,7 @@
 			var wrap = document.createElement('div');
 			wrap.innerHTML = '<p style="margin:0 0 12px">' + esc(S.test_text) + '</p>';
 			var i = document.createElement('input');
-			i.className = 'dxn-input'; i.type = 'email'; i.value = C.testTo;
+			i.className = 'dxo-input'; i.type = 'email'; i.value = C.testTo;
 			wrap.appendChild(i);
 			modal({
 				title: S.test_title, body: wrap,
@@ -622,24 +622,24 @@
 				var tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1); tomorrow.setHours(9, 0, 0, 0);
 				var pad = function (n) { return (n < 10 ? '0' : '') + n; };
 				var def = C.scheduled || (tomorrow.getFullYear() + '-' + pad(tomorrow.getMonth() + 1) + '-' + pad(tomorrow.getDate()) + 'T09:00');
-				wrap.innerHTML = '<div class="dxn-choices" style="margin-bottom:12px">'
-					+ '<label class="dxn-choice"><input type="radio" name="dxn-when" value="now" ' + (C.scheduled ? '' : 'checked') + '><b>' + esc(S.now) + '</b></label>'
-					+ '<label class="dxn-choice"><input type="radio" name="dxn-when" value="later" ' + (C.scheduled ? 'checked' : '') + '><b>' + esc(S.later) + '</b></label></div>'
-					+ '<input class="dxn-input" type="datetime-local" data-when value="' + esc(def) + '" ' + (C.scheduled ? '' : 'hidden') + '>'
-					+ '<p class="dxn-note" style="margin-top:14px"><span>' + esc(goesTo()) + '</span></p>'
-					+ (C.tested ? '' : '<p class="dxn-note" style="color:var(--warn)"><span>' + esc(S.no_test) + '</span></p>');
+				wrap.innerHTML = '<div class="dxo-choices" style="margin-bottom:12px">'
+					+ '<label class="dxo-choice"><input type="radio" name="dxo-when" value="now" ' + (C.scheduled ? '' : 'checked') + '><b>' + esc(S.now) + '</b></label>'
+					+ '<label class="dxo-choice"><input type="radio" name="dxo-when" value="later" ' + (C.scheduled ? 'checked' : '') + '><b>' + esc(S.later) + '</b></label></div>'
+					+ '<input class="dxo-input" type="datetime-local" data-when value="' + esc(def) + '" ' + (C.scheduled ? '' : 'hidden') + '>'
+					+ '<p class="dxo-note" style="margin-top:14px"><span>' + esc(goesTo()) + '</span></p>'
+					+ (C.tested ? '' : '<p class="dxo-note" style="color:var(--warn)"><span>' + esc(S.no_test) + '</span></p>');
 				var when = $('[data-when]', wrap);
-				$$('input[name=dxn-when]', wrap).forEach(function (r) {
+				$$('input[name=dxo-when]', wrap).forEach(function (r) {
 					r.addEventListener('change', function () {
 						when.hidden = r.value !== 'later' || !r.checked;
-						var go = $('.ft .dxn-btn-dark', $('#dxn-modal'));
+						var go = $('.ft .dxo-btn-dark', $('#dxo-modal'));
 						if (go) go.textContent = when.hidden ? S.send_now : S.schedule;
 					});
 				});
 				modal({
 					title: S.send_title, body: wrap,
 					buttons: [{ label: T.cancel, kind: 'gray' }, { label: C.scheduled ? S.schedule : S.send_now, kind: 'dark', onClick: function () {
-						var later = $('input[name=dxn-when]:checked', wrap).value === 'later';
+						var later = $('input[name=dxo-when]:checked', wrap).value === 'later';
 						return ajax('launch', { id: C.id, when: later ? when.value : '' }).then(function (r) {
 							dirty = false; location.href = r.redirect; return false;
 						});
@@ -664,11 +664,11 @@
 	// Suscriptores
 	// ═══════════════════════════════════════════════════════════════════════
 	function subscribers() {
-		var S = JSON.parse(($('#dxn-sub-strings') || {}).textContent || '{}');
+		var S = JSON.parse(($('#dxo-sub-strings') || {}).textContent || '{}');
 		var tpl = function (id) { var t = $(id); var d = document.createElement('div'); d.appendChild(t.content.cloneNode(true)); return d; };
 
 		function openSub(sub) {
-			var box = tpl('#dxn-tpl-sub');
+			var box = tpl('#dxo-tpl-sub');
 			var isNew = !sub;
 			$$('[data-only]', box).forEach(function (el) { el.hidden = el.getAttribute('data-only') !== (isNew ? 'new' : 'edit'); });
 			if (sub) {
@@ -677,7 +677,7 @@
 				$('[name=last_name]', box).value = sub.last_name;
 				$$('[name="lists[]"]', box).forEach(function (c) { c.checked = sub.lists.indexOf(parseInt(c.value, 10)) > -1; });
 				var cls = { active: 'p-ok', pending: 'p-warn', unsubscribed: 'p-gray', bounced: 'p-bad' }[sub.status];
-				$('[data-f=status]', box).innerHTML = '<span class="dxn-pill ' + cls + '"><span class="dot"></span>' + esc(S.statuses[sub.status]) + '</span>';
+				$('[data-f=status]', box).innerHTML = '<span class="dxo-pill ' + cls + '"><span class="dot"></span>' + esc(S.statuses[sub.status]) + '</span>';
 				$('[data-f=joined]', box).textContent = fmt(S.came, sub.joined, sub.source);
 			} else {
 				var first = $('[name="lists[]"]', box); if (first) first.checked = true;
@@ -709,7 +709,7 @@
 		}
 
 		function openImport() {
-			var box = tpl('#dxn-tpl-import');
+			var box = tpl('#dxo-tpl-import');
 			modal({ title: S.import, body: box, buttons: [{ label: T.cancel, kind: 'gray' }, { label: S.import_btn, kind: 'dark', onClick: function () {
 				var fd = new FormData();
 				var file = $('[name=file]', box).files[0];
@@ -725,7 +725,7 @@
 		}
 
 		function openLists() {
-			var box = tpl('#dxn-tpl-lists');
+			var box = tpl('#dxo-tpl-lists');
 			$$('[data-list]', box).forEach(function (row) {
 				var input = $('input', row), id = row.getAttribute('data-list'), orig = input.value;
 				input.addEventListener('change', function () {
@@ -764,9 +764,9 @@
 	// Formularios
 	// ═══════════════════════════════════════════════════════════════════════
 	function forms() {
-		var form = $('#dxn-form-edit');
+		var form = $('#dxo-form-edit');
 		if (!form) return;
-		var preview = $('#dxn-form-preview');
+		var preview = $('#dxo-form-preview');
 		var t;
 		function data() {
 			var fd = new FormData(form);
@@ -786,7 +786,7 @@
 				var fd = data();
 				ajax('form_preview', fd).then(function (r) {
 					preview.innerHTML = r.html;
-					var b = $('.dxn-bar', preview);
+					var b = $('.dxo-bar', preview);
 					if (b) { b.hidden = false; b.classList.add('is-open'); }
 				}).catch(function () {});
 			}, 250);
@@ -804,7 +804,7 @@
 			});
 		});
 		place();
-		var b0 = $('.dxn-bar', preview);
+		var b0 = $('.dxo-bar', preview);
 		if (b0) { b0.hidden = false; b0.classList.add('is-open'); }
 
 		$('[data-form-save]').addEventListener('click', function () {
@@ -826,10 +826,10 @@
 	// Ajustes
 	// ═══════════════════════════════════════════════════════════════════════
 	function settings() {
-		var form = $('#dxn-settings');
+		var form = $('#dxo-settings');
 		if (!form) return;
-		var S = JSON.parse(($('#dxn-set-strings') || {}).textContent || '{}');
-		var state = $('#dxn-settings-state'), reset = $('[data-settings-reset]');
+		var S = JSON.parse(($('#dxo-set-strings') || {}).textContent || '{}');
+		var state = $('#dxo-settings-state'), reset = $('[data-settings-reset]');
 		var initial = serialize();
 
 		// Pestañas, recordando la elegida en la URL.
@@ -854,7 +854,7 @@
 		function serialize() { return JSON.stringify(fields()); }
 		function dirtyCheck() {
 			var d = serialize() !== initial;
-			state.innerHTML = d ? '<span class="dxn-pill p-warn"><span class="dot"></span>' + esc(S.unsaved) + '</span>' : esc(S.saved);
+			state.innerHTML = d ? '<span class="dxo-pill p-warn"><span class="dot"></span>' + esc(S.unsaved) + '</span>' : esc(S.saved);
 			reset.hidden = !d;
 			return d;
 		}
@@ -867,19 +867,19 @@
 		$$('[name=transport]', form).forEach(function (r) { r.addEventListener('change', function () { $('[data-ses]', form).hidden = fields().transport !== 'ses'; speed(); }); });
 
 		// Velocidad y cupo del servidor.
-		var range = $('#dxn-speed'), limitIn = $('[name=server_limit]', form);
+		var range = $('#dxo-speed'), limitIn = $('[name=server_limit]', form);
 		function speed() {
 			var n = parseInt(range.value, 10), lim = Math.max(1, parseInt(limitIn.value, 10) || 200);
 			var ses = fields().transport === 'ses';
 			range.max = Math.max(lim, n, ses ? 2000 : 0);
-			$('#dxn-speed-pill').textContent = fmt(S.perHour, num(n));
-			$('#dxn-qa').style.width = Math.min(100, n * 100 / lim) + '%';
-			$('#dxn-qa').textContent = fmt(S.news, num(n));
-			$('#dxn-qb').textContent = n < lim ? fmt(S.rest, num(lim - n)) : '';
+			$('#dxo-speed-pill').textContent = fmt(S.perHour, num(n));
+			$('#dxo-qa').style.width = Math.min(100, n * 100 / lim) + '%';
+			$('#dxo-qa').textContent = fmt(S.news, num(n));
+			$('#dxo-qb').textContent = n < lim ? fmt(S.rest, num(lim - n)) : '';
 			var spanLimit = $('[data-limit]'); if (spanLimit) spanLimit.textContent = num(lim);
 			var h = S.active / n;
-			$('#dxn-eta').textContent = S.active ? (h < 1 ? fmt(S.eta_min, num(S.active), Math.max(1, Math.round(h * 60))) : fmt(S.eta, num(S.active), Math.round(h * 10) / 10)) : '';
-			var warn = $('#dxn-speed-warn');
+			$('#dxo-eta').textContent = S.active ? (h < 1 ? fmt(S.eta_min, num(S.active), Math.max(1, Math.round(h * 60))) : fmt(S.eta, num(S.active), Math.round(h * 10) / 10)) : '';
+			var warn = $('#dxo-speed-warn');
 			var bad = !ses && lim - n < 50;
 			warn.style.color = bad ? 'var(--bad)' : '';
 			$('span', warn).textContent = ses ? S.sesWarn : (bad ? S.badWarn : S.okWarn);
@@ -935,7 +935,7 @@
 
 		// Prueba con lo que hay en pantalla: se guarda antes si hay cambios.
 		$('[data-settings-test]').addEventListener('click', function () {
-			var btn = this, to = $('#dxn-test-to').value;
+			var btn = this, to = $('#dxo-test-to').value;
 			btn.classList.add('is-busy');
 			var first = dirtyCheck() ? ajax('save_settings', fields()).then(function () { initial = serialize(); dirtyCheck(); }) : Promise.resolve();
 			first.then(function () { return ajax('settings_test', { to: to }); })

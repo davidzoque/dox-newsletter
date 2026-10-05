@@ -3,7 +3,7 @@
  * Lo que llega desde fuera: suscribirse, confirmar, darse de baja, abrir,
  * hacer clic y "ver en el navegador".
  *
- * Todo va por la portada con ?dxn=<acción>&t=<token> en vez de por la API REST:
+ * Todo va por la portada con ?dxo=<acción>&t=<token> en vez de por la API REST:
  * hay webs (Hide My WP) que cierran wp-json a los visitantes, y la portada
  * siempre está. Se atiende en `init`, antes de que el tema pinte nada, y se
  * marca como no cacheable para LiteSpeed y cualquier caché que mire las cabeceras.
@@ -11,7 +11,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class DXN_Public {
+class DXO_Public {
 
 	public static function init() {
 		add_action( 'init', [ __CLASS__, 'route' ], 5 );
@@ -19,7 +19,7 @@ class DXN_Public {
 
 	/** La URL pública de una acción. */
 	public static function url( $action, $token = '', $link = 0 ) {
-		$args = [ 'dxn' => $action ];
+		$args = [ 'dxo' => $action ];
 		if ( $token !== '' ) $args['t'] = $token;
 		if ( $link ) $args['l'] = (int) $link;
 		return add_query_arg( $args, home_url( '/' ) );
@@ -28,16 +28,16 @@ class DXN_Public {
 	/** Los textos fijos del pie del correo, en el idioma del sitio. */
 	public static function email_strings() {
 		return [
-			'unsubscribe' => __( 'Unsubscribe', 'dox-newsletter' ),
-			'view'        => __( 'View in browser', 'dox-newsletter' ),
+			'unsubscribe' => __( 'Unsubscribe', 'dox-orbit' ),
+			'view'        => __( 'View in browser', 'dox-orbit' ),
 			'lang'        => substr( get_locale(), 0, 2 ),
 		];
 	}
 
 	public static function route() {
-		// Solo en la web: dentro de wp-admin (y admin-ajax) un campo "dxn" no es para nosotros.
-		if ( empty( $_REQUEST['dxn'] ) || is_admin() ) return;
-		$action = sanitize_key( wp_unslash( $_REQUEST['dxn'] ) );
+		// Solo en la web: dentro de wp-admin (y admin-ajax) un campo "dxo" no es para nosotros.
+		if ( empty( $_REQUEST['dxo'] ) || is_admin() ) return;
+		$action = sanitize_key( wp_unslash( $_REQUEST['dxo'] ) );
 		$token  = isset( $_REQUEST['t'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['t'] ) ) : '';
 
 		self::nocache();
@@ -56,7 +56,7 @@ class DXN_Public {
 
 	private static function nocache() {
 		if ( ! defined( 'DONOTCACHEPAGE' ) ) define( 'DONOTCACHEPAGE', true );
-		do_action( 'litespeed_control_set_nocache', 'dox-newsletter' );
+		do_action( 'litespeed_control_set_nocache', 'dox-orbit' );
 		nocache_headers();
 		header( 'X-Robots-Tag: noindex, nofollow' );
 	}
@@ -64,14 +64,14 @@ class DXN_Public {
 	private static function recipient( $token ) {
 		global $wpdb;
 		if ( ! preg_match( '/^[a-f0-9]{32}$/', (string) $token ) ) return null;
-		return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . DXN_Install::table( 'recipients' ) . ' WHERE token = %s', $token ), ARRAY_A );
+		return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . DXO_Install::table( 'recipients' ) . ' WHERE token = %s', $token ), ARRAY_A );
 	}
 
 	// ═══ Suscribirse ════════════════════════════════════════════════════════
 
 	private static function subscribe() {
-		$ajax = ! empty( $_POST['dxn_ajax'] );
-		$form = DXN_Forms::get( isset( $_POST['dxn_form'] ) ? sanitize_key( wp_unslash( $_POST['dxn_form'] ) ) : '' );
+		$ajax = ! empty( $_POST['dxo_ajax'] );
+		$form = DXO_Forms::get( isset( $_POST['dxo_form'] ) ? sanitize_key( wp_unslash( $_POST['dxo_form'] ) ) : '' );
 
 		$respond = function ( $ok, $state, $message ) use ( $ajax, $form ) {
 			if ( $ajax ) {
@@ -79,19 +79,19 @@ class DXN_Public {
 			}
 			// Sin JavaScript: de vuelta a la página del formulario con el resultado.
 			$back = wp_get_referer() ?: home_url( '/' );
-			$back = add_query_arg( [ 'dxn_s' => $state, 'dxn_f' => $form ? $form['slug'] : '' ], remove_query_arg( [ 'dxn_s', 'dxn_f' ], $back ) );
-			wp_safe_redirect( $back . '#dxn-' . ( $form ? $form['slug'] : 'form' ) );
+			$back = add_query_arg( [ 'dxo_s' => $state, 'dxo_f' => $form ? $form['slug'] : '' ], remove_query_arg( [ 'dxo_s', 'dxo_f' ], $back ) );
+			wp_safe_redirect( $back . '#dxo-' . ( $form ? $form['slug'] : 'form' ) );
 		};
 
 		if ( $_SERVER['REQUEST_METHOD'] !== 'POST' || ! $form ) {
-			$respond( false, 'error', __( 'Something went wrong. Reload the page and try again.', 'dox-newsletter' ) );
+			$respond( false, 'error', __( 'Something went wrong. Reload the page and try again.', 'dox-orbit' ) );
 			return;
 		}
 
 		// Trampas para bots: un campo que una persona no ve (y no rellena) y un
 		// mínimo de 2 segundos entre que se pinta el formulario y se envía.
-		$hp = isset( $_POST['dxn_hp'] ) ? trim( (string) wp_unslash( $_POST['dxn_hp'] ) ) : '';
-		$ts = isset( $_POST['dxn_ts'] ) ? (int) $_POST['dxn_ts'] : 0;
+		$hp = isset( $_POST['dxo_hp'] ) ? trim( (string) wp_unslash( $_POST['dxo_hp'] ) ) : '';
+		$ts = isset( $_POST['dxo_ts'] ) ? (int) $_POST['dxo_ts'] : 0;
 		if ( $hp !== '' || ( $ts && time() - $ts < 2 ) ) {
 			// Al bot se le dice que todo fue bien, para que no insista.
 			$respond( true, 'pending', $form['success_text'] );
@@ -100,10 +100,10 @@ class DXN_Public {
 
 		// Como mucho 5 intentos cada 10 minutos por IP.
 		$ip  = self::ip();
-		$key = 'dxn_rl_' . md5( $ip );
+		$key = 'dxo_rl_' . md5( $ip );
 		$n   = (int) get_transient( $key );
 		if ( $n >= 5 ) {
-			$respond( false, 'error', __( 'Too many attempts. Try again in a few minutes.', 'dox-newsletter' ) );
+			$respond( false, 'error', __( 'Too many attempts. Try again in a few minutes.', 'dox-orbit' ) );
 			return;
 		}
 		set_transient( $key, $n + 1, 10 * MINUTE_IN_SECONDS );
@@ -111,11 +111,11 @@ class DXN_Public {
 		$email = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
 		$name  = isset( $_POST['first_name'] ) ? sanitize_text_field( wp_unslash( $_POST['first_name'] ) ) : '';
 		if ( ! is_email( $email ) ) {
-			$respond( false, 'invalid', __( 'That email does not look right. Check it and try again.', 'dox-newsletter' ) );
+			$respond( false, 'invalid', __( 'That email does not look right. Check it and try again.', 'dox-orbit' ) );
 			return;
 		}
 
-		$res = DXN_Subscribers::subscribe( $email, [
+		$res = DXO_Subscribers::subscribe( $email, [
 			'first_name' => $name,
 			'list_ids'   => [ (int) $form['list_id'] ],
 			'source'     => $form['slug'],
@@ -126,8 +126,8 @@ class DXN_Public {
 		switch ( $res['result'] ) {
 			case 'pending': $respond( true, 'pending', $form['success_text'] ); break;
 			case 'active':  $respond( true, 'active', $form['done_text'] ); break;
-			case 'already': $respond( true, 'already', __( 'You were already subscribed. Thanks!', 'dox-newsletter' ) ); break;
-			default:        $respond( false, 'invalid', __( 'That email does not look right. Check it and try again.', 'dox-newsletter' ) );
+			case 'already': $respond( true, 'already', __( 'You were already subscribed. Thanks!', 'dox-orbit' ) ); break;
+			default:        $respond( false, 'invalid', __( 'That email does not look right. Check it and try again.', 'dox-orbit' ) );
 		}
 	}
 
@@ -139,16 +139,16 @@ class DXN_Public {
 	// ═══ Confirmar y darse de baja ══════════════════════════════════════════
 
 	private static function confirm( $token ) {
-		$sub = DXN_Subscribers::confirm( $token );
+		$sub = DXO_Subscribers::confirm( $token );
 		if ( ! $sub ) {
-			self::page( __( 'This link is no longer valid', 'dox-newsletter' ), __( 'It may have been used already. If you want to subscribe, use the form on the website again.', 'dox-newsletter' ) );
+			self::page( __( 'This link is no longer valid', 'dox-orbit' ), __( 'It may have been used already. If you want to subscribe, use the form on the website again.', 'dox-orbit' ) );
 			return;
 		}
 		if ( $sub['status'] !== 'active' ) {
-			self::page( __( 'You are unsubscribed', 'dox-newsletter' ), __( 'This address unsubscribed. To come back, use the form on the website.', 'dox-newsletter' ) );
+			self::page( __( 'You are unsubscribed', 'dox-orbit' ), __( 'This address unsubscribed. To come back, use the form on the website.', 'dox-orbit' ) );
 			return;
 		}
-		$s = DXN_Settings::all();
+		$s = DXO_Settings::all();
 		self::page( $s['confirmed_title'], $s['confirmed_text'], 'ok' );
 	}
 
@@ -160,30 +160,30 @@ class DXN_Public {
 	 */
 	private static function unsubscribe( $token ) {
 		$r   = self::recipient( $token );
-		$sub = $r ? DXN_Subscribers::get( $r['subscriber_id'] ) : DXN_Subscribers::get_by_token( $token );
+		$sub = $r ? DXO_Subscribers::get( $r['subscriber_id'] ) : DXO_Subscribers::get_by_token( $token );
 		if ( ! $sub ) {
-			self::page( __( 'This link is no longer valid', 'dox-newsletter' ), __( 'This address is no longer on our list.', 'dox-newsletter' ) );
+			self::page( __( 'This link is no longer valid', 'dox-orbit' ), __( 'This address is no longer on our list.', 'dox-orbit' ) );
 			return;
 		}
 
 		if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
-			if ( $sub['status'] !== 'unsubscribed' ) DXN_Subscribers::unsubscribe( (int) $sub['id'], $r );
+			if ( $sub['status'] !== 'unsubscribed' ) DXO_Subscribers::unsubscribe( (int) $sub['id'], $r );
 			if ( ! empty( $_POST['List-Unsubscribe'] ) ) {
 				status_header( 200 );
 				echo 'OK';
 				return;
 			}
-			self::page( __( 'Done, you will not receive more emails', 'dox-newsletter' ), sprintf( __( '%s has been removed from the list. If it was a mistake, you can subscribe again from the website.', 'dox-newsletter' ), $sub['email'] ), 'ok' );
+			self::page( __( 'Done, you will not receive more emails', 'dox-orbit' ), sprintf( __( '%s has been removed from the list. If it was a mistake, you can subscribe again from the website.', 'dox-orbit' ), $sub['email'] ), 'ok' );
 			return;
 		}
 
 		if ( $sub['status'] === 'unsubscribed' ) {
-			self::page( __( 'You are already unsubscribed', 'dox-newsletter' ), sprintf( __( '%s will not receive more emails from us.', 'dox-newsletter' ), $sub['email'] ), 'ok' );
+			self::page( __( 'You are already unsubscribed', 'dox-orbit' ), sprintf( __( '%s will not receive more emails from us.', 'dox-orbit' ), $sub['email'] ), 'ok' );
 			return;
 		}
 
-		$form = '<form method="post" action="' . esc_url( self::url( 'unsubscribe', $token ) ) . '"><button type="submit" class="dxn-btn">' . esc_html__( 'Unsubscribe', 'dox-newsletter' ) . '</button></form>';
-		self::page( __( 'Do you want to unsubscribe?', 'dox-newsletter' ), sprintf( __( '%s will stop receiving our newsletter.', 'dox-newsletter' ), $sub['email'] ), '', $form );
+		$form = '<form method="post" action="' . esc_url( self::url( 'unsubscribe', $token ) ) . '"><button type="submit" class="dxo-btn">' . esc_html__( 'Unsubscribe', 'dox-orbit' ) . '</button></form>';
+		self::page( __( 'Do you want to unsubscribe?', 'dox-orbit' ), sprintf( __( '%s will stop receiving our newsletter.', 'dox-orbit' ), $sub['email'] ), '', $form );
 	}
 
 	// ═══ Seguimiento ════════════════════════════════════════════════════════
@@ -202,10 +202,10 @@ class DXN_Public {
 
 	private static function mark_open( array $r ) {
 		global $wpdb;
-		$t = DXN_Install::table( 'recipients' );
+		$t = DXO_Install::table( 'recipients' );
 		if ( ! $r['opened_at'] ) {
-			$wpdb->query( $wpdb->prepare( "UPDATE $t SET opened_at = %s, open_count = open_count + 1 WHERE id = %d", dxn_now(), $r['id'] ) );
-			DXN_Campaigns::log_event( (int) $r['campaign_id'], (int) $r['id'], 'open' );
+			$wpdb->query( $wpdb->prepare( "UPDATE $t SET opened_at = %s, open_count = open_count + 1 WHERE id = %d", dxo_now(), $r['id'] ) );
+			DXO_Campaigns::log_event( (int) $r['campaign_id'], (int) $r['id'], 'open' );
 		} else {
 			$wpdb->query( $wpdb->prepare( "UPDATE $t SET open_count = LEAST(open_count + 1, 65000) WHERE id = %d", $r['id'] ) );
 		}
@@ -213,7 +213,7 @@ class DXN_Public {
 
 	private static function click( $token, $link_id ) {
 		global $wpdb;
-		$link = $link_id ? $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . DXN_Install::table( 'links' ) . ' WHERE id = %d', $link_id ), ARRAY_A ) : null;
+		$link = $link_id ? $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . DXO_Install::table( 'links' ) . ' WHERE id = %d', $link_id ), ARRAY_A ) : null;
 		$r    = self::recipient( $token );
 
 		if ( ! $link || ( $r && (int) $link['campaign_id'] !== (int) $r['campaign_id'] ) ) {
@@ -222,32 +222,32 @@ class DXN_Public {
 		}
 
 		if ( $r && $r['status'] === 'sent' ) {
-			$t = DXN_Install::table( 'recipients' );
+			$t = DXO_Install::table( 'recipients' );
 			// Un clic sin apertura previa (imágenes bloqueadas) cuenta también como apertura.
 			if ( ! $r['opened_at'] ) self::mark_open( $r );
 			if ( ! $r['clicked_at'] ) {
-				$wpdb->query( $wpdb->prepare( "UPDATE $t SET clicked_at = %s WHERE id = %d", dxn_now(), $r['id'] ) );
+				$wpdb->query( $wpdb->prepare( "UPDATE $t SET clicked_at = %s WHERE id = %d", dxo_now(), $r['id'] ) );
 			}
 			$wpdb->query( $wpdb->prepare( "UPDATE $t SET click_count = LEAST(click_count + 1, 65000) WHERE id = %d", $r['id'] ) );
-			$wpdb->query( $wpdb->prepare( 'UPDATE ' . DXN_Install::table( 'links' ) . ' SET clicks = clicks + 1 WHERE id = %d', $link['id'] ) );
-			DXN_Campaigns::log_event( (int) $r['campaign_id'], (int) $r['id'], 'click', (int) $link['id'] );
+			$wpdb->query( $wpdb->prepare( 'UPDATE ' . DXO_Install::table( 'links' ) . ' SET clicks = clicks + 1 WHERE id = %d', $link['id'] ) );
+			DXO_Campaigns::log_event( (int) $r['campaign_id'], (int) $r['id'], 'click', (int) $link['id'] );
 		}
 
 		// La URL es la que se guardó al lanzar la campaña, nunca una que venga en
 		// la petición: así el enlace no sirve para mandar a nadie a otra web.
-		wp_redirect( $link['url'], 302, 'Dox Newsletter' );
+		wp_redirect( $link['url'], 302, 'Dox Orbit' );
 	}
 
 	/** "Ver en el navegador": el mismo correo, con sus datos y sin seguimiento. */
 	private static function view( $token ) {
 		$r   = self::recipient( $token );
-		$c   = $r ? DXN_Campaigns::get( $r['campaign_id'] ) : null;
-		$sub = $r ? DXN_Subscribers::get( $r['subscriber_id'] ) : null;
+		$c   = $r ? DXO_Campaigns::get( $r['campaign_id'] ) : null;
+		$sub = $r ? DXO_Subscribers::get( $r['subscriber_id'] ) : null;
 		if ( ! $c || ! $sub ) {
-			self::page( __( 'This email is no longer available', 'dox-newsletter' ), '' );
+			self::page( __( 'This email is no longer available', 'dox-orbit' ), '' );
 			return;
 		}
-		$email = DXN_Sender::build( $c, $r, $sub, null );
+		$email = DXO_Sender::build( $c, $r, $sub, null );
 		header( 'Content-Type: text/html; charset=utf-8' );
 		echo $email['html']; // phpcs:ignore -- HTML generado por el renderizador, ya escapado.
 	}
@@ -259,13 +259,13 @@ class DXN_Public {
 	 * el tema: así se ve bien en cualquier web y no depende de su cabecera.
 	 */
 	public static function page( $title, $text, $tone = '', $extra = '' ) {
-		$brand  = DXN_Settings::brand();
+		$brand  = DXO_Settings::brand();
 		$accent = $brand['accent'];
 		$logo   = $brand['logo_url']
 			? '<img src="' . esc_url( $brand['logo_url'] ) . '" alt="' . esc_attr( $brand['company'] ) . '" style="height:32px;width:auto;display:block">'
 			: '<b style="font-size:18px;letter-spacing:-.02em;color:#141313">' . esc_html( $brand['company'] ) . '</b>';
 		$icon = $tone === 'ok'
-			? '<div class="dxn-ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#141313" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></div>'
+			? '<div class="dxo-ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#141313" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg></div>'
 			: '';
 
 		status_header( 200 );
@@ -280,27 +280,27 @@ class DXN_Public {
 <style>
 *{box-sizing:border-box}
 body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f4f2f0;font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:#52525b;padding:24px}
-.dxn-card{width:100%;max-width:480px;background:#fff;border-radius:18px;padding:36px;box-shadow:0 .25rem .5rem rgba(0,0,0,.04),0 1.5rem 2.2rem rgba(0,0,0,.07);animation:in .5s cubic-bezier(.165,.84,.44,1)}
+.dxo-card{width:100%;max-width:480px;background:#fff;border-radius:18px;padding:36px;box-shadow:0 .25rem .5rem rgba(0,0,0,.04),0 1.5rem 2.2rem rgba(0,0,0,.07);animation:in .5s cubic-bezier(.165,.84,.44,1)}
 @keyframes in{from{opacity:0;transform:translateY(20px)}}
-@media (prefers-reduced-motion:reduce){.dxn-card{animation:none}}
-.dxn-ic{width:44px;height:44px;border-radius:50%;background:<?php echo esc_attr( $accent ); ?>;display:grid;place-items:center;margin:28px 0 16px}
+@media (prefers-reduced-motion:reduce){.dxo-card{animation:none}}
+.dxo-ic{width:44px;height:44px;border-radius:50%;background:<?php echo esc_attr( $accent ); ?>;display:grid;place-items:center;margin:28px 0 16px}
 h1{font-size:26px;line-height:1.25;letter-spacing:-.03em;color:#141313;margin:28px 0 8px}
-.dxn-ic + h1{margin-top:0}
+.dxo-ic + h1{margin-top:0}
 p{margin:0 0 22px}
-.dxn-btn{all:unset;cursor:pointer;display:inline-block;background:#141313;color:#fff;font-weight:600;font-size:15px;padding:13px 24px;border-radius:999px;transition:transform .4s cubic-bezier(.165,.84,.44,1)}
-.dxn-btn:hover{transform:translateY(-2px)}
-.dxn-back{display:inline-block;margin-top:6px;color:#141313;font-weight:600;font-size:14px;text-decoration:none}
-.dxn-back:hover{text-decoration:underline}
+.dxo-btn{all:unset;cursor:pointer;display:inline-block;background:#141313;color:#fff;font-weight:600;font-size:15px;padding:13px 24px;border-radius:999px;transition:transform .4s cubic-bezier(.165,.84,.44,1)}
+.dxo-btn:hover{transform:translateY(-2px)}
+.dxo-back{display:inline-block;margin-top:6px;color:#141313;font-weight:600;font-size:14px;text-decoration:none}
+.dxo-back:hover{text-decoration:underline}
 </style>
 </head>
 <body>
-<main class="dxn-card">
+<main class="dxo-card">
 	<?php echo $logo; // phpcs:ignore -- escapado arriba ?>
 	<?php echo $icon; // phpcs:ignore ?>
 	<h1><?php echo esc_html( $title ); ?></h1>
 	<?php if ( $text !== '' ) : ?><p><?php echo esc_html( $text ); ?></p><?php endif; ?>
 	<?php echo $extra; // phpcs:ignore -- formulario construido arriba con esc_* ?>
-	<?php if ( $extra === '' ) : ?><a class="dxn-back" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Go to the website', 'dox-newsletter' ); ?> &rarr;</a><?php endif; ?>
+	<?php if ( $extra === '' ) : ?><a class="dxo-back" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Go to the website', 'dox-orbit' ); ?> &rarr;</a><?php endif; ?>
 </main>
 </body>
 </html><?php

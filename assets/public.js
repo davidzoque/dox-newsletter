@@ -1,9 +1,9 @@
-/* Dox Newsletter: envío del formulario sin recargar, ventana emergente y barra.
+/* Dox Orbit: envío del formulario sin recargar, ventana emergente y barra.
    Sin dependencias. Si este archivo no carga, el formulario funciona igual:
    envía por POST y la página vuelve con el resultado. */
 (function () {
 	'use strict';
-	var cfg = window.DXN || {};
+	var cfg = window.DXO || {};
 	var DAYS = 14; // tras cerrar una ventana o barra, no vuelve a salir en 14 días
 
 	function store(key, val) {
@@ -13,17 +13,17 @@
 		} catch (e) { return null; }
 	}
 	function dismissed(slug) {
-		var t = parseInt(store('dxn_closed_' + slug) || '0', 10);
+		var t = parseInt(store('dxo_closed_' + slug) || '0', 10);
 		return t && Date.now() - t < DAYS * 864e5;
 	}
-	function subscribed() { return store('dxn_subscribed') === '1'; }
+	function subscribed() { return store('dxo_subscribed') === '1'; }
 
 	// ─── Envío ───
 	function bind(form) {
 		form.addEventListener('submit', function (e) {
 			if (!window.fetch || !window.FormData) return; // sin fetch, envío normal
 			e.preventDefault();
-			var msg = form.querySelector('.dxn-msg');
+			var msg = form.querySelector('.dxo-msg');
 			var email = form.querySelector('input[name="email"]');
 			if (email && !email.checkValidity()) {
 				show(msg, email.validationMessage || cfg.error, false);
@@ -31,7 +31,7 @@
 				return;
 			}
 			var data = new FormData(form);
-			data.append('dxn_ajax', '1');
+			data.append('dxo_ajax', '1');
 			form.classList.add('is-busy');
 			fetch(cfg.url || form.action, { method: 'POST', body: data, credentials: 'same-origin' })
 				.then(function (r) { return r.json(); })
@@ -40,7 +40,7 @@
 					show(msg, res.message || cfg.error, !!res.ok);
 					if (res.ok) {
 						form.classList.add('is-done');
-						store('dxn_subscribed', '1');
+						store('dxo_subscribed', '1');
 					}
 				})
 				.catch(function () {
@@ -59,7 +59,7 @@
 
 	// ─── Ventana emergente ───
 	function popup(el) {
-		var slug = el.getAttribute('data-dxn-slug');
+		var slug = el.getAttribute('data-dxo-slug');
 		if (dismissed(slug) || subscribed()) return;
 		var opened = false;
 		function open() {
@@ -74,12 +74,12 @@
 		function close() {
 			el.classList.add('is-closing');
 			el.classList.remove('is-open');
-			store('dxn_closed_' + slug, String(Date.now()));
+			store('dxo_closed_' + slug, String(Date.now()));
 			document.removeEventListener('keydown', esc);
 			setTimeout(function () { el.hidden = true; el.classList.remove('is-closing'); }, 220);
 		}
 		function esc(e) { if (e.key === 'Escape') close(); }
-		el.querySelectorAll('[data-dxn-close]').forEach(function (b) { b.addEventListener('click', close); });
+		el.querySelectorAll('[data-dxo-close]').forEach(function (b) { b.addEventListener('click', close); });
 
 		var trigger = el.getAttribute('data-trigger');
 		var value = parseInt(el.getAttribute('data-value') || '60', 10);
@@ -99,23 +99,23 @@
 
 	// ─── Barra inferior ───
 	function bar(el) {
-		var slug = el.getAttribute('data-dxn-slug');
+		var slug = el.getAttribute('data-dxo-slug');
 		if (dismissed(slug) || subscribed()) return;
 		el.hidden = false;
 		setTimeout(function () { el.classList.add('is-open'); }, 1200);
-		el.querySelectorAll('[data-dxn-close]').forEach(function (b) {
+		el.querySelectorAll('[data-dxo-close]').forEach(function (b) {
 			b.addEventListener('click', function () {
 				el.classList.remove('is-open');
-				store('dxn_closed_' + slug, String(Date.now()));
+				store('dxo_closed_' + slug, String(Date.now()));
 				setTimeout(function () { el.hidden = true; }, 500);
 			});
 		});
 	}
 
 	function boot() {
-		document.querySelectorAll('.dxn-form').forEach(bind);
-		document.querySelectorAll('.dxn-popup').forEach(popup);
-		document.querySelectorAll('.dxn-bar').forEach(bar);
+		document.querySelectorAll('.dxo-form').forEach(bind);
+		document.querySelectorAll('.dxo-popup').forEach(popup);
+		document.querySelectorAll('.dxo-bar').forEach(bar);
 	}
 	if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
 	else boot();

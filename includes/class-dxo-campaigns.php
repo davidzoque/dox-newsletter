@@ -12,10 +12,10 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class DXN_Campaigns {
+class DXO_Campaigns {
 
 	private static function t( $name = 'campaigns' ) {
-		return DXN_Install::table( $name );
+		return DXO_Install::table( $name );
 	}
 
 	public static function get( $id ) {
@@ -72,13 +72,13 @@ class DXN_Campaigns {
 
 	public static function create( array $data = [] ) {
 		global $wpdb;
-		$now = dxn_now();
+		$now = dxo_now();
 		$wpdb->insert( self::t(), [
 			'type'       => $data['type'] ?? 'regular',
 			'subject'    => mb_substr( (string) ( $data['subject'] ?? '' ), 0, 255 ),
 			'preheader'  => mb_substr( (string) ( $data['preheader'] ?? '' ), 0, 255 ),
 			'blocks'     => wp_json_encode( $data['blocks'] ?? self::starter_blocks() ),
-			'list_ids'   => wp_json_encode( $data['audience'] ?? [ 'lists' => [ DXN_Lists::default_id() ] ] ),
+			'list_ids'   => wp_json_encode( $data['audience'] ?? [ 'lists' => [ DXO_Lists::default_id() ] ] ),
 			'status'     => $data['status'] ?? 'draft',
 			'created_at' => $now,
 			'updated_at' => $now,
@@ -90,8 +90,8 @@ class DXN_Campaigns {
 	public static function starter_blocks() {
 		return [
 			[ 'type' => 'heading', 'text' => '', 'size' => 'large', 'align' => 'left' ],
-			[ 'type' => 'text', 'html' => '<p>' . esc_html__( 'Hi {first_name|there},', 'dox-newsletter' ) . '</p><p></p>', 'align' => 'left' ],
-			[ 'type' => 'button', 'text' => __( 'Read more', 'dox-newsletter' ), 'url' => home_url( '/' ), 'style' => 'dark', 'align' => 'left' ],
+			[ 'type' => 'text', 'html' => '<p>' . esc_html__( 'Hi {first_name|there},', 'dox-orbit' ) . '</p><p></p>', 'align' => 'left' ],
+			[ 'type' => 'button', 'text' => __( 'Read more', 'dox-orbit' ), 'url' => home_url( '/' ), 'style' => 'dark', 'align' => 'left' ],
 		];
 	}
 
@@ -99,15 +99,15 @@ class DXN_Campaigns {
 	public static function save( $id, array $data ) {
 		global $wpdb;
 		$c = self::get( $id );
-		if ( ! $c ) return new WP_Error( 'missing', __( 'That campaign no longer exists.', 'dox-newsletter' ) );
+		if ( ! $c ) return new WP_Error( 'missing', __( 'That campaign no longer exists.', 'dox-orbit' ) );
 		if ( ! in_array( $c['status'], [ 'draft', 'scheduled', 'active', 'inactive' ], true ) ) {
-			return new WP_Error( 'locked', __( 'This campaign has already been sent and cannot be edited.', 'dox-newsletter' ) );
+			return new WP_Error( 'locked', __( 'This campaign has already been sent and cannot be edited.', 'dox-orbit' ) );
 		}
 
-		$row = [ 'updated_at' => dxn_now() ];
+		$row = [ 'updated_at' => dxo_now() ];
 		if ( isset( $data['subject'] ) ) $row['subject'] = mb_substr( sanitize_text_field( $data['subject'] ), 0, 255 );
 		if ( isset( $data['preheader'] ) ) $row['preheader'] = mb_substr( sanitize_text_field( $data['preheader'] ), 0, 255 );
-		if ( isset( $data['blocks'] ) ) $row['blocks'] = wp_json_encode( DXN_Renderer::normalize_blocks( $data['blocks'] ) );
+		if ( isset( $data['blocks'] ) ) $row['blocks'] = wp_json_encode( DXO_Renderer::normalize_blocks( $data['blocks'] ) );
 		if ( isset( $data['lists'] ) && empty( $c['audience']['resend'] ) ) {
 			$row['list_ids'] = wp_json_encode( [ 'lists' => array_values( array_filter( array_map( 'intval', (array) $data['lists'] ) ) ) ] );
 		}
@@ -188,12 +188,12 @@ class DXN_Campaigns {
 	public static function audience_label( array $c ) {
 		if ( ! empty( $c['audience']['resend'] ) ) {
 			$orig = self::get( (int) $c['audience']['resend']['campaign_id'] );
-			$what = $c['audience']['resend']['who'] === 'not_clicked' ? __( 'Who did not click «%s»', 'dox-newsletter' ) : __( 'Who did not open «%s»', 'dox-newsletter' );
+			$what = $c['audience']['resend']['who'] === 'not_clicked' ? __( 'Who did not click «%s»', 'dox-orbit' ) : __( 'Who did not open «%s»', 'dox-orbit' );
 			return sprintf( $what, $orig ? $orig['subject'] : '#' . $c['audience']['resend']['campaign_id'] );
 		}
-		$names = DXN_Lists::names();
+		$names = DXO_Lists::names();
 		$lists = array_filter( array_map( function ( $id ) use ( $names ) { return $names[ $id ] ?? null; }, $c['audience']['lists'] ?? [] ) );
-		return $lists ? implode( ', ', $lists ) : __( 'All subscribers', 'dox-newsletter' );
+		return $lists ? implode( ', ', $lists ) : __( 'All subscribers', 'dox-orbit' );
 	}
 
 	// ═══ Lanzar ═════════════════════════════════════════════════════════════
@@ -201,7 +201,7 @@ class DXN_Campaigns {
 	/** Lo que impide lanzar la campaña, en frases para la pantalla. Vacío = se puede. */
 	public static function problems( array $c ) {
 		$p = [];
-		if ( trim( $c['subject'] ) === '' ) $p[] = __( 'Write a subject.', 'dox-newsletter' );
+		if ( trim( $c['subject'] ) === '' ) $p[] = __( 'Write a subject.', 'dox-orbit' );
 		$has = false;
 		foreach ( $c['blocks'] as $b ) {
 			if ( ( $b['type'] === 'text' && trim( strip_tags( $b['html'] ) ) !== '' ) || ( $b['type'] === 'heading' && $b['text'] !== '' ) || ( $b['type'] === 'image' && $b['url'] !== '' ) || $b['type'] === 'post' ) {
@@ -209,7 +209,7 @@ class DXN_Campaigns {
 				break;
 			}
 		}
-		if ( ! $has ) $p[] = __( 'The email is empty: add a title, a text or an image.', 'dox-newsletter' );
+		if ( ! $has ) $p[] = __( 'The email is empty: add a title, a text or an image.', 'dox-orbit' );
 
 		$texts = [ $c['subject'], $c['preheader'] ];
 		foreach ( $c['blocks'] as $b ) {
@@ -217,13 +217,13 @@ class DXN_Campaigns {
 			$texts[] = $b['html'] ?? '';
 			$texts[] = $b['url'] ?? '';
 		}
-		$unknown = DXN_Renderer::unknown_tags( ...$texts );
+		$unknown = DXO_Renderer::unknown_tags( ...$texts );
 		if ( $unknown ) {
 			/* translators: %s: list of unknown merge tags */
-			$p[] = sprintf( __( 'These fields cannot be filled: %s. The ones that work are {first_name}, {last_name} and {email}.', 'dox-newsletter' ), implode( ', ', $unknown ) );
+			$p[] = sprintf( __( 'These fields cannot be filled: %s. The ones that work are {first_name}, {last_name} and {email}.', 'dox-orbit' ), implode( ', ', $unknown ) );
 		}
-		if ( ! is_email( DXN_Settings::get( 'from_email' ) ) ) $p[] = __( 'The sender email in Settings is not valid.', 'dox-newsletter' );
-		if ( $c['type'] === 'regular' && ! self::audience_ids( $c ) ) $p[] = __( 'Nobody would receive it: the chosen lists have no active subscribers.', 'dox-newsletter' );
+		if ( ! is_email( DXO_Settings::get( 'from_email' ) ) ) $p[] = __( 'The sender email in Settings is not valid.', 'dox-orbit' );
+		if ( $c['type'] === 'regular' && ! self::audience_ids( $c ) ) $p[] = __( 'Nobody would receive it: the chosen lists have no active subscribers.', 'dox-orbit' );
 		return $p;
 	}
 
@@ -235,17 +235,17 @@ class DXN_Campaigns {
 		global $wpdb;
 		$c = self::get( $id );
 		if ( ! $c || ! in_array( $c['status'], [ 'draft', 'scheduled' ], true ) ) {
-			return new WP_Error( 'state', __( 'This campaign cannot be sent from its current state.', 'dox-newsletter' ) );
+			return new WP_Error( 'state', __( 'This campaign cannot be sent from its current state.', 'dox-orbit' ) );
 		}
 		$p = self::problems( $c );
 		if ( $p ) return new WP_Error( 'problems', implode( "\n", $p ), $p );
 
 		if ( $when && strtotime( $when . ' UTC' ) > time() + 60 ) {
-			$wpdb->update( self::t(), [ 'status' => 'scheduled', 'scheduled_at' => $when, 'updated_at' => dxn_now() ], [ 'id' => $c['id'] ] );
+			$wpdb->update( self::t(), [ 'status' => 'scheduled', 'scheduled_at' => $when, 'updated_at' => dxo_now() ], [ 'id' => $c['id'] ] );
 			return self::get( $id );
 		}
 		self::start( $c );
-		DXN_Sender::kick();
+		DXO_Sender::kick();
 		return self::get( $id );
 	}
 
@@ -261,14 +261,14 @@ class DXN_Campaigns {
 		$ids = self::audience_ids( $c );
 		$s   = self::t( 'subscribers' );
 		$r   = self::t( 'recipients' );
-		$now = dxn_now();
+		$now = dxo_now();
 
 		foreach ( array_chunk( $ids, 300 ) as $chunk ) {
 			$in     = implode( ',', $chunk );
 			$people = $wpdb->get_results( "SELECT id, email FROM $s WHERE id IN ($in)", ARRAY_A );
 			$values = [];
 			foreach ( $people as $p ) {
-				$values[] = $wpdb->prepare( '(%d,%d,%s,%s,%s,%s)', $c['id'], $p['id'], $p['email'], dxn_token(), 'queued', $now );
+				$values[] = $wpdb->prepare( '(%d,%d,%s,%s,%s,%s)', $c['id'], $p['id'], $p['email'], dxo_token(), 'queued', $now );
 			}
 			if ( $values ) {
 				// IGNORE: si se relanza tras un fallo, los que ya están no se duplican.
@@ -284,8 +284,8 @@ class DXN_Campaigns {
 	/** Los enlaces del correo, una fila por URL. Los que llevan un {campo} no se siguen. */
 	public static function register_links( array $c ) {
 		global $wpdb;
-		$html = DXN_Renderer::render_blocks( $c['blocks'], DXN_Settings::brand() );
-		foreach ( DXN_Renderer::extract_links( $html ) as $url ) {
+		$html = DXO_Renderer::render_blocks( $c['blocks'], DXO_Settings::brand() );
+		foreach ( DXO_Renderer::extract_links( $html ) as $url ) {
 			if ( strpos( $url, '{' ) !== false ) continue;
 			$wpdb->query( $wpdb->prepare( 'INSERT IGNORE INTO ' . self::t( 'links' ) . ' (campaign_id, url, url_hash) VALUES (%d, %s, %s)', $c['id'], $url, sha1( $url ) ) );
 		}
@@ -302,8 +302,8 @@ class DXN_Campaigns {
 
 	public static function set_status( $id, $status ) {
 		global $wpdb;
-		$data = [ 'status' => $status, 'updated_at' => dxn_now() ];
-		if ( $status === 'sent' || $status === 'cancelled' ) $data['finished_at'] = dxn_now();
+		$data = [ 'status' => $status, 'updated_at' => dxo_now() ];
+		if ( $status === 'sent' || $status === 'cancelled' ) $data['finished_at'] = dxo_now();
 		return (bool) $wpdb->update( self::t(), $data, [ 'id' => (int) $id ] );
 	}
 
@@ -324,16 +324,16 @@ class DXN_Campaigns {
 			$id = self::create( [
 				'type'      => 'welcome',
 				'status'    => 'inactive',
-				'subject'   => sprintf( __( 'Welcome to %s', 'dox-newsletter' ), get_bloginfo( 'name' ) ),
-				'preheader' => __( 'What you will receive and how often.', 'dox-newsletter' ),
+				'subject'   => sprintf( __( 'Welcome to %s', 'dox-orbit' ), get_bloginfo( 'name' ) ),
+				'preheader' => __( 'What you will receive and how often.', 'dox-orbit' ),
 				'audience'  => [ 'lists' => [] ],
 				'blocks'    => [
-					[ 'type' => 'heading', 'text' => __( 'Welcome, {first_name|friend}', 'dox-newsletter' ), 'size' => 'large', 'align' => 'left' ],
-					[ 'type' => 'text', 'html' => '<p>' . esc_html__( 'Thanks for subscribing. Once a month you will receive what we learn and what we publish, without filler.', 'dox-newsletter' ) . '</p>', 'align' => 'left' ],
-					[ 'type' => 'button', 'text' => __( 'Visit the blog', 'dox-newsletter' ), 'url' => home_url( '/' ), 'style' => 'dark', 'align' => 'left' ],
+					[ 'type' => 'heading', 'text' => __( 'Welcome, {first_name|friend}', 'dox-orbit' ), 'size' => 'large', 'align' => 'left' ],
+					[ 'type' => 'text', 'html' => '<p>' . esc_html__( 'Thanks for subscribing. Once a month you will receive what we learn and what we publish, without filler.', 'dox-orbit' ) . '</p>', 'align' => 'left' ],
+					[ 'type' => 'button', 'text' => __( 'Visit the blog', 'dox-orbit' ), 'url' => home_url( '/' ), 'style' => 'dark', 'align' => 'left' ],
 				],
 			] );
-			$wpdb->update( self::t(), [ 'started_at' => dxn_now() ], [ 'id' => $id ] );
+			$wpdb->update( self::t(), [ 'started_at' => dxo_now() ], [ 'id' => $id ] );
 		}
 		return self::get( $id );
 	}
@@ -347,12 +347,12 @@ class DXN_Campaigns {
 
 		$wpdb->query( $wpdb->prepare(
 			'INSERT IGNORE INTO ' . self::t( 'recipients' ) . ' (campaign_id, subscriber_id, email, token, status, queued_at) VALUES (%d,%d,%s,%s,%s,%s)',
-			$w['id'], $sub['id'], $sub['email'], dxn_token(), 'queued', dxn_now()
+			$w['id'], $sub['id'], $sub['email'], dxo_token(), 'queued', dxo_now()
 		) );
 		if ( $wpdb->rows_affected ) {
 			self::register_links( $w );
 			$wpdb->query( $wpdb->prepare( 'UPDATE ' . self::t() . ' SET total = total + 1 WHERE id = %d', $w['id'] ) );
-			DXN_Sender::kick();
+			DXO_Sender::kick();
 		}
 	}
 
@@ -365,7 +365,7 @@ class DXN_Campaigns {
 			'recipient_id' => (int) $recipient_id,
 			'type'         => $type,
 			'link_id'      => (int) $link_id,
-			'created_at'   => dxn_now(),
+			'created_at'   => dxo_now(),
 		] );
 	}
 
@@ -417,7 +417,7 @@ class DXN_Campaigns {
 		];
 		$out = [];
 		foreach ( $groups as $k => $g ) $out[ $k ] = [ 'name' => $g[0], 'sent' => 0, 'opened' => 0 ];
-		$out['other'] = [ 'name' => __( 'Others', 'dox-newsletter' ), 'sent' => 0, 'opened' => 0 ];
+		$out['other'] = [ 'name' => __( 'Others', 'dox-orbit' ), 'sent' => 0, 'opened' => 0 ];
 
 		$rows = $wpdb->get_results( $wpdb->prepare(
 			"SELECT SUBSTRING_INDEX(email,'@',-1) d, COUNT(*) n, SUM(opened_at IS NOT NULL) o FROM " . self::t( 'recipients' ) . " WHERE campaign_id = %d AND status = 'sent' AND email <> '' GROUP BY d",

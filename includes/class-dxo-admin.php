@@ -2,16 +2,16 @@
 /**
  * El panel en wp-admin.
  *
- * Una sola página (Dox Plugins > Newsletter) con su propia navegación:
- * ?page=dox-newsletter&view=dashboard|campaigns|edit|subscribers|forms|report|settings.
- * Las acciones van por admin-ajax (dxn_*), todas con nonce y manage_options.
+ * Una sola página (Dox Plugins > Orbit) con su propia navegación:
+ * ?page=dox-orbit&view=dashboard|campaigns|edit|subscribers|forms|report|settings.
+ * Las acciones van por admin-ajax (dxo_*), todas con nonce y manage_options.
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class DXN_Admin {
+class DXO_Admin {
 
-	const SLUG = 'dox-newsletter';
+	const SLUG = 'dox-orbit';
 	const CAP  = 'manage_options';
 
 	const VIEWS = [ 'dashboard', 'campaigns', 'edit', 'subscribers', 'forms', 'report', 'settings' ];
@@ -21,7 +21,7 @@ class DXN_Admin {
 		add_action( 'admin_menu', [ __CLASS__, 'fallback_menu' ], 20 );
 		add_action( 'admin_enqueue_scripts', [ __CLASS__, 'assets' ] );
 		add_filter( 'admin_body_class', [ __CLASS__, 'body_class' ] );
-		add_filter( 'plugin_action_links_' . plugin_basename( DXN_FILE ), [ __CLASS__, 'action_links' ] );
+		add_filter( 'plugin_action_links_' . plugin_basename( DXO_FILE ), [ __CLASS__, 'action_links' ] );
 
 		$ajax = [
 			'save_campaign', 'preview', 'send_test', 'launch', 'unschedule', 'pause', 'resume', 'cancel',
@@ -31,10 +31,10 @@ class DXN_Admin {
 			'save_settings', 'settings_test', 'posts',
 		];
 		foreach ( $ajax as $a ) {
-			add_action( 'wp_ajax_dxn_' . $a, [ __CLASS__, 'ajax_' . $a ] );
+			add_action( 'wp_ajax_dxo_' . $a, [ __CLASS__, 'ajax_' . $a ] );
 		}
-		add_action( 'admin_post_dxn_export', [ __CLASS__, 'export' ] );
-		add_action( 'admin_post_dxn_new_campaign', [ __CLASS__, 'new_campaign' ] );
+		add_action( 'admin_post_dxo_export', [ __CLASS__, 'export' ] );
+		add_action( 'admin_post_dxo_new_campaign', [ __CLASS__, 'new_campaign' ] );
 	}
 
 	// ═══ Menú ═══════════════════════════════════════════════════════════════
@@ -42,12 +42,12 @@ class DXN_Admin {
 	public static function register_in_core( $core ) {
 		$core->register_plugin( [
 			'slug'    => self::SLUG,
-			'name'    => 'Newsletter',
-			'version' => DXN_VERSION,
-			'summary' => __( 'Newsletters and email campaigns from your own WordPress.', 'dox-newsletter' ),
+			'name'    => 'Orbit',
+			'version' => DXO_VERSION,
+			'summary' => __( 'Newsletters and email campaigns from your own WordPress.', 'dox-orbit' ),
 			'page'    => [
-				'menu_title' => 'Newsletter',
-				'page_title' => 'Dox Newsletter',
+				'menu_title' => 'Orbit',
+				'page_title' => 'Dox Orbit',
 				'callback'   => [ __CLASS__, 'render' ],
 			],
 		] );
@@ -56,11 +56,11 @@ class DXN_Admin {
 	/** Sin dox-core (carpeta a medias), el plugin cuelga su propio menú. */
 	public static function fallback_menu() {
 		if ( function_exists( 'dox_core' ) ) return;
-		add_menu_page( 'Dox Newsletter', 'Newsletter', self::CAP, self::SLUG, [ __CLASS__, 'render' ], 'dashicons-email-alt', 58.95 );
+		add_menu_page( 'Dox Orbit', 'Orbit', self::CAP, self::SLUG, [ __CLASS__, 'render' ], 'dashicons-email-alt', 58.95 );
 	}
 
 	public static function action_links( $links ) {
-		array_unshift( $links, '<a href="' . esc_url( self::url() ) . '">' . esc_html__( 'Open', 'dox-newsletter' ) . '</a>' );
+		array_unshift( $links, '<a href="' . esc_url( self::url() ) . '">' . esc_html__( 'Open', 'dox-orbit' ) . '</a>' );
 		return $links;
 	}
 
@@ -74,7 +74,7 @@ class DXN_Admin {
 	}
 
 	public static function body_class( $classes ) {
-		return self::is_our_page() ? $classes . ' dxn-screen' : $classes;
+		return self::is_our_page() ? $classes . ' dxo-screen' : $classes;
 	}
 
 	public static function current_view() {
@@ -86,21 +86,21 @@ class DXN_Admin {
 
 	public static function assets() {
 		if ( ! self::is_our_page() ) return;
-		wp_enqueue_style( 'dxn-inter', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap', [], null );
-		wp_enqueue_style( 'dxn-admin', DXN_URL . 'assets/admin.css', [], dxn_asset_ver( 'admin.css' ) );
-		wp_enqueue_script( 'dxn-admin', DXN_URL . 'assets/admin.js', [], dxn_asset_ver( 'admin.js' ), true );
+		wp_enqueue_style( 'dxo-inter', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap', [], null );
+		wp_enqueue_style( 'dxo-admin', DXO_URL . 'assets/admin.css', [], dxo_asset_ver( 'admin.css' ) );
+		wp_enqueue_script( 'dxo-admin', DXO_URL . 'assets/admin.js', [], dxo_asset_ver( 'admin.js' ), true );
 
 		$view = self::current_view();
 		if ( in_array( $view, [ 'edit', 'settings' ], true ) ) wp_enqueue_media();
 		if ( $view === 'forms' ) {
-			wp_enqueue_style( 'dxn-public', DXN_URL . 'assets/public.css', [], dxn_asset_ver( 'public.css' ) );
+			wp_enqueue_style( 'dxo-public', DXO_URL . 'assets/public.css', [], dxo_asset_ver( 'public.css' ) );
 		}
 
-		wp_localize_script( 'dxn-admin', 'DXN', [
+		wp_localize_script( 'dxo-admin', 'DXO', [
 			'ajax'  => admin_url( 'admin-ajax.php' ),
-			'nonce' => wp_create_nonce( 'dxn' ),
+			'nonce' => wp_create_nonce( 'dxo' ),
 			'view'  => $view,
-			'rate'  => (int) DXN_Settings::get( 'rate_per_hour' ),
+			'rate'  => (int) DXO_Settings::get( 'rate_per_hour' ),
 			'urls'  => [
 				'campaigns' => self::url( 'campaigns' ),
 				'edit'      => self::url( 'edit' ),
@@ -108,31 +108,31 @@ class DXN_Admin {
 				'dashboard' => self::url( 'dashboard' ),
 			],
 			'i18n'  => [
-				'saved'        => __( 'Saved', 'dox-newsletter' ),
-				'saving'       => __( 'Saving…', 'dox-newsletter' ),
-				'unsaved'      => __( 'Unsaved changes', 'dox-newsletter' ),
-				'error'        => __( 'Something went wrong. Try again.', 'dox-newsletter' ),
-				'sent_test'    => __( 'Test sent to %s', 'dox-newsletter' ),
-				'copied'       => __( 'Copied', 'dox-newsletter' ),
-				'confirm'      => __( 'Confirm', 'dox-newsletter' ),
-				'cancel'       => __( 'Cancel', 'dox-newsletter' ),
-				'delete'       => __( 'Delete', 'dox-newsletter' ),
-				'choose_image' => __( 'Choose an image', 'dox-newsletter' ),
-				'use_image'    => __( 'Use this image', 'dox-newsletter' ),
-				'leave'        => __( 'There are unsaved changes.', 'dox-newsletter' ),
-				'chars'        => __( '%d characters', 'dox-newsletter' ),
+				'saved'        => __( 'Saved', 'dox-orbit' ),
+				'saving'       => __( 'Saving…', 'dox-orbit' ),
+				'unsaved'      => __( 'Unsaved changes', 'dox-orbit' ),
+				'error'        => __( 'Something went wrong. Try again.', 'dox-orbit' ),
+				'sent_test'    => __( 'Test sent to %s', 'dox-orbit' ),
+				'copied'       => __( 'Copied', 'dox-orbit' ),
+				'confirm'      => __( 'Confirm', 'dox-orbit' ),
+				'cancel'       => __( 'Cancel', 'dox-orbit' ),
+				'delete'       => __( 'Delete', 'dox-orbit' ),
+				'choose_image' => __( 'Choose an image', 'dox-orbit' ),
+				'use_image'    => __( 'Use this image', 'dox-orbit' ),
+				'leave'        => __( 'There are unsaved changes.', 'dox-orbit' ),
+				'chars'        => __( '%d characters', 'dox-orbit' ),
 				'block'        => [
-					'heading' => __( 'Title', 'dox-newsletter' ),
-					'text'    => __( 'Text', 'dox-newsletter' ),
-					'image'   => __( 'Image', 'dox-newsletter' ),
-					'button'  => __( 'Button', 'dox-newsletter' ),
-					'post'    => __( 'Blog post', 'dox-newsletter' ),
-					'divider' => __( 'Divider', 'dox-newsletter' ),
-					'spacer'  => __( 'Space', 'dox-newsletter' ),
+					'heading' => __( 'Title', 'dox-orbit' ),
+					'text'    => __( 'Text', 'dox-orbit' ),
+					'image'   => __( 'Image', 'dox-orbit' ),
+					'button'  => __( 'Button', 'dox-orbit' ),
+					'post'    => __( 'Blog post', 'dox-orbit' ),
+					'divider' => __( 'Divider', 'dox-orbit' ),
+					'spacer'  => __( 'Space', 'dox-orbit' ),
 				],
-				'read_more'    => __( 'Read more', 'dox-newsletter' ),
-				'no_posts'     => __( 'No posts found', 'dox-newsletter' ),
-				'empty_block'  => __( '(empty)', 'dox-newsletter' ),
+				'read_more'    => __( 'Read more', 'dox-orbit' ),
+				'no_posts'     => __( 'No posts found', 'dox-orbit' ),
+				'empty_block'  => __( '(empty)', 'dox-orbit' ),
 			],
 		] );
 	}
@@ -142,7 +142,7 @@ class DXN_Admin {
 	public static function render() {
 		if ( ! current_user_can( self::CAP ) ) return;
 		$view = self::current_view();
-		include DXN_PATH . 'admin/views/layout.php';
+		include DXO_PATH . 'admin/views/layout.php';
 	}
 
 	/** Un icono de línea (los de la maqueta), por nombre. */
@@ -228,69 +228,69 @@ class DXN_Admin {
 			$axis .= '<span style="left:' . $pos . '%;transform:translateX(' . $shift . ')">' . esc_html( $l ) . '</span>';
 		}
 		$last = $n - 1;
-		return '<svg class="dxn-chart" viewBox="0 0 ' . $W . ' ' . $H . '" preserveAspectRatio="none" role="img">'
+		return '<svg class="dxo-chart" viewBox="0 0 ' . $W . ' ' . $H . '" preserveAspectRatio="none" role="img">'
 			. '<defs><linearGradient id="' . $id . '" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="' . esc_attr( $color ) . '" stop-opacity=".22"/><stop offset="1" stop-color="' . esc_attr( $color ) . '" stop-opacity="0"/></linearGradient></defs>'
 			. $grid
 			. '<path d="' . $d . 'L' . round( $x( $last ), 1 ) . ' ' . ( $H - 8 ) . ' L' . round( $x( 0 ), 1 ) . ' ' . ( $H - 8 ) . 'Z" fill="url(#' . $id . ')"/>'
-			. '<path class="dxn-line" d="' . trim( $d ) . '" fill="none" stroke="' . esc_attr( $color ) . '" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" pathLength="1"/>'
+			. '<path class="dxo-line" d="' . trim( $d ) . '" fill="none" stroke="' . esc_attr( $color ) . '" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" pathLength="1"/>'
 			. '<circle cx="' . round( $x( $last ), 1 ) . '" cy="' . round( $y( $values[ $last ] ), 1 ) . '" r="4.5" fill="#fff" stroke="' . esc_attr( $color ) . '" stroke-width="2.4" vector-effect="non-scaling-stroke"/>'
-			. '</svg><div class="dxn-axis">' . $axis . '</div>';
+			. '</svg><div class="dxo-axis">' . $axis . '</div>';
 	}
 
 	/** Lo que necesita la franja de estado para ponerse al día. */
 	public static function status_payload() {
-		$st = DXN_Sender::status();
+		$st = DXO_Sender::status();
 		if ( ! $st ) return [ 'active' => false ];
 		return [
 			'active' => true,
 			'id'     => $st['id'],
 			'paused' => $st['status'] === 'paused',
-			'title'  => sprintf( $st['status'] === 'paused' ? __( 'Paused «%s»', 'dox-newsletter' ) : __( 'Sending «%s»', 'dox-newsletter' ), $st['subject'] ),
-			'count'  => sprintf( __( '%1$s of %2$s', 'dox-newsletter' ), dxn_num( $st['done'] ), dxn_num( $st['total'] ) ),
+			'title'  => sprintf( $st['status'] === 'paused' ? __( 'Paused «%s»', 'dox-orbit' ) : __( 'Sending «%s»', 'dox-orbit' ), $st['subject'] ),
+			'count'  => sprintf( __( '%1$s of %2$s', 'dox-orbit' ), dxo_num( $st['done'] ), dxo_num( $st['total'] ) ),
 			'pct'    => $st['total'] ? round( $st['done'] * 100 / $st['total'] ) : 0,
 			'meta'   => self::status_meta( $st ),
-			'label'  => $st['status'] === 'paused' ? __( 'Resume', 'dox-newsletter' ) : __( 'Pause', 'dox-newsletter' ),
+			'label'  => $st['status'] === 'paused' ? __( 'Resume', 'dox-orbit' ) : __( 'Pause', 'dox-orbit' ),
 		];
 	}
 
 	/** "Sale a 150 por hora para dejar sitio a los correos de la web · termina hoy hacia las 18:40" */
 	public static function status_meta( array $st ) {
 		if ( $st['status'] === 'paused' ) {
-			return sprintf( __( '%s left. Nothing goes out until you resume it.', 'dox-newsletter' ), dxn_num( $st['left'] ) );
+			return sprintf( __( '%s left. Nothing goes out until you resume it.', 'dox-orbit' ), dxo_num( $st['left'] ) );
 		}
-		$rate = sprintf( __( 'Going out at %s per hour to leave room for the website emails', 'dox-newsletter' ), dxn_num( $st['rate'] ) );
+		$rate = sprintf( __( 'Going out at %s per hour to leave room for the website emails', 'dox-orbit' ), dxo_num( $st['rate'] ) );
 		if ( ! $st['left'] ) return $rate;
 		$when = $st['eta_day'] === 'today'
-			? sprintf( __( 'finishes today around %s', 'dox-newsletter' ), $st['eta'] )
-			: sprintf( __( 'finishes %1$s around %2$s', 'dox-newsletter' ), $st['eta_day'], $st['eta'] );
+			? sprintf( __( 'finishes today around %s', 'dox-orbit' ), $st['eta'] )
+			: sprintf( __( 'finishes %1$s around %2$s', 'dox-orbit' ), $st['eta_day'], $st['eta'] );
 		return $rate . ' · ' . $when;
 	}
 
 	/** La pastilla de estado de una campaña. */
 	public static function status_pill( array $c, $st = null ) {
 		$map = [
-			'draft'     => [ 'p-gray', __( 'Draft', 'dox-newsletter' ) ],
-			'scheduled' => [ 'p-info', __( 'Scheduled', 'dox-newsletter' ) ],
-			'sending'   => [ 'p-acc', __( 'Sending', 'dox-newsletter' ) ],
-			'paused'    => [ 'p-warn', __( 'Paused', 'dox-newsletter' ) ],
-			'sent'      => [ 'p-ok', __( 'Sent', 'dox-newsletter' ) ],
-			'cancelled' => [ 'p-gray', __( 'Cancelled', 'dox-newsletter' ) ],
-			'active'    => [ 'p-ok', __( 'On', 'dox-newsletter' ) ],
-			'inactive'  => [ 'p-gray', __( 'Off', 'dox-newsletter' ) ],
+			'draft'     => [ 'p-gray', __( 'Draft', 'dox-orbit' ) ],
+			'scheduled' => [ 'p-info', __( 'Scheduled', 'dox-orbit' ) ],
+			'sending'   => [ 'p-acc', __( 'Sending', 'dox-orbit' ) ],
+			'paused'    => [ 'p-warn', __( 'Paused', 'dox-orbit' ) ],
+			'sent'      => [ 'p-ok', __( 'Sent', 'dox-orbit' ) ],
+			'cancelled' => [ 'p-gray', __( 'Cancelled', 'dox-orbit' ) ],
+			'active'    => [ 'p-ok', __( 'On', 'dox-orbit' ) ],
+			'inactive'  => [ 'p-gray', __( 'Off', 'dox-orbit' ) ],
 		];
 		$m     = $map[ $c['status'] ] ?? [ 'p-gray', $c['status'] ];
 		$label = $m[1];
 		if ( $c['status'] === 'sending' && $st && $st['total'] ) {
 			$label .= ' ' . round( ( $st['sent'] + $st['failed'] ) * 100 / $st['total'] ) . ' %';
 		}
-		return '<span class="dxn-pill ' . $m[0] . '"><span class="dot"></span>' . esc_html( $label ) . '</span>';
+		return '<span class="dxo-pill ' . $m[0] . '"><span class="dot"></span>' . esc_html( $label ) . '</span>';
 	}
 
 	// ═══ AJAX: utilidades ═══════════════════════════════════════════════════
 
 	private static function guard() {
-		if ( ! current_user_can( self::CAP ) || ! check_ajax_referer( 'dxn', 'nonce', false ) ) {
-			wp_send_json_error( [ 'message' => __( 'Your session expired. Reload the page.', 'dox-newsletter' ) ], 403 );
+		if ( ! current_user_can( self::CAP ) || ! check_ajax_referer( 'dxo', 'nonce', false ) ) {
+			wp_send_json_error( [ 'message' => __( 'Your session expired. Reload the page.', 'dox-orbit' ) ], 403 );
 		}
 	}
 
@@ -305,8 +305,8 @@ class DXN_Admin {
 	// ═══ AJAX: campañas ═════════════════════════════════════════════════════
 
 	public static function new_campaign() {
-		if ( ! current_user_can( self::CAP ) || ! check_admin_referer( 'dxn_new' ) ) wp_die( 'Forbidden' );
-		$id = DXN_Campaigns::create();
+		if ( ! current_user_can( self::CAP ) || ! check_admin_referer( 'dxo_new' ) ) wp_die( 'Forbidden' );
+		$id = DXO_Campaigns::create();
 		wp_safe_redirect( self::url( 'edit', [ 'id' => $id ] ) );
 		exit;
 	}
@@ -319,40 +319,40 @@ class DXN_Admin {
 			'blocks'    => json_decode( (string) self::in( 'blocks', '[]' ), true ) ?: [],
 		];
 		if ( isset( $_POST['lists'] ) ) $data['lists'] = (array) self::in( 'lists', [] );
-		$c = DXN_Campaigns::save( (int) self::in( 'id' ), $data );
+		$c = DXO_Campaigns::save( (int) self::in( 'id' ), $data );
 		if ( is_wp_error( $c ) ) self::fail( $c->get_error_message() );
-		wp_send_json_success( [ 'audience' => count( DXN_Campaigns::audience_ids( $c ) ), 'problems' => DXN_Campaigns::problems( $c ) ] );
+		wp_send_json_success( [ 'audience' => count( DXO_Campaigns::audience_ids( $c ) ), 'problems' => DXO_Campaigns::problems( $c ) ] );
 	}
 
 	/** La vista previa: el mismo HTML que se envía, con los datos de quien la mira. */
 	public static function ajax_preview() {
 		self::guard();
 		$user   = wp_get_current_user();
-		$blocks = DXN_Renderer::normalize_blocks( json_decode( (string) self::in( 'blocks', '[]' ), true ) ?: [] );
-		$render = DXN_Renderer::render_email( [
+		$blocks = DXO_Renderer::normalize_blocks( json_decode( (string) self::in( 'blocks', '[]' ), true ) ?: [] );
+		$render = DXO_Renderer::render_email( [
 			'blocks'          => $blocks,
-			'brand'           => DXN_Settings::brand(),
+			'brand'           => DXO_Settings::brand(),
 			'subject'         => (string) self::in( 'subject' ),
 			'preheader'       => (string) self::in( 'preheader' ),
 			'fields'          => [ 'first_name' => $user->first_name ?: 'Ana', 'last_name' => $user->last_name, 'email' => $user->user_email ],
 			'unsubscribe_url' => '#',
 			'view_url'        => '#',
-			'strings'         => DXN_Public::email_strings(),
+			'strings'         => DXO_Public::email_strings(),
 		] );
 		wp_send_json_success( [ 'html' => $render['html'] ] );
 	}
 
 	public static function ajax_send_test() {
 		self::guard();
-		$c  = DXN_Campaigns::get( (int) self::in( 'id' ) );
+		$c  = DXO_Campaigns::get( (int) self::in( 'id' ) );
 		$to = sanitize_email( self::in( 'to' ) );
-		if ( ! $c ) self::fail( __( 'That campaign no longer exists.', 'dox-newsletter' ) );
-		if ( ! is_email( $to ) ) self::fail( __( 'Write a valid email for the test.', 'dox-newsletter' ) );
-		update_user_meta( get_current_user_id(), 'dxn_test_to', $to );
-		$err = DXN_Sender::send_test( $c, $to );
+		if ( ! $c ) self::fail( __( 'That campaign no longer exists.', 'dox-orbit' ) );
+		if ( ! is_email( $to ) ) self::fail( __( 'Write a valid email for the test.', 'dox-orbit' ) );
+		update_user_meta( get_current_user_id(), 'dxo_test_to', $to );
+		$err = DXO_Sender::send_test( $c, $to );
 		if ( $err !== null ) self::fail( $err );
 		global $wpdb;
-		$wpdb->update( DXN_Install::table( 'campaigns' ), [ 'test_sent_at' => dxn_now() ], [ 'id' => $c['id'] ] );
+		$wpdb->update( DXO_Install::table( 'campaigns' ), [ 'test_sent_at' => dxo_now() ], [ 'id' => $c['id'] ] );
 		wp_send_json_success();
 	}
 
@@ -366,72 +366,72 @@ class DXN_Admin {
 				$dt  = new DateTime( $when, wp_timezone() );
 				$utc = $dt->setTimezone( new DateTimeZone( 'UTC' ) )->format( 'Y-m-d H:i:s' );
 			} catch ( Exception $e ) {
-				self::fail( __( 'That date is not valid.', 'dox-newsletter' ) );
+				self::fail( __( 'That date is not valid.', 'dox-orbit' ) );
 			}
-			if ( strtotime( $utc . ' UTC' ) < time() ) self::fail( __( 'That time has already passed.', 'dox-newsletter' ) );
+			if ( strtotime( $utc . ' UTC' ) < time() ) self::fail( __( 'That time has already passed.', 'dox-orbit' ) );
 		}
-		$c = DXN_Campaigns::launch( (int) self::in( 'id' ), $utc );
+		$c = DXO_Campaigns::launch( (int) self::in( 'id' ), $utc );
 		if ( is_wp_error( $c ) ) self::fail( $c->get_error_message(), [ 'problems' => $c->get_error_data() ] );
 		wp_send_json_success( [ 'status' => $c['status'], 'redirect' => $c['status'] === 'scheduled' ? self::url( 'campaigns' ) : self::url( 'dashboard' ) ] );
 	}
 
 	public static function ajax_unschedule() {
 		self::guard();
-		DXN_Campaigns::unschedule( (int) self::in( 'id' ) );
+		DXO_Campaigns::unschedule( (int) self::in( 'id' ) );
 		wp_send_json_success();
 	}
 
 	public static function ajax_pause() {
 		self::guard();
 		global $wpdb;
-		$wpdb->update( DXN_Install::table( 'campaigns' ), [ 'status' => 'paused' ], [ 'id' => (int) self::in( 'id' ), 'status' => 'sending' ] );
+		$wpdb->update( DXO_Install::table( 'campaigns' ), [ 'status' => 'paused' ], [ 'id' => (int) self::in( 'id' ), 'status' => 'sending' ] );
 		wp_send_json_success( self::status_payload() );
 	}
 
 	public static function ajax_resume() {
 		self::guard();
 		global $wpdb;
-		$wpdb->update( DXN_Install::table( 'campaigns' ), [ 'status' => 'sending' ], [ 'id' => (int) self::in( 'id' ), 'status' => 'paused' ] );
-		DXN_Sender::kick();
+		$wpdb->update( DXO_Install::table( 'campaigns' ), [ 'status' => 'sending' ], [ 'id' => (int) self::in( 'id' ), 'status' => 'paused' ] );
+		DXO_Sender::kick();
 		wp_send_json_success( self::status_payload() );
 	}
 
 	public static function ajax_cancel() {
 		self::guard();
-		DXN_Campaigns::cancel( (int) self::in( 'id' ) );
+		DXO_Campaigns::cancel( (int) self::in( 'id' ) );
 		wp_send_json_success();
 	}
 
 	public static function ajax_delete_campaign() {
 		self::guard();
-		if ( ! DXN_Campaigns::delete( (int) self::in( 'id' ) ) ) self::fail( __( 'This campaign cannot be deleted while it is sending.', 'dox-newsletter' ) );
+		if ( ! DXO_Campaigns::delete( (int) self::in( 'id' ) ) ) self::fail( __( 'This campaign cannot be deleted while it is sending.', 'dox-orbit' ) );
 		wp_send_json_success();
 	}
 
 	public static function ajax_duplicate() {
 		self::guard();
-		$id = DXN_Campaigns::duplicate( (int) self::in( 'id' ) );
+		$id = DXO_Campaigns::duplicate( (int) self::in( 'id' ) );
 		wp_send_json_success( [ 'redirect' => self::url( 'edit', [ 'id' => $id ] ) ] );
 	}
 
 	public static function ajax_resend() {
 		self::guard();
-		$id = DXN_Campaigns::resend( (int) self::in( 'id' ), (string) self::in( 'who', 'not_opened' ) );
-		if ( ! $id ) self::fail( __( 'Only sent campaigns can be resent.', 'dox-newsletter' ) );
+		$id = DXO_Campaigns::resend( (int) self::in( 'id' ), (string) self::in( 'who', 'not_opened' ) );
+		if ( ! $id ) self::fail( __( 'Only sent campaigns can be resent.', 'dox-orbit' ) );
 		wp_send_json_success( [ 'redirect' => self::url( 'edit', [ 'id' => $id ] ) ] );
 	}
 
 	public static function ajax_welcome_toggle() {
 		self::guard();
-		$w  = DXN_Campaigns::welcome();
+		$w  = DXO_Campaigns::welcome();
 		$on = (int) self::in( 'on' ) === 1;
 		if ( $on ) {
-			$p = DXN_Campaigns::problems( $w );
+			$p = DXO_Campaigns::problems( $w );
 			if ( $p ) self::fail( implode( "\n", $p ) );
 		}
-		DXN_Campaigns::set_status( $w['id'], $on ? 'active' : 'inactive' );
+		DXO_Campaigns::set_status( $w['id'], $on ? 'active' : 'inactive' );
 		global $wpdb;
-		$wpdb->update( DXN_Install::table( 'campaigns' ), [ 'finished_at' => null ], [ 'id' => $w['id'] ] );
+		$wpdb->update( DXO_Install::table( 'campaigns' ), [ 'finished_at' => null ], [ 'id' => $w['id'] ] );
 		wp_send_json_success();
 	}
 
@@ -442,7 +442,7 @@ class DXN_Admin {
 	 */
 	public static function ajax_status() {
 		self::guard();
-		DXN_Sender::run();
+		DXO_Sender::run();
 		wp_send_json_success( self::status_payload() );
 	}
 
@@ -456,24 +456,24 @@ class DXN_Admin {
 		$first = sanitize_text_field( self::in( 'first_name' ) );
 		$last  = sanitize_text_field( self::in( 'last_name' ) );
 		$lists = array_map( 'intval', (array) self::in( 'lists', [] ) );
-		if ( ! is_email( $email ) ) self::fail( __( 'That email does not look right.', 'dox-newsletter' ) );
+		if ( ! is_email( $email ) ) self::fail( __( 'That email does not look right.', 'dox-orbit' ) );
 
-		$other = DXN_Subscribers::get_by_email( $email );
-		if ( $other && (int) $other['id'] !== $id ) self::fail( __( 'There is already a subscriber with that email.', 'dox-newsletter' ) );
+		$other = DXO_Subscribers::get_by_email( $email );
+		if ( $other && (int) $other['id'] !== $id ) self::fail( __( 'There is already a subscriber with that email.', 'dox-orbit' ) );
 
 		if ( $id ) {
-			$wpdb->update( DXN_Install::table( 'subscribers' ), [ 'email' => strtolower( $email ), 'first_name' => $first, 'last_name' => $last ], [ 'id' => $id ] );
+			$wpdb->update( DXO_Install::table( 'subscribers' ), [ 'email' => strtolower( $email ), 'first_name' => $first, 'last_name' => $last ], [ 'id' => $id ] );
 		} else {
-			if ( ! self::in( 'consent' ) ) self::fail( __( 'Confirm that this person agreed to receive your emails.', 'dox-newsletter' ) );
-			$id = DXN_Subscribers::add_imported( strtolower( $email ), $first, $last, $lists, 'manual' );
+			if ( ! self::in( 'consent' ) ) self::fail( __( 'Confirm that this person agreed to receive your emails.', 'dox-orbit' ) );
+			$id = DXO_Subscribers::add_imported( strtolower( $email ), $first, $last, $lists, 'manual' );
 		}
-		DXN_Subscribers::set_lists( $id, $lists ?: [ DXN_Lists::default_id() ] );
+		DXO_Subscribers::set_lists( $id, $lists ?: [ DXO_Lists::default_id() ] );
 		wp_send_json_success( [ 'id' => $id ] );
 	}
 
 	public static function ajax_delete_subscriber() {
 		self::guard();
-		DXN_Subscribers::delete( (int) self::in( 'id' ) );
+		DXO_Subscribers::delete( (int) self::in( 'id' ) );
 		wp_send_json_success();
 	}
 
@@ -482,54 +482,54 @@ class DXN_Admin {
 		$status = sanitize_key( self::in( 'status' ) );
 		// A mano solo se puede dar de baja o reactivar a quien rebotó: volver a
 		// activar a alguien que se dio de baja él mismo no es nuestro.
-		$sub = DXN_Subscribers::get( (int) self::in( 'id' ) );
-		if ( ! $sub ) self::fail( __( 'That subscriber no longer exists.', 'dox-newsletter' ) );
+		$sub = DXO_Subscribers::get( (int) self::in( 'id' ) );
+		if ( ! $sub ) self::fail( __( 'That subscriber no longer exists.', 'dox-orbit' ) );
 		if ( $status === 'active' && $sub['status'] === 'unsubscribed' ) {
-			self::fail( __( 'This person unsubscribed. Only they can subscribe again, from a form.', 'dox-newsletter' ) );
+			self::fail( __( 'This person unsubscribed. Only they can subscribe again, from a form.', 'dox-orbit' ) );
 		}
-		DXN_Subscribers::set_status( (int) $sub['id'], $status );
+		DXO_Subscribers::set_status( (int) $sub['id'], $status );
 		wp_send_json_success();
 	}
 
 	public static function ajax_resend_confirm() {
 		self::guard();
-		$sub = DXN_Subscribers::get( (int) self::in( 'id' ) );
-		if ( ! $sub || $sub['status'] !== 'pending' ) self::fail( __( 'This person is not waiting for confirmation.', 'dox-newsletter' ) );
-		DXN_Subscribers::send_confirmation( $sub, true ) ? wp_send_json_success() : self::fail( __( 'The email could not be sent.', 'dox-newsletter' ) );
+		$sub = DXO_Subscribers::get( (int) self::in( 'id' ) );
+		if ( ! $sub || $sub['status'] !== 'pending' ) self::fail( __( 'This person is not waiting for confirmation.', 'dox-orbit' ) );
+		DXO_Subscribers::send_confirmation( $sub, true ) ? wp_send_json_success() : self::fail( __( 'The email could not be sent.', 'dox-orbit' ) );
 	}
 
 	public static function ajax_import() {
 		self::guard();
-		if ( empty( $_FILES['file']['tmp_name'] ) || ! is_uploaded_file( $_FILES['file']['tmp_name'] ) ) self::fail( __( 'Choose a CSV file.', 'dox-newsletter' ) );
-		if ( ! self::in( 'consent' ) ) self::fail( __( 'Confirm that these people agreed to receive your emails.', 'dox-newsletter' ) );
-		$lists = array_map( 'intval', (array) self::in( 'lists', [] ) ) ?: [ DXN_Lists::default_id() ];
-		$res   = DXN_Subscribers::import_csv( $_FILES['file']['tmp_name'], $lists );
-		if ( $res['invalid'] === -1 ) self::fail( __( 'No email column was found in the file.', 'dox-newsletter' ) );
+		if ( empty( $_FILES['file']['tmp_name'] ) || ! is_uploaded_file( $_FILES['file']['tmp_name'] ) ) self::fail( __( 'Choose a CSV file.', 'dox-orbit' ) );
+		if ( ! self::in( 'consent' ) ) self::fail( __( 'Confirm that these people agreed to receive your emails.', 'dox-orbit' ) );
+		$lists = array_map( 'intval', (array) self::in( 'lists', [] ) ) ?: [ DXO_Lists::default_id() ];
+		$res   = DXO_Subscribers::import_csv( $_FILES['file']['tmp_name'], $lists );
+		if ( $res['invalid'] === -1 ) self::fail( __( 'No email column was found in the file.', 'dox-orbit' ) );
 		wp_send_json_success( $res );
 	}
 
 	public static function ajax_save_list() {
 		self::guard();
 		$name = sanitize_text_field( self::in( 'name' ) );
-		if ( $name === '' ) self::fail( __( 'Give the list a name.', 'dox-newsletter' ) );
+		if ( $name === '' ) self::fail( __( 'Give the list a name.', 'dox-orbit' ) );
 		$id = (int) self::in( 'id' );
-		$id ? DXN_Lists::rename( $id, $name ) : ( $id = DXN_Lists::create( $name ) );
+		$id ? DXO_Lists::rename( $id, $name ) : ( $id = DXO_Lists::create( $name ) );
 		wp_send_json_success( [ 'id' => $id ] );
 	}
 
 	public static function ajax_delete_list() {
 		self::guard();
-		if ( count( DXN_Lists::all() ) < 2 ) self::fail( __( 'There must be at least one list.', 'dox-newsletter' ) );
-		DXN_Lists::delete( (int) self::in( 'id' ) );
+		if ( count( DXO_Lists::all() ) < 2 ) self::fail( __( 'There must be at least one list.', 'dox-orbit' ) );
+		DXO_Lists::delete( (int) self::in( 'id' ) );
 		wp_send_json_success();
 	}
 
 	/** CSV con los suscriptores del filtro actual. BOM para que Excel lea las tildes. */
 	public static function export() {
-		if ( ! current_user_can( self::CAP ) || ! check_admin_referer( 'dxn_export' ) ) wp_die( 'Forbidden' );
+		if ( ! current_user_can( self::CAP ) || ! check_admin_referer( 'dxo_export' ) ) wp_die( 'Forbidden' );
 		$status = isset( $_GET['status'] ) ? sanitize_key( $_GET['status'] ) : 'active';
 		$list   = isset( $_GET['list'] ) ? (int) $_GET['list'] : 0;
-		$res    = DXN_Subscribers::query( [ 'status' => $status, 'list_id' => $list, 'per_page' => 200, 'page' => 1 ] );
+		$res    = DXO_Subscribers::query( [ 'status' => $status, 'list_id' => $list, 'per_page' => 200, 'page' => 1 ] );
 		$pages  = (int) ceil( $res['total'] / 200 );
 
 		nocache_headers();
@@ -539,9 +539,9 @@ class DXN_Admin {
 		fwrite( $out, "\xEF\xBB\xBF" );
 		fputcsv( $out, [ 'email', 'first_name', 'last_name', 'status', 'lists', 'source', 'created_at' ] );
 		for ( $p = 1; $p <= max( 1, $pages ); $p++ ) {
-			if ( $p > 1 ) $res = DXN_Subscribers::query( [ 'status' => $status, 'list_id' => $list, 'per_page' => 200, 'page' => $p ] );
+			if ( $p > 1 ) $res = DXO_Subscribers::query( [ 'status' => $status, 'list_id' => $list, 'per_page' => 200, 'page' => $p ] );
 			foreach ( $res['rows'] as $r ) {
-				fputcsv( $out, [ $r['email'], $r['first_name'], $r['last_name'], $r['status'], implode( ' | ', $r['lists'] ), $r['source'], dxn_date( $r['created_at'], 'Y-m-d H:i' ) ] );
+				fputcsv( $out, [ $r['email'], $r['first_name'], $r['last_name'], $r['status'], implode( ' | ', $r['lists'] ), $r['source'], dxo_date( $r['created_at'], 'Y-m-d H:i' ) ] );
 			}
 		}
 		fclose( $out );
@@ -551,7 +551,7 @@ class DXN_Admin {
 	// ═══ AJAX: formularios ══════════════════════════════════════════════════
 
 	private static function form_from_post() {
-		$keys = array_keys( DXN_Forms::defaults() );
+		$keys = array_keys( DXO_Forms::defaults() );
 		$f    = [];
 		foreach ( $keys as $k ) {
 			if ( isset( $_POST[ $k ] ) ) $f[ $k ] = self::in( $k ); // phpcs:ignore
@@ -564,30 +564,30 @@ class DXN_Admin {
 
 	public static function ajax_save_form() {
 		self::guard();
-		$f = DXN_Forms::save( self::form_from_post() );
+		$f = DXO_Forms::save( self::form_from_post() );
 		wp_send_json_success( [ 'slug' => $f['slug'], 'redirect' => self::url( 'forms', [ 'form' => $f['slug'] ] ) ] );
 	}
 
 	public static function ajax_delete_form() {
 		self::guard();
-		if ( ! DXN_Forms::delete( sanitize_key( self::in( 'slug' ) ) ) ) self::fail( __( 'There must be at least one form.', 'dox-newsletter' ) );
+		if ( ! DXO_Forms::delete( sanitize_key( self::in( 'slug' ) ) ) ) self::fail( __( 'There must be at least one form.', 'dox-orbit' ) );
 		wp_send_json_success( [ 'redirect' => self::url( 'forms' ) ] );
 	}
 
 	/** El formulario tal y como saldrá en la web, sin guardar. */
 	public static function ajax_form_preview() {
 		self::guard();
-		$f = wp_parse_args( self::form_from_post(), DXN_Forms::defaults() );
+		$f = wp_parse_args( self::form_from_post(), DXO_Forms::defaults() );
 		$f = array_map( function ( $v ) { return is_string( $v ) ? sanitize_text_field( $v ) : $v; }, $f );
 		$f['slug'] = sanitize_key( $f['slug'] ) ?: 'preview';
-		wp_send_json_success( [ 'html' => DXN_Forms::render( $f, $f['placement'] === 'bar' ? 'preview-bar' : 'preview' ) ] );
+		wp_send_json_success( [ 'html' => DXO_Forms::render( $f, $f['placement'] === 'bar' ? 'preview-bar' : 'preview' ) ] );
 	}
 
 	// ═══ AJAX: ajustes ══════════════════════════════════════════════════════
 
 	public static function ajax_save_settings() {
 		self::guard();
-		$s   = DXN_Settings::all();
+		$s   = DXO_Settings::all();
 		$new = [];
 		foreach ( [ 'from_name', 'company', 'address', 'confirm_subject', 'confirm_heading', 'confirm_button', 'confirmed_title', 'footer_why', 'ses_host', 'ses_user' ] as $k ) {
 			if ( isset( $_POST[ $k ] ) ) $new[ $k ] = sanitize_text_field( self::in( $k ) );
@@ -598,11 +598,11 @@ class DXN_Admin {
 		foreach ( [ 'from_email', 'reply_to' ] as $k ) {
 			if ( ! isset( $_POST[ $k ] ) ) continue;
 			$v = sanitize_email( self::in( $k ) );
-			if ( $k === 'from_email' && ! is_email( $v ) ) self::fail( __( 'The sender email is not valid.', 'dox-newsletter' ), [ 'field' => $k ] );
-			if ( $k === 'reply_to' && self::in( $k ) !== '' && ! is_email( $v ) ) self::fail( __( 'The reply-to email is not valid.', 'dox-newsletter' ), [ 'field' => $k ] );
+			if ( $k === 'from_email' && ! is_email( $v ) ) self::fail( __( 'The sender email is not valid.', 'dox-orbit' ), [ 'field' => $k ] );
+			if ( $k === 'reply_to' && self::in( $k ) !== '' && ! is_email( $v ) ) self::fail( __( 'The reply-to email is not valid.', 'dox-orbit' ), [ 'field' => $k ] );
 			$new[ $k ] = $v;
 		}
-		if ( isset( $_POST['accent'] ) ) $new['accent'] = DXN_Renderer::color( self::in( 'accent' ) );
+		if ( isset( $_POST['accent'] ) ) $new['accent'] = DXO_Renderer::color( self::in( 'accent' ) );
 		if ( isset( $_POST['logo_id'] ) ) $new['logo_id'] = (int) self::in( 'logo_id' );
 		foreach ( [ 'rate_per_hour' => [ 10, 2000 ], 'server_limit' => [ 10, 100000 ], 'ses_port' => [ 1, 65535 ] ] as $k => $r ) {
 			if ( isset( $_POST[ $k ] ) ) $new[ $k ] = max( $r[0], min( $r[1], (int) self::in( $k ) ) );
@@ -614,17 +614,17 @@ class DXN_Admin {
 
 		// La contraseña de SES: vacía quiere decir "no la cambies". Nunca vuelve a la pantalla.
 		$pass = (string) self::in( 'ses_pass' );
-		if ( $pass !== '' ) $new['ses_pass'] = DXN_Settings::encrypt( $pass );
+		if ( $pass !== '' ) $new['ses_pass'] = DXO_Settings::encrypt( $pass );
 
 		// Con SES elegido, se comprueba contra Amazon antes de guardar: un usuario
 		// o una contraseña mal puestos harían fallar a todos los de una campaña.
 		$merged = array_merge( $s, $new );
 		if ( $merged['transport'] === 'ses' ) {
-			$err = DXN_Mailer::check_ses( DXN_Mailer::ses_config( $merged ) );
-			if ( $err !== null ) self::fail( sprintf( __( 'Amazon SES did not accept the connection: %s', 'dox-newsletter' ), $err ), [ 'field' => 'ses_user' ] );
+			$err = DXO_Mailer::check_ses( DXO_Mailer::ses_config( $merged ) );
+			if ( $err !== null ) self::fail( sprintf( __( 'Amazon SES did not accept the connection: %s', 'dox-orbit' ), $err ), [ 'field' => 'ses_user' ] );
 		}
 
-		DXN_Settings::update( $new );
+		DXO_Settings::update( $new );
 		wp_send_json_success();
 	}
 
@@ -632,11 +632,11 @@ class DXN_Admin {
 	public static function ajax_settings_test() {
 		self::guard();
 		$to = sanitize_email( self::in( 'to' ) );
-		if ( ! is_email( $to ) ) self::fail( __( 'Write a valid email for the test.', 'dox-newsletter' ) );
-		update_user_meta( get_current_user_id(), 'dxn_test_to', $to );
-		$err = DXN_Subscribers::send_confirmation( [
+		if ( ! is_email( $to ) ) self::fail( __( 'Write a valid email for the test.', 'dox-orbit' ) );
+		update_user_meta( get_current_user_id(), 'dxo_test_to', $to );
+		$err = DXO_Subscribers::send_confirmation( [
 			'id' => 0, 'email' => $to, 'first_name' => wp_get_current_user()->first_name, 'token' => str_repeat( '0', 32 ), 'confirm_sent_at' => null,
-		], true ) ? null : __( 'The email could not be sent. Check the sending settings.', 'dox-newsletter' );
+		], true ) ? null : __( 'The email could not be sent. Check the sending settings.', 'dox-orbit' );
 		if ( $err ) self::fail( $err );
 		wp_send_json_success();
 	}

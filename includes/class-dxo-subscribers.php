@@ -12,13 +12,13 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class DXN_Lists {
+class DXO_Lists {
 
 	public static function all() {
 		global $wpdb;
-		$t  = DXN_Install::table( 'lists' );
-		$ls = DXN_Install::table( 'list_subscriber' );
-		$s  = DXN_Install::table( 'subscribers' );
+		$t  = DXO_Install::table( 'lists' );
+		$ls = DXO_Install::table( 'list_subscriber' );
+		$s  = DXO_Install::table( 'subscribers' );
 		return $wpdb->get_results(
 			"SELECT l.*, (SELECT COUNT(*) FROM $ls x JOIN $s s ON s.id = x.subscriber_id AND s.status = 'active' WHERE x.list_id = l.id) AS active
 			 FROM $t l ORDER BY l.id ASC",
@@ -28,7 +28,7 @@ class DXN_Lists {
 
 	public static function get( $id ) {
 		global $wpdb;
-		return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . DXN_Install::table( 'lists' ) . ' WHERE id = %d', $id ), ARRAY_A );
+		return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . DXO_Install::table( 'lists' ) . ' WHERE id = %d', $id ), ARRAY_A );
 	}
 
 	public static function names() {
@@ -39,47 +39,47 @@ class DXN_Lists {
 
 	public static function create( $name, $description = '' ) {
 		global $wpdb;
-		$wpdb->insert( DXN_Install::table( 'lists' ), [
+		$wpdb->insert( DXO_Install::table( 'lists' ), [
 			'name'        => mb_substr( $name, 0, 120 ),
 			'description' => mb_substr( $description, 0, 255 ),
-			'created_at'  => dxn_now(),
+			'created_at'  => dxo_now(),
 		] );
 		return (int) $wpdb->insert_id;
 	}
 
 	public static function rename( $id, $name ) {
 		global $wpdb;
-		return false !== $wpdb->update( DXN_Install::table( 'lists' ), [ 'name' => mb_substr( $name, 0, 120 ) ], [ 'id' => (int) $id ] );
+		return false !== $wpdb->update( DXO_Install::table( 'lists' ), [ 'name' => mb_substr( $name, 0, 120 ) ], [ 'id' => (int) $id ] );
 	}
 
 	/** Borra la lista, no a la gente: siguen en las demás listas y en la base. */
 	public static function delete( $id ) {
 		global $wpdb;
-		$wpdb->delete( DXN_Install::table( 'list_subscriber' ), [ 'list_id' => (int) $id ] );
-		return (bool) $wpdb->delete( DXN_Install::table( 'lists' ), [ 'id' => (int) $id ] );
+		$wpdb->delete( DXO_Install::table( 'list_subscriber' ), [ 'list_id' => (int) $id ] );
+		return (bool) $wpdb->delete( DXO_Install::table( 'lists' ), [ 'id' => (int) $id ] );
 	}
 
 	/** Toda instalación tiene al menos una lista, la "General". */
 	public static function ensure_default() {
 		global $wpdb;
-		$n = (int) $wpdb->get_var( 'SELECT COUNT(*) FROM ' . DXN_Install::table( 'lists' ) );
+		$n = (int) $wpdb->get_var( 'SELECT COUNT(*) FROM ' . DXO_Install::table( 'lists' ) );
 		if ( ! $n ) {
-			self::create( __( 'General', 'dox-newsletter' ) );
+			self::create( __( 'General', 'dox-orbit' ) );
 		}
 	}
 
 	public static function default_id() {
 		global $wpdb;
-		return (int) $wpdb->get_var( 'SELECT MIN(id) FROM ' . DXN_Install::table( 'lists' ) );
+		return (int) $wpdb->get_var( 'SELECT MIN(id) FROM ' . DXO_Install::table( 'lists' ) );
 	}
 }
 
-class DXN_Subscribers {
+class DXO_Subscribers {
 
 	const STATUSES = [ 'active', 'pending', 'unsubscribed', 'bounced' ];
 
 	private static function t() {
-		return DXN_Install::table( 'subscribers' );
+		return DXO_Install::table( 'subscribers' );
 	}
 
 	public static function get( $id ) {
@@ -123,8 +123,8 @@ class DXN_Subscribers {
 			'ip'         => '',
 			'confirmed'  => false, // true = no hace falta confirmar (importación, alta a mano)
 		] );
-		$lists  = array_filter( array_map( 'intval', (array) $args['list_ids'] ) ) ?: [ DXN_Lists::default_id() ];
-		$double = (int) DXN_Settings::get( 'double_optin' ) && ! $args['confirmed'];
+		$lists  = array_filter( array_map( 'intval', (array) $args['list_ids'] ) ) ?: [ DXO_Lists::default_id() ];
+		$double = (int) DXO_Settings::get( 'double_optin' ) && ! $args['confirmed'];
 		$sub    = self::get_by_email( $email );
 
 		if ( $sub && $sub['status'] === 'active' ) {
@@ -137,7 +137,7 @@ class DXN_Subscribers {
 		}
 
 		$status = $double ? 'pending' : 'active';
-		$now    = dxn_now();
+		$now    = dxo_now();
 
 		if ( $sub ) {
 			// Estaba sin confirmar, de baja o rebotado y se vuelve a apuntar él mismo.
@@ -157,7 +157,7 @@ class DXN_Subscribers {
 				'status'       => $status,
 				'source'       => mb_substr( (string) $args['source'], 0, 60 ),
 				'lang'         => mb_substr( (string) $args['lang'], 0, 12 ),
-				'token'        => dxn_token(),
+				'token'        => dxo_token(),
 				'ip'           => mb_substr( (string) $args['ip'], 0, 45 ),
 				'created_at'   => $now,
 				'confirmed_at' => $status === 'active' ? $now : null,
@@ -174,7 +174,7 @@ class DXN_Subscribers {
 		if ( $status === 'pending' ) {
 			self::send_confirmation( $row );
 		} else {
-			DXN_Campaigns::enqueue_welcome( $row );
+			DXO_Campaigns::enqueue_welcome( $row );
 		}
 
 		return [ 'result' => $status, 'subscriber' => $row ];
@@ -191,26 +191,26 @@ class DXN_Subscribers {
 			return true;
 		}
 
-		$s   = DXN_Settings::all();
-		$url = DXN_Public::url( 'confirm', $sub['token'] );
+		$s   = DXO_Settings::all();
+		$url = DXO_Public::url( 'confirm', $sub['token'] );
 
-		$render = DXN_Renderer::render_email( [
+		$render = DXO_Renderer::render_email( [
 			'blocks' => [
 				[ 'type' => 'heading', 'text' => $s['confirm_heading'], 'size' => 'large', 'align' => 'left' ],
 				[ 'type' => 'text', 'html' => wpautop( esc_html( $s['confirm_text'] ) ), 'align' => 'left' ],
 				[ 'type' => 'button', 'text' => $s['confirm_button'], 'url' => $url, 'style' => 'dark', 'align' => 'left' ],
 			],
-			'brand'           => DXN_Settings::brand(),
+			'brand'           => DXO_Settings::brand(),
 			'subject'         => $s['confirm_subject'],
 			'fields'          => [ 'first_name' => $sub['first_name'], 'email' => $sub['email'] ],
 			// En el de confirmación la baja no tiene sentido: aún no está dado de alta.
-			'unsubscribe_url' => DXN_Public::url( 'unsubscribe', $sub['token'] ),
-			'strings'         => DXN_Public::email_strings(),
+			'unsubscribe_url' => DXO_Public::url( 'unsubscribe', $sub['token'] ),
+			'strings'         => DXO_Public::email_strings(),
 		] );
 
-		$error = DXN_Mailer::send( $sub['email'], $s['confirm_subject'], $render['html'], $render['text'], [] );
+		$error = DXO_Mailer::send( $sub['email'], $s['confirm_subject'], $render['html'], $render['text'], [] );
 		if ( $error === null ) {
-			$wpdb->update( self::t(), [ 'confirm_sent_at' => dxn_now() ], [ 'id' => $sub['id'] ] );
+			$wpdb->update( self::t(), [ 'confirm_sent_at' => dxo_now() ], [ 'id' => $sub['id'] ] );
 		}
 		return $error === null;
 	}
@@ -221,9 +221,9 @@ class DXN_Subscribers {
 		$sub = self::get_by_token( $token );
 		if ( ! $sub ) return null;
 		if ( $sub['status'] === 'pending' ) {
-			$wpdb->update( self::t(), [ 'status' => 'active', 'confirmed_at' => dxn_now() ], [ 'id' => $sub['id'] ] );
+			$wpdb->update( self::t(), [ 'status' => 'active', 'confirmed_at' => dxo_now() ], [ 'id' => $sub['id'] ] );
 			$sub = self::get( $sub['id'] );
-			DXN_Campaigns::enqueue_welcome( $sub );
+			DXO_Campaigns::enqueue_welcome( $sub );
 		}
 		return $sub;
 	}
@@ -234,10 +234,10 @@ class DXN_Subscribers {
 	 */
 	public static function unsubscribe( $subscriber_id, $recipient = null ) {
 		global $wpdb;
-		$wpdb->update( self::t(), [ 'status' => 'unsubscribed', 'unsubscribed_at' => dxn_now() ], [ 'id' => (int) $subscriber_id ] );
+		$wpdb->update( self::t(), [ 'status' => 'unsubscribed', 'unsubscribed_at' => dxo_now() ], [ 'id' => (int) $subscriber_id ] );
 		if ( $recipient && empty( $recipient['unsubscribed_at'] ) ) {
-			$wpdb->update( DXN_Install::table( 'recipients' ), [ 'unsubscribed_at' => dxn_now() ], [ 'id' => $recipient['id'] ] );
-			DXN_Campaigns::log_event( (int) $recipient['campaign_id'], (int) $recipient['id'], 'unsub' );
+			$wpdb->update( DXO_Install::table( 'recipients' ), [ 'unsubscribed_at' => dxo_now() ], [ 'id' => $recipient['id'] ] );
+			DXO_Campaigns::log_event( (int) $recipient['campaign_id'], (int) $recipient['id'], 'unsub' );
 		}
 	}
 
@@ -245,8 +245,8 @@ class DXN_Subscribers {
 		global $wpdb;
 		if ( ! in_array( $status, self::STATUSES, true ) ) return false;
 		$data = [ 'status' => $status ];
-		if ( $status === 'active' ) $data['confirmed_at'] = dxn_now();
-		if ( $status === 'unsubscribed' ) $data['unsubscribed_at'] = dxn_now();
+		if ( $status === 'active' ) $data['confirmed_at'] = dxo_now();
+		if ( $status === 'unsubscribed' ) $data['unsubscribed_at'] = dxo_now();
 		return false !== $wpdb->update( self::t(), $data, [ 'id' => (int) $id ] );
 	}
 
@@ -254,22 +254,22 @@ class DXN_Subscribers {
 
 	public static function add_to_lists( $id, array $list_ids ) {
 		global $wpdb;
-		$t = DXN_Install::table( 'list_subscriber' );
+		$t = DXO_Install::table( 'list_subscriber' );
 		foreach ( array_unique( array_map( 'intval', $list_ids ) ) as $lid ) {
 			if ( ! $lid ) continue;
-			$wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO $t (list_id, subscriber_id, created_at) VALUES (%d, %d, %s)", $lid, $id, dxn_now() ) );
+			$wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO $t (list_id, subscriber_id, created_at) VALUES (%d, %d, %s)", $lid, $id, dxo_now() ) );
 		}
 	}
 
 	public static function set_lists( $id, array $list_ids ) {
 		global $wpdb;
-		$wpdb->delete( DXN_Install::table( 'list_subscriber' ), [ 'subscriber_id' => (int) $id ] );
+		$wpdb->delete( DXO_Install::table( 'list_subscriber' ), [ 'subscriber_id' => (int) $id ] );
 		self::add_to_lists( $id, $list_ids );
 	}
 
 	public static function list_ids( $id ) {
 		global $wpdb;
-		return array_map( 'intval', $wpdb->get_col( $wpdb->prepare( 'SELECT list_id FROM ' . DXN_Install::table( 'list_subscriber' ) . ' WHERE subscriber_id = %d', $id ) ) );
+		return array_map( 'intval', $wpdb->get_col( $wpdb->prepare( 'SELECT list_id FROM ' . DXO_Install::table( 'list_subscriber' ) . ' WHERE subscriber_id = %d', $id ) ) );
 	}
 
 	// ═══ Consultas ══════════════════════════════════════════════════════════
@@ -302,7 +302,7 @@ class DXN_Subscribers {
 		}
 		$join = '';
 		if ( $q['list_id'] ) {
-			$join    = 'JOIN ' . DXN_Install::table( 'list_subscriber' ) . ' ls ON ls.subscriber_id = s.id AND ls.list_id = %d';
+			$join    = 'JOIN ' . DXO_Install::table( 'list_subscriber' ) . ' ls ON ls.subscriber_id = s.id AND ls.list_id = %d';
 			array_unshift( $args, (int) $q['list_id'] );
 		}
 		if ( $q['search'] !== '' ) {
@@ -328,10 +328,10 @@ class DXN_Subscribers {
 		global $wpdb;
 		if ( ! $rows ) return $rows;
 		$ids   = implode( ',', array_map( 'intval', array_column( $rows, 'id' ) ) );
-		$names = DXN_Lists::names();
+		$names = DXO_Lists::names();
 
 		$lists = [];
-		foreach ( $wpdb->get_results( 'SELECT subscriber_id, list_id FROM ' . DXN_Install::table( 'list_subscriber' ) . " WHERE subscriber_id IN ($ids)", ARRAY_A ) as $r ) {
+		foreach ( $wpdb->get_results( 'SELECT subscriber_id, list_id FROM ' . DXO_Install::table( 'list_subscriber' ) . " WHERE subscriber_id IN ($ids)", ARRAY_A ) as $r ) {
 			if ( isset( $names[ (int) $r['list_id'] ] ) ) $lists[ (int) $r['subscriber_id'] ][] = $names[ (int) $r['list_id'] ];
 		}
 
@@ -350,7 +350,7 @@ class DXN_Subscribers {
 	public static function interest( array $ids ) {
 		global $wpdb;
 		if ( ! $ids ) return [];
-		$t   = DXN_Install::table( 'recipients' );
+		$t   = DXO_Install::table( 'recipients' );
 		$in  = implode( ',', array_map( 'intval', $ids ) );
 		$out = [];
 		$per = [];
@@ -374,8 +374,8 @@ class DXN_Subscribers {
 	 */
 	public static function delete( $id ) {
 		global $wpdb;
-		$wpdb->delete( DXN_Install::table( 'list_subscriber' ), [ 'subscriber_id' => (int) $id ] );
-		$wpdb->update( DXN_Install::table( 'recipients' ), [ 'email' => '' ], [ 'subscriber_id' => (int) $id ] );
+		$wpdb->delete( DXO_Install::table( 'list_subscriber' ), [ 'subscriber_id' => (int) $id ] );
+		$wpdb->update( DXO_Install::table( 'recipients' ), [ 'email' => '' ], [ 'subscriber_id' => (int) $id ] );
 		return (bool) $wpdb->delete( self::t(), [ 'id' => (int) $id ] );
 	}
 
@@ -461,12 +461,12 @@ class DXN_Subscribers {
 			'last_name'    => mb_substr( $last, 0, 100 ),
 			'status'       => 'active',
 			'source'       => $source,
-			'token'        => dxn_token(),
-			'created_at'   => dxn_now(),
-			'confirmed_at' => dxn_now(),
+			'token'        => dxo_token(),
+			'created_at'   => dxo_now(),
+			'confirmed_at' => dxo_now(),
 		] );
 		$id = (int) $wpdb->insert_id;
-		if ( $id ) self::add_to_lists( $id, $list_ids ?: [ DXN_Lists::default_id() ] );
+		if ( $id ) self::add_to_lists( $id, $list_ids ?: [ DXO_Lists::default_id() ] );
 		return $id;
 	}
 }

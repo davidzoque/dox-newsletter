@@ -2,9 +2,9 @@
 /**
  * Formularios de suscripción.
  *
- * Se guardan en una opción (`dxn_forms`), uno por slug. Cada formulario sale
+ * Se guardan en una opción (`dxo_forms`), uno por slug. Cada formulario sale
  * en un sitio:
- * - inline: donde se ponga el shortcode [dox_newsletter form="slug"] o el widget de Elementor.
+ * - inline: donde se ponga el shortcode [dox_orbit form="slug"] o el widget de Elementor.
  * - popup:  ventana emergente al bajar un porcentaje de la página o tras unos segundos.
  * - bar:    barra fija abajo, que se puede cerrar.
  * Las ventanas y barras se pintan solas en el pie de la web si están encendidas.
@@ -12,14 +12,14 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class DXN_Forms {
+class DXO_Forms {
 
-	const OPTION = 'dxn_forms';
+	const OPTION = 'dxo_forms';
 
 	private static $assets = false;
 
 	public static function init() {
-		add_shortcode( 'dox_newsletter', [ __CLASS__, 'shortcode' ] );
+		add_shortcode( 'dox_orbit', [ __CLASS__, 'shortcode' ] );
 		// Antes de la prioridad 20, que es cuando WordPress imprime los scripts del pie:
 		// si no, el JS de la ventana se encolaría tarde y no saldría nunca.
 		add_action( 'wp_footer', [ __CLASS__, 'footer' ], 5 );
@@ -29,12 +29,12 @@ class DXN_Forms {
 	public static function defaults() {
 		return [
 			'slug'          => 'main',
-			'name'          => __( 'Main form', 'dox-newsletter' ),
-			'title'         => __( 'One email a month, no filler', 'dox-newsletter' ),
-			'text'          => __( 'What we learn and what we publish. You can unsubscribe with one click.', 'dox-newsletter' ),
-			'button'        => __( 'Subscribe', 'dox-newsletter' ),
-			'placeholder'   => __( 'you@email.com', 'dox-newsletter' ),
-			'name_label'    => __( 'Your name', 'dox-newsletter' ),
+			'name'          => __( 'Main form', 'dox-orbit' ),
+			'title'         => __( 'One email a month, no filler', 'dox-orbit' ),
+			'text'          => __( 'What we learn and what we publish. You can unsubscribe with one click.', 'dox-orbit' ),
+			'button'        => __( 'Subscribe', 'dox-orbit' ),
+			'placeholder'   => __( 'you@email.com', 'dox-orbit' ),
+			'name_label'    => __( 'Your name', 'dox-orbit' ),
 			'list_id'       => 0,
 			'ask_name'      => 0,
 			'show_count'    => 1,
@@ -44,8 +44,8 @@ class DXN_Forms {
 			'trigger'       => 'scroll', // scroll | delay
 			'trigger_value' => 60,       // % de la página o segundos
 			'where'         => 'posts',  // posts | all
-			'success_text'  => __( 'Almost done! Check your inbox and confirm with one click.', 'dox-newsletter' ),
-			'done_text'     => __( 'Done! You are subscribed.', 'dox-newsletter' ),
+			'success_text'  => __( 'Almost done! Check your inbox and confirm with one click.', 'dox-orbit' ),
+			'done_text'     => __( 'Done! You are subscribed.', 'dox-orbit' ),
 		];
 	}
 
@@ -57,7 +57,7 @@ class DXN_Forms {
 		foreach ( $forms as $slug => $f ) {
 			$forms[ $slug ] = wp_parse_args( $f, self::defaults() );
 			$forms[ $slug ]['slug'] = $slug;
-			if ( ! (int) $forms[ $slug ]['list_id'] ) $forms[ $slug ]['list_id'] = DXN_Lists::default_id();
+			if ( ! (int) $forms[ $slug ]['list_id'] ) $forms[ $slug ]['list_id'] = DXO_Lists::default_id();
 		}
 		return $forms;
 	}
@@ -111,7 +111,7 @@ class DXN_Forms {
 		global $wpdb;
 		$out = [];
 		$rows = $wpdb->get_results( $wpdb->prepare(
-			'SELECT source, COUNT(*) n FROM ' . DXN_Install::table( 'subscribers' ) . ' WHERE created_at >= %s GROUP BY source ORDER BY n DESC',
+			'SELECT source, COUNT(*) n FROM ' . DXO_Install::table( 'subscribers' ) . ' WHERE created_at >= %s GROUP BY source ORDER BY n DESC',
 			gmdate( 'Y-m-d H:i:s', time() - $days * DAY_IN_SECONDS )
 		), ARRAY_A ) ?: [];
 		foreach ( $rows as $r ) $out[ $r['source'] ] = (int) $r['n'];
@@ -121,24 +121,24 @@ class DXN_Forms {
 	// ═══ Pintar ═════════════════════════════════════════════════════════════
 
 	public static function register_assets() {
-		wp_register_style( 'dxn-public', DXN_URL . 'assets/public.css', [], dxn_asset_ver( 'public.css' ) );
-		wp_register_script( 'dxn-public', DXN_URL . 'assets/public.js', [], dxn_asset_ver( 'public.js' ), true );
+		wp_register_style( 'dxo-public', DXO_URL . 'assets/public.css', [], dxo_asset_ver( 'public.css' ) );
+		wp_register_script( 'dxo-public', DXO_URL . 'assets/public.js', [], dxo_asset_ver( 'public.js' ), true );
 	}
 
 	private static function enqueue() {
 		if ( self::$assets ) return;
 		self::$assets = true;
-		if ( ! wp_style_is( 'dxn-public', 'registered' ) ) self::register_assets();
-		wp_enqueue_style( 'dxn-public' );
-		wp_enqueue_script( 'dxn-public' );
-		wp_localize_script( 'dxn-public', 'DXN', [
-			'url'   => DXN_Public::url( 'subscribe' ),
-			'error' => __( 'Something went wrong. Try again.', 'dox-newsletter' ),
+		if ( ! wp_style_is( 'dxo-public', 'registered' ) ) self::register_assets();
+		wp_enqueue_style( 'dxo-public' );
+		wp_enqueue_script( 'dxo-public' );
+		wp_localize_script( 'dxo-public', 'DXO', [
+			'url'   => DXO_Public::url( 'subscribe' ),
+			'error' => __( 'Something went wrong. Try again.', 'dox-orbit' ),
 		] );
 	}
 
 	public static function shortcode( $atts ) {
-		$atts = shortcode_atts( [ 'form' => '' ], $atts, 'dox_newsletter' );
+		$atts = shortcode_atts( [ 'form' => '' ], $atts, 'dox_orbit' );
 		$form = self::get( sanitize_key( $atts['form'] ) );
 		if ( ! $form ) return '';
 		self::enqueue();
@@ -153,7 +153,7 @@ class DXN_Forms {
 			if ( $form['where'] === 'posts' && ! is_singular( 'post' ) ) continue;
 			self::enqueue();
 			// El CSS ya no llega al <head> a estas alturas: se imprime aquí.
-			wp_print_styles( 'dxn-public' );
+			wp_print_styles( 'dxo-public' );
 			echo self::render( $form, $form['placement'] ); // phpcs:ignore -- render() escapa
 		}
 	}
@@ -166,58 +166,58 @@ class DXN_Forms {
 		$slug   = esc_attr( $f['slug'] );
 		$count  = '';
 		if ( $f['show_count'] ) {
-			$n = DXN_Stats::active_count();
+			$n = DXO_Stats::active_count();
 			if ( $n >= 100 ) {
 				/* translators: %s: number of subscribers */
-				$count = '<p class="dxn-proof"><span class="dxn-stack" aria-hidden="true"><i></i><i></i><i></i></span>' . esc_html( sprintf( __( 'Join %s subscribers', 'dox-newsletter' ), dxn_num( $n ) ) ) . '</p>';
+				$count = '<p class="dxo-proof"><span class="dxo-stack" aria-hidden="true"><i></i><i></i><i></i></span>' . esc_html( sprintf( __( 'Join %s subscribers', 'dox-orbit' ), dxo_num( $n ) ) ) . '</p>';
 			}
 		}
 
 		// Resultado sin JavaScript (vuelta de la redirección).
 		$state = '';
-		if ( isset( $_GET['dxn_f'], $_GET['dxn_s'] ) && sanitize_key( $_GET['dxn_f'] ) === $f['slug'] ) {
-			$s     = sanitize_key( $_GET['dxn_s'] );
-			$msg   = $s === 'pending' ? $f['success_text'] : ( $s === 'active' ? $f['done_text'] : ( $s === 'already' ? __( 'You were already subscribed. Thanks!', 'dox-newsletter' ) : __( 'That email does not look right. Check it and try again.', 'dox-newsletter' ) ) );
-			$state = '<p class="dxn-msg' . ( in_array( $s, [ 'pending', 'active', 'already' ], true ) ? ' is-ok' : ' is-error' ) . '" role="status">' . esc_html( $msg ) . '</p>';
+		if ( isset( $_GET['dxo_f'], $_GET['dxo_s'] ) && sanitize_key( $_GET['dxo_f'] ) === $f['slug'] ) {
+			$s     = sanitize_key( $_GET['dxo_s'] );
+			$msg   = $s === 'pending' ? $f['success_text'] : ( $s === 'active' ? $f['done_text'] : ( $s === 'already' ? __( 'You were already subscribed. Thanks!', 'dox-orbit' ) : __( 'That email does not look right. Check it and try again.', 'dox-orbit' ) ) );
+			$state = '<p class="dxo-msg' . ( in_array( $s, [ 'pending', 'active', 'already' ], true ) ? ' is-ok' : ' is-error' ) . '" role="status">' . esc_html( $msg ) . '</p>';
 		}
 
 		$pv   = in_array( $mode, [ 'preview', 'preview-bar' ], true );
 		$name = $f['ask_name']
-			? '<label class="dxn-sr" for="dxn-name-' . $slug . '-' . $mode . '">' . esc_html( $f['name_label'] ) . '</label><input id="dxn-name-' . $slug . '-' . $mode . '" type="text"' . ( $pv ? '' : ' name="first_name"' ) . ' autocomplete="given-name" placeholder="' . esc_attr( $f['name_label'] ) . '">'
+			? '<label class="dxo-sr" for="dxo-name-' . $slug . '-' . $mode . '">' . esc_html( $f['name_label'] ) . '</label><input id="dxo-name-' . $slug . '-' . $mode . '" type="text"' . ( $pv ? '' : ' name="first_name"' ) . ' autocomplete="given-name" placeholder="' . esc_attr( $f['name_label'] ) . '">'
 			: '';
 
 		// En la vista previa del panel no puede ser un <form>: va dentro del formulario
 		// de edición, y un <form> dentro de otro cierra el de fuera antes de tiempo.
 		$tag  = in_array( $mode, [ 'preview', 'preview-bar' ], true ) ? 'div' : 'form';
-		$form = '<' . $tag . ' class="dxn-form"' . ( $tag === 'form' ? ' method="post" action="' . esc_url( DXN_Public::url( 'subscribe' ) ) . '" novalidate' : '' ) . '>'
-			. ( $pv ? '' : '<input type="hidden" name="dxn" value="subscribe"><input type="hidden" name="dxn_form" value="' . $slug . '">'
-				. '<input type="hidden" name="dxn_ts" value="' . time() . '">'
-				. '<div class="dxn-hp" aria-hidden="true"><input type="text" name="dxn_hp" tabindex="-1" autocomplete="off"></div>' )
-			. '<div class="dxn-fields' . ( $f['ask_name'] ? ' has-name' : '' ) . '">' . $name
-			. '<label class="dxn-sr" for="dxn-email-' . $slug . '-' . $mode . '">' . esc_html__( 'Email', 'dox-newsletter' ) . '</label>'
-			. '<input id="dxn-email-' . $slug . '-' . $mode . '" type="email"' . ( $pv ? '' : ' name="email"' ) . ' required autocomplete="email" inputmode="email" placeholder="' . esc_attr( $f['placeholder'] ) . '">'
+		$form = '<' . $tag . ' class="dxo-form"' . ( $tag === 'form' ? ' method="post" action="' . esc_url( DXO_Public::url( 'subscribe' ) ) . '" novalidate' : '' ) . '>'
+			. ( $pv ? '' : '<input type="hidden" name="dxo" value="subscribe"><input type="hidden" name="dxo_form" value="' . $slug . '">'
+				. '<input type="hidden" name="dxo_ts" value="' . time() . '">'
+				. '<div class="dxo-hp" aria-hidden="true"><input type="text" name="dxo_hp" tabindex="-1" autocomplete="off"></div>' )
+			. '<div class="dxo-fields' . ( $f['ask_name'] ? ' has-name' : '' ) . '">' . $name
+			. '<label class="dxo-sr" for="dxo-email-' . $slug . '-' . $mode . '">' . esc_html__( 'Email', 'dox-orbit' ) . '</label>'
+			. '<input id="dxo-email-' . $slug . '-' . $mode . '" type="email"' . ( $pv ? '' : ' name="email"' ) . ' required autocomplete="email" inputmode="email" placeholder="' . esc_attr( $f['placeholder'] ) . '">'
 			. '<button type="' . ( $pv ? 'button' : 'submit' ) . '">' . esc_html( $f['button'] ) . '</button></div>'
-			. '<p class="dxn-msg" role="status" hidden></p>'
+			. '<p class="dxo-msg" role="status" hidden></p>'
 			. '</' . $tag . '>';
 
-		$accent = DXN_Settings::brand()['accent'];
-		$vars   = ' style="--dxn-accent:' . esc_attr( $accent ) . ';--dxn-on:' . esc_attr( DXN_Renderer::text_on( $accent ) ) . '"';
+		$accent = DXO_Settings::brand()['accent'];
+		$vars   = ' style="--dxo-accent:' . esc_attr( $accent ) . ';--dxo-on:' . esc_attr( DXO_Renderer::text_on( $accent ) ) . '"';
 
-		$body = '<div class="dxn-box dxn-' . esc_attr( $f['style'] ) . '"' . $vars . '>'
-			. ( $f['title'] !== '' ? '<p class="dxn-title">' . esc_html( $f['title'] ) . '</p>' : '' )
-			. ( $f['text'] !== '' ? '<p class="dxn-text">' . esc_html( $f['text'] ) . '</p>' : '' )
+		$body = '<div class="dxo-box dxo-' . esc_attr( $f['style'] ) . '"' . $vars . '>'
+			. ( $f['title'] !== '' ? '<p class="dxo-title">' . esc_html( $f['title'] ) . '</p>' : '' )
+			. ( $f['text'] !== '' ? '<p class="dxo-text">' . esc_html( $f['text'] ) . '</p>' : '' )
 			. ( $state ?: $form ) . $count . '</div>';
 
 		if ( $mode === 'popup' ) {
-			return '<div class="dxn-popup" id="dxn-' . $slug . '" data-dxn-slug="' . $slug . '" data-trigger="' . esc_attr( $f['trigger'] ) . '" data-value="' . (int) $f['trigger_value'] . '" hidden>'
-				. '<div class="dxn-veil" data-dxn-close></div><div class="dxn-dialog" role="dialog" aria-modal="true" aria-label="' . esc_attr( $f['title'] ) . '">'
-				. '<button type="button" class="dxn-close" data-dxn-close aria-label="' . esc_attr__( 'Close', 'dox-newsletter' ) . '">&times;</button>' . $body . '</div></div>';
+			return '<div class="dxo-popup" id="dxo-' . $slug . '" data-dxo-slug="' . $slug . '" data-trigger="' . esc_attr( $f['trigger'] ) . '" data-value="' . (int) $f['trigger_value'] . '" hidden>'
+				. '<div class="dxo-veil" data-dxo-close></div><div class="dxo-dialog" role="dialog" aria-modal="true" aria-label="' . esc_attr( $f['title'] ) . '">'
+				. '<button type="button" class="dxo-close" data-dxo-close aria-label="' . esc_attr__( 'Close', 'dox-orbit' ) . '">&times;</button>' . $body . '</div></div>';
 		}
 		if ( $mode === 'bar' || $mode === 'preview-bar' ) {
-			return '<div class="dxn-bar dxn-' . esc_attr( $f['style'] ) . '" id="dxn-' . $slug . '" data-dxn-slug="' . $slug . '"' . $vars . ' hidden>'
-				. '<div class="dxn-bar-in"><p class="dxn-bar-title">' . esc_html( $f['title'] ) . '</p>' . $form
-				. '<button type="button" class="dxn-close" data-dxn-close aria-label="' . esc_attr__( 'Close', 'dox-newsletter' ) . '">&times;</button></div></div>';
+			return '<div class="dxo-bar dxo-' . esc_attr( $f['style'] ) . '" id="dxo-' . $slug . '" data-dxo-slug="' . $slug . '"' . $vars . ' hidden>'
+				. '<div class="dxo-bar-in"><p class="dxo-bar-title">' . esc_html( $f['title'] ) . '</p>' . $form
+				. '<button type="button" class="dxo-close" data-dxo-close aria-label="' . esc_attr__( 'Close', 'dox-orbit' ) . '">&times;</button></div></div>';
 		}
-		return '<div class="dxn-inline" id="dxn-' . $slug . '">' . $body . '</div>';
+		return '<div class="dxo-inline" id="dxo-' . $slug . '">' . $body . '</div>';
 	}
 }

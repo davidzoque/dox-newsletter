@@ -5,13 +5,13 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class DXN_Stats {
+class DXO_Stats {
 
 	public static function active_count() {
 		global $wpdb;
 		static $n = null;
 		if ( $n === null ) {
-			$n = (int) $wpdb->get_var( 'SELECT COUNT(*) FROM ' . DXN_Install::table( 'subscribers' ) . " WHERE status = 'active'" );
+			$n = (int) $wpdb->get_var( 'SELECT COUNT(*) FROM ' . DXO_Install::table( 'subscribers' ) . " WHERE status = 'active'" );
 		}
 		return $n;
 	}
@@ -24,7 +24,7 @@ class DXN_Stats {
 	 */
 	public static function growth( $days = 30 ) {
 		global $wpdb;
-		$rows = $wpdb->get_results( 'SELECT confirmed_at, unsubscribed_at, status FROM ' . DXN_Install::table( 'subscribers' ) . ' WHERE confirmed_at IS NOT NULL', ARRAY_A ) ?: [];
+		$rows = $wpdb->get_results( 'SELECT confirmed_at, unsubscribed_at, status FROM ' . DXO_Install::table( 'subscribers' ) . ' WHERE confirmed_at IS NOT NULL', ARRAY_A ) ?: [];
 		$tz   = wp_timezone();
 		$out  = [];
 		for ( $i = $days - 1; $i >= 0; $i-- ) {
@@ -47,7 +47,7 @@ class DXN_Stats {
 	/** Altas y bajas de los últimos $days días, y cuántos faltan por confirmar. */
 	public static function movement( $days = 30 ) {
 		global $wpdb;
-		$t    = DXN_Install::table( 'subscribers' );
+		$t    = DXO_Install::table( 'subscribers' );
 		$from = gmdate( 'Y-m-d H:i:s', time() - $days * DAY_IN_SECONDS );
 		return [
 			'new'     => (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $t WHERE confirmed_at >= %s", $from ) ),
@@ -59,16 +59,16 @@ class DXN_Stats {
 	/** Apertura, clics y bajas medias de las últimas $n campañas enviadas. */
 	public static function averages( $n = 5 ) {
 		global $wpdb;
-		$c   = DXN_Install::table( 'campaigns' );
+		$c   = DXO_Install::table( 'campaigns' );
 		$ids = $wpdb->get_col( $wpdb->prepare( "SELECT id FROM $c WHERE type = 'regular' AND status IN ('sent','sending','cancelled') AND sent > 0 ORDER BY started_at DESC LIMIT %d", $n ) );
 		if ( ! $ids ) return null;
 		$in  = implode( ',', array_map( 'intval', $ids ) );
 		$row = $wpdb->get_row(
 			'SELECT SUM(status = \'sent\') sent, SUM(status = \'sent\' AND opened_at IS NOT NULL) opened, SUM(status = \'sent\' AND clicked_at IS NOT NULL) clicked, SUM(unsubscribed_at IS NOT NULL) unsub
-			 FROM ' . DXN_Install::table( 'recipients' ) . " WHERE campaign_id IN ($in)",
+			 FROM ' . DXO_Install::table( 'recipients' ) . " WHERE campaign_id IN ($in)",
 			ARRAY_A
 		);
-		$last = DXN_Campaigns::stats( (int) $ids[0] );
+		$last = DXO_Campaigns::stats( (int) $ids[0] );
 		return [
 			'campaigns'    => count( $ids ),
 			'sent'         => (int) $row['sent'],
@@ -85,8 +85,8 @@ class DXN_Stats {
 	 */
 	public static function health() {
 		global $wpdb;
-		$r    = DXN_Install::table( 'recipients' );
-		$s    = DXN_Install::table( 'subscribers' );
+		$r    = DXO_Install::table( 'recipients' );
+		$s    = DXO_Install::table( 'subscribers' );
 		$from = gmdate( 'Y-m-d H:i:s', time() - 90 * DAY_IN_SECONDS );
 		$row  = $wpdb->get_row( $wpdb->prepare( "SELECT SUM(status IN ('sent','failed')) total, SUM(status = 'failed') failed, SUM(unsubscribed_at IS NOT NULL) unsub FROM $r WHERE sent_at >= %s", $from ), ARRAY_A );
 
@@ -121,18 +121,18 @@ class DXN_Stats {
 	/** La próxima campaña programada. */
 	public static function next_scheduled() {
 		global $wpdb;
-		$id = $wpdb->get_var( 'SELECT id FROM ' . DXN_Install::table( 'campaigns' ) . " WHERE status = 'scheduled' ORDER BY scheduled_at ASC LIMIT 1" );
-		return $id ? DXN_Campaigns::get( $id ) : null;
+		$id = $wpdb->get_var( 'SELECT id FROM ' . DXO_Install::table( 'campaigns' ) . " WHERE status = 'scheduled' ORDER BY scheduled_at ASC LIMIT 1" );
+		return $id ? DXO_Campaigns::get( $id ) : null;
 	}
 
 	/** Las últimas $n campañas lanzadas, con sus números. */
 	public static function recent( $n = 3 ) {
 		global $wpdb;
-		$ids = $wpdb->get_col( $wpdb->prepare( 'SELECT id FROM ' . DXN_Install::table( 'campaigns' ) . " WHERE type = 'regular' AND status IN ('sending','paused','sent','cancelled') ORDER BY started_at DESC LIMIT %d", $n ) );
+		$ids = $wpdb->get_col( $wpdb->prepare( 'SELECT id FROM ' . DXO_Install::table( 'campaigns' ) . " WHERE type = 'regular' AND status IN ('sending','paused','sent','cancelled') ORDER BY started_at DESC LIMIT %d", $n ) );
 		$out = [];
 		foreach ( $ids as $id ) {
-			$c          = DXN_Campaigns::get( $id );
-			$c['stats'] = DXN_Campaigns::stats( $id );
+			$c          = DXO_Campaigns::get( $id );
+			$c['stats'] = DXO_Campaigns::stats( $id );
 			$out[]      = $c;
 		}
 		return $out;

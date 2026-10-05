@@ -14,9 +14,9 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class DXN_Sender {
+class DXO_Sender {
 
-	const HOOK = 'dxn_send';
+	const HOOK = 'dxo_send';
 
 	/** Correos como máximo por pasada, aunque el tope por hora deje más. */
 	const BATCH = 25;
@@ -30,18 +30,18 @@ class DXN_Sender {
 	public static function init() {
 		add_filter( 'cron_schedules', [ __CLASS__, 'schedules' ] );
 		add_action( self::HOOK, [ __CLASS__, 'run' ] );
-		add_action( 'dxn_send_now', [ __CLASS__, 'run' ] );
+		add_action( 'dxo_send_now', [ __CLASS__, 'run' ] );
 		add_action( 'init', [ __CLASS__, 'schedule' ] );
 	}
 
 	public static function schedules( $s ) {
-		$s['dxn_minute'] = [ 'interval' => 60, 'display' => 'Dox Newsletter (every minute)' ];
+		$s['dxo_minute'] = [ 'interval' => 60, 'display' => 'Dox Orbit (every minute)' ];
 		return $s;
 	}
 
 	public static function schedule() {
 		if ( ! wp_next_scheduled( self::HOOK ) ) {
-			wp_schedule_event( time() + 30, 'dxn_minute', self::HOOK );
+			wp_schedule_event( time() + 30, 'dxo_minute', self::HOOK );
 		}
 	}
 
@@ -50,8 +50,8 @@ class DXN_Sender {
 	 * cron pase cuanto antes en vez de esperar al minuto.
 	 */
 	public static function kick() {
-		if ( ! wp_next_scheduled( 'dxn_send_now' ) ) {
-			wp_schedule_single_event( time(), 'dxn_send_now' );
+		if ( ! wp_next_scheduled( 'dxo_send_now' ) ) {
+			wp_schedule_single_event( time(), 'dxo_send_now' );
 		}
 		if ( function_exists( 'spawn_cron' ) ) spawn_cron();
 	}
@@ -61,7 +61,7 @@ class DXN_Sender {
 	/** @return int cuántos correos salieron en esta pasada */
 	public static function run() {
 		global $wpdb;
-		$c = DXN_Install::table( 'campaigns' );
+		$c = DXO_Install::table( 'campaigns' );
 
 		$pending = (int) $wpdb->get_var( "SELECT COUNT(*) FROM $c WHERE status IN ('scheduled','sending') OR (type = 'welcome' AND status = 'active')" );
 		if ( ! $pending ) return 0;
@@ -70,10 +70,10 @@ class DXN_Sender {
 		$sent = 0;
 		try {
 			// Las programadas cuya hora ya llegó.
-			$due = $wpdb->get_col( $wpdb->prepare( "SELECT id FROM $c WHERE status = 'scheduled' AND scheduled_at <= %s", dxn_now() ) );
+			$due = $wpdb->get_col( $wpdb->prepare( "SELECT id FROM $c WHERE status = 'scheduled' AND scheduled_at <= %s", dxo_now() ) );
 			foreach ( $due as $id ) {
-				$camp = DXN_Campaigns::get( $id );
-				if ( $camp ) DXN_Campaigns::start( $camp );
+				$camp = DXO_Campaigns::get( $id );
+				if ( $camp ) DXO_Campaigns::start( $camp );
 			}
 
 			$allowance = min( self::BATCH, self::allowance() );
@@ -83,11 +83,11 @@ class DXN_Sender {
 			$ids = $wpdb->get_col( "SELECT id FROM $c WHERE (type = 'welcome' AND status = 'active') OR status = 'sending' ORDER BY (type = 'welcome') DESC, started_at ASC" );
 
 			foreach ( $ids as $id ) {
-				$camp  = DXN_Campaigns::get( $id );
-				$links = DXN_Campaigns::link_map( $id );
+				$camp  = DXO_Campaigns::get( $id );
+				$links = DXO_Campaigns::link_map( $id );
 
 				while ( $allowance > 0 && time() - $started < self::BUDGET ) {
-					$r = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . DXN_Install::table( 'recipients' ) . " WHERE campaign_id = %d AND status = 'queued' ORDER BY id ASC LIMIT 1", $id ), ARRAY_A );
+					$r = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . DXO_Install::table( 'recipients' ) . " WHERE campaign_id = %d AND status = 'queued' ORDER BY id ASC LIMIT 1", $id ), ARRAY_A );
 					if ( ! $r ) break;
 					if ( self::send_one( $camp, $r, $links ) !== 'skipped' ) {
 						$allowance--;
@@ -96,7 +96,7 @@ class DXN_Sender {
 				}
 
 				if ( $camp['type'] === 'regular' && ! self::queued( $id ) ) {
-					DXN_Campaigns::set_status( $id, 'sent' );
+					DXO_Campaigns::set_status( $id, 'sent' );
 				}
 				if ( $allowance <= 0 || time() - $started >= self::BUDGET ) break;
 			}
@@ -108,17 +108,17 @@ class DXN_Sender {
 
 	/** Lo que queda del tope de la última hora. */
 	public static function allowance() {
-		return max( 0, (int) DXN_Settings::get( 'rate_per_hour' ) - self::sent_last_hour() );
+		return max( 0, (int) DXO_Settings::get( 'rate_per_hour' ) - self::sent_last_hour() );
 	}
 
 	public static function sent_last_hour() {
 		global $wpdb;
-		return (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . DXN_Install::table( 'recipients' ) . " WHERE status IN ('sent','failed') AND sent_at >= %s", gmdate( 'Y-m-d H:i:s', time() - HOUR_IN_SECONDS ) ) );
+		return (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . DXO_Install::table( 'recipients' ) . " WHERE status IN ('sent','failed') AND sent_at >= %s", gmdate( 'Y-m-d H:i:s', time() - HOUR_IN_SECONDS ) ) );
 	}
 
 	public static function queued( $campaign_id ) {
 		global $wpdb;
-		return (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . DXN_Install::table( 'recipients' ) . " WHERE campaign_id = %d AND status = 'queued'", $campaign_id ) );
+		return (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM ' . DXO_Install::table( 'recipients' ) . " WHERE campaign_id = %d AND status = 'queued'", $campaign_id ) );
 	}
 
 	// ═══ Un correo ══════════════════════════════════════════════════════════
@@ -126,8 +126,8 @@ class DXN_Sender {
 	/** @return string sent|failed|skipped */
 	public static function send_one( array $c, array $r, array $links ) {
 		global $wpdb;
-		$rt  = DXN_Install::table( 'recipients' );
-		$sub = DXN_Subscribers::get( $r['subscriber_id'] );
+		$rt  = DXO_Install::table( 'recipients' );
+		$sub = DXO_Subscribers::get( $r['subscriber_id'] );
 
 		// Si se dio de baja (o se borró) entre que se lanzó y le toca, no se le manda.
 		if ( ! $sub || $sub['status'] !== 'active' ) {
@@ -136,21 +136,21 @@ class DXN_Sender {
 		}
 
 		$email = self::build( $c, $r, $sub, $links );
-		$error = DXN_Mailer::send( $sub['email'], $email['subject'], $email['html'], $email['text'], [
+		$error = DXO_Mailer::send( $sub['email'], $email['subject'], $email['html'], $email['text'], [
 			// Baja con un clic (RFC 8058): Gmail y Yahoo la exigen a quien manda en
 			// cantidad, y ponen el enlace "Cancelar suscripción" junto al remitente.
 			'List-Unsubscribe'      => '<' . $email['unsubscribe_url'] . '>',
 			'List-Unsubscribe-Post' => 'List-Unsubscribe=One-Click',
-			'X-Dox-Newsletter'      => $c['id'] . '.' . $r['id'],
+			'X-Dox-Orbit'      => $c['id'] . '.' . $r['id'],
 		] );
 
-		$ct = DXN_Install::table( 'campaigns' );
+		$ct = DXO_Install::table( 'campaigns' );
 		if ( $error === null ) {
-			$wpdb->update( $rt, [ 'status' => 'sent', 'sent_at' => dxn_now(), 'error' => '' ], [ 'id' => $r['id'] ] );
+			$wpdb->update( $rt, [ 'status' => 'sent', 'sent_at' => dxo_now(), 'error' => '' ], [ 'id' => $r['id'] ] );
 			$wpdb->query( $wpdb->prepare( "UPDATE $ct SET sent = sent + 1 WHERE id = %d", $c['id'] ) );
 			return 'sent';
 		}
-		$wpdb->update( $rt, [ 'status' => 'failed', 'sent_at' => dxn_now(), 'error' => mb_substr( $error, 0, 250 ) ], [ 'id' => $r['id'] ] );
+		$wpdb->update( $rt, [ 'status' => 'failed', 'sent_at' => dxo_now(), 'error' => mb_substr( $error, 0, 250 ) ], [ 'id' => $r['id'] ] );
 		$wpdb->query( $wpdb->prepare( "UPDATE $ct SET failed = failed + 1 WHERE id = %d", $c['id'] ) );
 		return 'failed';
 	}
@@ -161,29 +161,29 @@ class DXN_Sender {
 	 * @param array|null $links URL => id del enlace; null = sin seguimiento (prueba y "ver en el navegador")
 	 */
 	public static function build( array $c, array $r, array $sub, $links ) {
-		$s      = DXN_Settings::all();
+		$s      = DXO_Settings::all();
 		$token  = $r['token'];
 		$fields = [ 'first_name' => $sub['first_name'], 'last_name' => $sub['last_name'], 'email' => $sub['email'] ];
-		$unsub  = DXN_Public::url( 'unsubscribe', $token );
+		$unsub  = DXO_Public::url( 'unsubscribe', $token );
 		$track  = $links !== null;
 
-		$render = DXN_Renderer::render_email( [
+		$render = DXO_Renderer::render_email( [
 			'blocks'          => $c['blocks'],
-			'brand'           => DXN_Settings::brand(),
+			'brand'           => DXO_Settings::brand(),
 			'subject'         => $c['subject'],
 			'preheader'       => $c['preheader'],
 			'fields'          => $fields,
 			'unsubscribe_url' => $unsub,
-			'view_url'        => $track ? DXN_Public::url( 'view', $token ) : '',
-			'pixel_url'       => $track && $s['track_opens'] ? DXN_Public::url( 'open', $token ) : null,
+			'view_url'        => $track ? DXO_Public::url( 'view', $token ) : '',
+			'pixel_url'       => $track && $s['track_opens'] ? DXO_Public::url( 'open', $token ) : null,
 			'link'            => $track && $s['track_clicks'] ? function ( $url ) use ( $links, $token ) {
-				return isset( $links[ $url ] ) ? DXN_Public::url( 'click', $token, $links[ $url ] ) : null;
+				return isset( $links[ $url ] ) ? DXO_Public::url( 'click', $token, $links[ $url ] ) : null;
 			} : null,
-			'strings'         => DXN_Public::email_strings(),
+			'strings'         => DXO_Public::email_strings(),
 		] );
 
 		return [
-			'subject'         => DXN_Renderer::merge( $c['subject'], $fields, false ),
+			'subject'         => DXO_Renderer::merge( $c['subject'], $fields, false ),
 			'html'            => $render['html'],
 			'text'            => $render['text'],
 			'unsubscribe_url' => $unsub,
@@ -198,7 +198,7 @@ class DXN_Sender {
 		$user  = wp_get_current_user();
 		$fake  = [ 'first_name' => $user && $user->first_name ? $user->first_name : 'Ana', 'last_name' => '', 'email' => $to ];
 		$email = self::build( $c, [ 'token' => str_repeat( '0', 32 ) ], $fake, null );
-		return DXN_Mailer::send( $to, '[' . __( 'Test', 'dox-newsletter' ) . '] ' . $email['subject'], $email['html'], $email['text'] );
+		return DXO_Mailer::send( $to, '[' . __( 'Test', 'dox-orbit' ) . '] ' . $email['subject'], $email['html'], $email['text'] );
 	}
 
 	// ═══ Estado para el panel ═══════════════════════════════════════════════
@@ -206,11 +206,11 @@ class DXN_Sender {
 	/** La campaña que está saliendo, su progreso y cuándo terminará. */
 	public static function status() {
 		global $wpdb;
-		$row = $wpdb->get_row( 'SELECT id FROM ' . DXN_Install::table( 'campaigns' ) . " WHERE type = 'regular' AND status IN ('sending','paused') ORDER BY started_at ASC LIMIT 1", ARRAY_A );
+		$row = $wpdb->get_row( 'SELECT id FROM ' . DXO_Install::table( 'campaigns' ) . " WHERE type = 'regular' AND status IN ('sending','paused') ORDER BY started_at ASC LIMIT 1", ARRAY_A );
 		if ( ! $row ) return null;
-		$c     = DXN_Campaigns::get( $row['id'] );
-		$st    = DXN_Campaigns::stats( $c['id'] );
-		$rate  = max( 1, (int) DXN_Settings::get( 'rate_per_hour' ) );
+		$c     = DXO_Campaigns::get( $row['id'] );
+		$st    = DXO_Campaigns::stats( $c['id'] );
+		$rate  = max( 1, (int) DXO_Settings::get( 'rate_per_hour' ) );
 		$left  = $st['queued'];
 		// Lo que falta, al ritmo del tope, contando con lo que ya se gastó esta hora.
 		$hours = $left / $rate;
@@ -234,19 +234,19 @@ class DXN_Sender {
 
 	private static function lock() {
 		global $wpdb;
-		if ( false === get_option( 'dxn_lock' ) ) add_option( 'dxn_lock', '0', '', false );
+		if ( false === get_option( 'dxo_lock' ) ) add_option( 'dxo_lock', '0', '', false );
 		$now = time();
 		$wpdb->query( $wpdb->prepare(
-			"UPDATE {$wpdb->options} SET option_value = %s WHERE option_name = 'dxn_lock' AND (option_value = '0' OR option_value < %s)",
+			"UPDATE {$wpdb->options} SET option_value = %s WHERE option_name = 'dxo_lock' AND (option_value = '0' OR option_value < %s)",
 			(string) $now, (string) ( $now - self::LOCK_SECONDS )
 		) );
-		wp_cache_delete( 'dxn_lock', 'options' );
+		wp_cache_delete( 'dxo_lock', 'options' );
 		return $wpdb->rows_affected > 0;
 	}
 
 	private static function unlock() {
 		global $wpdb;
-		$wpdb->query( "UPDATE {$wpdb->options} SET option_value = '0' WHERE option_name = 'dxn_lock'" );
-		wp_cache_delete( 'dxn_lock', 'options' );
+		$wpdb->query( "UPDATE {$wpdb->options} SET option_value = '0' WHERE option_name = 'dxo_lock'" );
+		wp_cache_delete( 'dxo_lock', 'options' );
 	}
 }

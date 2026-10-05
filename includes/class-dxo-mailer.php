@@ -10,7 +10,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class DXN_Mailer {
+class DXO_Mailer {
 
 	/** El PHPMailer de SES de esta petición: se crea una vez y sirve para toda la tanda. */
 	private static $ses = null;
@@ -26,7 +26,7 @@ class DXN_Mailer {
 	 * @return string|null null si salió; el motivo si no
 	 */
 	public static function send( $to, $subject, $html, $text, array $headers = [] ) {
-		$s = DXN_Settings::all();
+		$s = DXO_Settings::all();
 		try {
 			if ( $s['transport'] === 'ses' ) {
 				return self::send_ses( self::ses_config( $s ), $to, $subject, $html, $text, $headers, $s );
@@ -60,7 +60,7 @@ class DXN_Mailer {
 		self::$alt = '';
 
 		if ( $ok ) return null;
-		return self::$wp_error !== '' ? self::$wp_error : __( 'WordPress could not send the email.', 'dox-newsletter' );
+		return self::$wp_error !== '' ? self::$wp_error : __( 'WordPress could not send the email.', 'dox-orbit' );
 	}
 
 	/** La versión de texto junto al HTML: los filtros de spam miran que exista. */
@@ -85,7 +85,7 @@ class DXN_Mailer {
 			'host' => $s['ses_host'],
 			'port' => (int) $s['ses_port'],
 			'user' => $s['ses_user'],
-			'pass' => DXN_Settings::decrypt( $s['ses_pass'] ),
+			'pass' => DXO_Settings::decrypt( $s['ses_pass'] ),
 		];
 		foreach ( $override as $k => $v ) {
 			if ( $v !== '' && $v !== null ) $c[ $k ] = $v;
@@ -114,7 +114,7 @@ class DXN_Mailer {
 	}
 
 	private static function send_ses( array $c, $to, $subject, $html, $text, array $headers, array $s ) {
-		if ( ! $c['user'] || ! $c['pass'] ) return __( 'Amazon SES is missing the SMTP user or password.', 'dox-newsletter' );
+		if ( ! $c['user'] || ! $c['pass'] ) return __( 'Amazon SES is missing the SMTP user or password.', 'dox-orbit' );
 		if ( self::$ses === null ) self::$ses = self::phpmailer( $c );
 		$m = self::$ses;
 		$m->clearAllRecipients();
@@ -153,7 +153,7 @@ class DXN_Mailer {
 			$m->Debugoutput = function ( $line ) use ( &$log ) { $log[] = trim( preg_replace( '/\s+/', ' ', (string) $line ) ); };
 			$ok = $m->smtpConnect();
 			$m->smtpClose();
-			return $ok ? null : ( self::server_reason( $log ) ?: __( 'Could not connect to Amazon SES.', 'dox-newsletter' ) );
+			return $ok ? null : ( self::server_reason( $log ) ?: __( 'Could not connect to Amazon SES.', 'dox-orbit' ) );
 		} catch ( Throwable $e ) {
 			return self::server_reason( $log ) ?: $e->getMessage();
 		}

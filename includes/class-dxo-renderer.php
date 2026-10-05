@@ -12,7 +12,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class DXN_Renderer {
+class DXO_Renderer {
 
 	/** Los campos que se rellenan con los datos de cada persona. */
 	const TAGS = [ 'first_name', 'last_name', 'email' ];
@@ -89,10 +89,10 @@ class DXN_Renderer {
 
 		$doc = new DOMDocument();
 		libxml_use_internal_errors( true );
-		$doc->loadHTML( '<?xml encoding="utf-8"?><div id="dxn-root">' . $html . '</div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+		$doc->loadHTML( '<?xml encoding="utf-8"?><div id="dxo-root">' . $html . '</div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
 		libxml_clear_errors();
 
-		$root = $doc->getElementById( 'dxn-root' );
+		$root = $doc->getElementById( 'dxo-root' );
 		if ( ! $root ) {
 			return htmlspecialchars( strip_tags( $html ), ENT_QUOTES, 'UTF-8' );
 		}
@@ -223,14 +223,14 @@ class DXN_Renderer {
 					if ( $b['text'] === '' ) break;
 					$sizes = [ 'large' => [ 28, 1.2 ], 'medium' => [ 21, 1.3 ], 'small' => [ 17, 1.4 ] ];
 					list( $px, $lh ) = $sizes[ $b['size'] ] ?? $sizes['large'];
-					$rows .= '<tr><td class="dxn-pad" style="padding:0 40px 14px 40px;font-family:' . $font . ';font-size:' . $px . 'px;line-height:' . $lh . ';font-weight:700;letter-spacing:-0.4px;color:' . self::INK . ';text-align:' . $align . ';">'
+					$rows .= '<tr><td class="dxo-pad" style="padding:0 40px 14px 40px;font-family:' . $font . ';font-size:' . $px . 'px;line-height:' . $lh . ';font-weight:700;letter-spacing:-0.4px;color:' . self::INK . ';text-align:' . $align . ';">'
 						. self::esc( $b['text'] ) . '</td></tr>';
 					break;
 
 				case 'text':
 					if ( $b['html'] === '' ) break;
 					$html  = self::inline_text_styles( $b['html'], $accent );
-					$rows .= '<tr><td class="dxn-pad" style="padding:0 40px 6px 40px;font-family:' . $font . ';font-size:16px;line-height:1.7;color:' . self::BODY . ';text-align:' . $align . ';">' . $html . '</td></tr>';
+					$rows .= '<tr><td class="dxo-pad" style="padding:0 40px 6px 40px;font-family:' . $font . ';font-size:16px;line-height:1.7;color:' . self::BODY . ';text-align:' . $align . ';">' . $html . '</td></tr>';
 					break;
 
 				case 'image':
@@ -239,12 +239,12 @@ class DXN_Renderer {
 					if ( $b['link'] !== '' ) {
 						$img = '<a href="' . self::esc( $b['link'] ) . '" style="text-decoration:none;">' . $img . '</a>';
 					}
-					$rows .= '<tr><td class="dxn-pad" align="' . $align . '" style="padding:4px 40px 22px 40px;">' . $img . '</td></tr>';
+					$rows .= '<tr><td class="dxo-pad" align="' . $align . '" style="padding:4px 40px 22px 40px;">' . $img . '</td></tr>';
 					break;
 
 				case 'button':
 					if ( $b['text'] === '' || $b['url'] === '' ) break;
-					$rows .= '<tr><td class="dxn-pad" align="' . $align . '" style="padding:8px 40px 26px 40px;">' . self::button( $b['text'], $b['url'], $b['style'] ?? 'dark', $accent, $align ) . '</td></tr>';
+					$rows .= '<tr><td class="dxo-pad" align="' . $align . '" style="padding:8px 40px 26px 40px;">' . self::button( $b['text'], $b['url'], $b['style'] ?? 'dark', $accent, $align ) . '</td></tr>';
 					break;
 
 				case 'post':
@@ -259,11 +259,11 @@ class DXN_Renderer {
 					}
 					$cta   = $b['cta'] !== '' ? $b['cta'] : 'Read more';
 					$card .= '<tr><td style="padding:6px 22px 20px 22px;font-family:' . $font . ';font-size:15px;font-weight:700;"><a href="' . self::esc( $b['url'] ) . '" style="color:' . self::INK . ';text-decoration:underline;">' . self::esc( $cta ) . ' &rarr;</a></td></tr>';
-					$rows .= '<tr><td class="dxn-pad" style="padding:4px 40px 24px 40px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #ebe6e2;border-radius:12px;">' . $card . '</table></td></tr>';
+					$rows .= '<tr><td class="dxo-pad" style="padding:4px 40px 24px 40px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #ebe6e2;border-radius:12px;">' . $card . '</table></td></tr>';
 					break;
 
 				case 'divider':
-					$rows .= '<tr><td class="dxn-pad" style="padding:10px 40px 26px 40px;"><div style="height:1px;line-height:1px;font-size:1px;background:#ebe6e2;">&nbsp;</div></td></tr>';
+					$rows .= '<tr><td class="dxo-pad" style="padding:10px 40px 26px 40px;"><div style="height:1px;line-height:1px;font-size:1px;background:#ebe6e2;">&nbsp;</div></td></tr>';
 					break;
 
 				case 'spacer':
@@ -323,7 +323,7 @@ class DXN_Renderer {
 		} else {
 			$head = '<span style="font-family:' . $font . ';font-size:18px;font-weight:700;letter-spacing:-0.4px;color:' . self::INK . ';">' . self::esc( $brand['company'] ?? '' ) . '</span>';
 		}
-		$header = '<tr><td class="dxn-pad" style="padding:34px 40px 26px 40px;">' . $head . '</td></tr>';
+		$header = '<tr><td class="dxo-pad" style="padding:34px 40px 26px 40px;">' . $head . '</td></tr>';
 
 		$unsubscribe = self::esc( (string) ( $o['unsubscribe_url'] ?? '#' ) );
 		$view        = ! empty( $o['view_url'] ) ? ' &middot; <a href="' . self::esc( $o['view_url'] ) . '" style="color:' . self::SOFT . ';text-decoration:underline;">' . self::esc( $str['view'] ) . '</a>' : '';
@@ -342,12 +342,12 @@ class DXN_Renderer {
 
 		// El único <style>: en el móvil, menos margen a los lados. Si un programa
 		// de correo lo ignora, se ve igual que en el ordenador, que también vale.
-		$css = '<style>@media (max-width:600px){.dxn-pad{padding-left:24px!important;padding-right:24px!important}.dxn-outer{padding:12px 8px!important}}</style>';
+		$css = '<style>@media (max-width:600px){.dxo-pad{padding-left:24px!important;padding-right:24px!important}.dxo-outer{padding:12px 8px!important}}</style>';
 
 		$html = '<!doctype html><html lang="' . self::esc( $str['lang'] ) . '"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
 			. '<meta name="x-apple-disable-message-reformatting"><title>' . self::esc( self::merge( (string) ( $o['subject'] ?? '' ), $fields, false ) ) . '</title>' . $css . '</head>'
 			. '<body style="margin:0;padding:0;background:' . self::PAGE . ';-webkit-text-size-adjust:100%;">' . $preheaderHtml
-			. '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:' . self::PAGE . ';"><tr><td class="dxn-outer" align="center" style="padding:32px 16px;">'
+			. '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:' . self::PAGE . ';"><tr><td class="dxo-outer" align="center" style="padding:32px 16px;">'
 			. '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#ffffff;border-radius:16px;">'
 			. $header . $content . '<tr><td style="height:16px;line-height:16px;font-size:1px;">&nbsp;</td></tr></table>'
 			. '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;"><tr><td align="center" style="padding:22px 24px 0 24px;font-family:' . $font . ';font-size:12px;line-height:1.7;color:' . self::SOFT . ';">'
