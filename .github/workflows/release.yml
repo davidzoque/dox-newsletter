@@ -1,0 +1,55 @@
+name: Build release ZIP
+
+# Al pushear un tag v* se crea la release con un ZIP limpio del plugin.
+# Plugin Update Checker (enableReleaseAssets) sirve ese ZIP a los sitios.
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Verificar que la versión del plugin coincide con el tag
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          PLUGIN_VERSION=$(grep -oP '^ \* Version:\s+\K[0-9.]+' dox-newsletter.php)
+          echo "Tag: $TAG_VERSION / Plugin: $PLUGIN_VERSION"
+          if [ "$TAG_VERSION" != "$PLUGIN_VERSION" ]; then
+            echo "::error::La versión del header ($PLUGIN_VERSION) no coincide con el tag ($TAG_VERSION)."
+            exit 1
+          fi
+
+      - name: Pruebas del renderizador
+        run: php tests/run.php
+
+      - name: Construir ZIP limpio
+        run: |
+          mkdir -p build/dox-newsletter
+          rsync -a \
+            --exclude='.git*' \
+            --exclude='.github' \
+            --exclude='build' \
+            --exclude='tests' \
+            --exclude='tools' \
+            --exclude='maqueta' \
+            --exclude='*.zip' \
+            ./ build/dox-newsletter/
+          cd build
+          zip -rq dox-newsletter.zip dox-newsletter
+
+      - name: Crear release y adjuntar ZIP
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
+        with:
+          files: build/dox-newsletter.zip
+          generate_release_notes: true

@@ -1,0 +1,1435 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Dox Newsletter\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Domain: dox-newsletter\n"
+
+msgid "%1$s in %2$d days"
+msgstr ""
+
+msgid "%1$s new, %2$s already there, %3$s skipped, %4$s invalid"
+msgstr ""
+
+msgid "%1$s new, %2$s unsubscribed"
+msgstr ""
+
+msgid "%1$s of %2$s"
+msgstr ""
+
+msgid "%1$s people take about %2$s hours"
+msgstr ""
+
+msgid "%1$s people take about %2$s minutes"
+msgstr ""
+
+msgid "%1$s–%2$s of %3$s"
+msgstr ""
+
+msgid "%d characters"
+msgstr ""
+
+msgid "%d days"
+msgstr ""
+
+msgid "%d of 5"
+msgstr ""
+
+msgid "%s ago"
+msgstr ""
+
+msgid "%s has been removed from the list. If it was a mistake, you can subscribe again from the website."
+msgstr ""
+
+msgid "%s hours"
+msgstr ""
+
+msgid "%s left. Nothing goes out until you resume it."
+msgstr ""
+
+msgid "%s minutes"
+msgstr ""
+
+msgid "%s of the opens came in the first 3 hours."
+msgstr ""
+
+msgid "%s per hour"
+msgstr ""
+
+msgid "%s points above your average"
+msgstr ""
+
+msgid "%s points below your average"
+msgstr ""
+
+msgid "%s will not receive more emails from us."
+msgstr ""
+
+msgid "%s will stop receiving our newsletter."
+msgstr ""
+
+msgid "(empty)"
+msgstr ""
+
+msgid "(no subject)"
+msgstr ""
+
+msgid "+%s"
+msgstr ""
+
+msgid "30 days"
+msgstr ""
+
+msgid "<b>All images</b> have alternative text"
+msgstr ""
+
+msgid "<b>No postal address.</b> Add it in Settings: CAN-SPAM requires it."
+msgstr ""
+
+msgid "<b>No test sent yet.</b> Send yourself one before scheduling it."
+msgstr ""
+
+msgid "<b>Postal address</b> in the footer, as required by CAN-SPAM"
+msgstr ""
+
+msgid "<b>Some image has no alternative text.</b> It is what is read when images are blocked."
+msgstr ""
+
+msgid "<b>Test sent.</b> Check it on your phone too."
+msgstr ""
+
+msgid "<b>Unsubscribe link</b> and the one-click unsubscribe header that Gmail and Yahoo require"
+msgstr ""
+
+msgid "A CSV from Mailchimp, Excel or wherever you have it."
+msgstr ""
+
+msgid "A CSV with a column for the email. If it has columns for the name (first name, last name or name), they are used too. Exports from Mailchimp, Excel or Google Sheets work as they are."
+msgstr ""
+
+msgid "A form on the website"
+msgstr ""
+
+msgid "A line that invites to open it"
+msgstr ""
+
+msgid "A person's name is opened more than a company's: «Ana from Acme» better than «Acme Newsletter»."
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Active subscribers"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Add subscriber"
+msgstr ""
+
+msgid "Added by hand"
+msgstr ""
+
+msgid "Address"
+msgstr ""
+
+msgid "After sending"
+msgstr ""
+
+msgid "After some seconds"
+msgstr ""
+
+msgid "Align"
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+msgid "All lists"
+msgstr ""
+
+msgid "All subscribers"
+msgstr ""
+
+msgid "Almost done! Check your inbox and confirm with one click."
+msgstr ""
+
+msgid "Alt text"
+msgstr ""
+
+msgid "Amazon SES did not accept the connection: %s"
+msgstr ""
+
+msgid "Amazon SES is missing the SMTP user or password."
+msgstr ""
+
+msgid "Apply"
+msgstr ""
+
+msgid "Ask for the name"
+msgstr ""
+
+msgid "At the top if there is no logo, and in the footer."
+msgstr ""
+
+msgid "Average open rate"
+msgstr ""
+
+msgid "Back to campaigns"
+msgstr ""
+
+msgid "Back to draft"
+msgstr ""
+
+msgid "Before sending"
+msgstr ""
+
+msgid "Below 0.5 % is considered healthy"
+msgstr ""
+
+msgid "Below it always go the unsubscribe link and the postal address."
+msgstr ""
+
+msgid "Better an address @%s: Gmail checks that the sender matches the domain."
+msgstr ""
+
+msgid "Between 30 and 50 characters is read in full on a phone"
+msgstr ""
+
+msgid "Black"
+msgstr ""
+
+msgid "Blocks"
+msgstr ""
+
+msgid "Blog post"
+msgstr ""
+
+msgid "Bold"
+msgstr ""
+
+msgid "Bottom bar"
+msgstr ""
+
+msgid "Bounced"
+msgstr ""
+
+msgid "Brand color"
+msgstr ""
+
+msgid "Brand in the email"
+msgstr ""
+
+msgid "Bring your list"
+msgstr ""
+
+msgid "Bring your list in a CSV or put a form on the website. They will appear here."
+msgstr ""
+
+msgid "Button"
+msgstr ""
+
+msgid "Came from"
+msgstr ""
+
+msgid "Campaign"
+msgstr ""
+
+msgid "Campaign not found"
+msgstr ""
+
+msgid "Campaigns"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Cancel sending"
+msgstr ""
+
+msgid "Cancelled"
+msgstr ""
+
+msgid "Center"
+msgstr ""
+
+msgid "Change"
+msgstr ""
+
+msgid "Change date"
+msgstr ""
+
+msgid "Change it in Settings"
+msgstr ""
+
+msgid "Check the forms"
+msgstr ""
+
+msgid "Checking with Amazon…"
+msgstr ""
+
+msgid "Choose"
+msgstr ""
+
+msgid "Choose a CSV file."
+msgstr ""
+
+msgid "Choose a date"
+msgstr ""
+
+msgid "Choose an image"
+msgstr ""
+
+msgid "City, state, country"
+msgstr ""
+
+msgid "Clear the search"
+msgstr ""
+
+msgid "Clicks"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Color"
+msgstr ""
+
+msgid "Company"
+msgstr ""
+
+msgid "Configured"
+msgstr ""
+
+msgid "Confirm"
+msgstr ""
+
+msgid "Confirm that these people agreed to receive your emails."
+msgstr ""
+
+msgid "Confirm that this person agreed to receive your emails."
+msgstr ""
+
+msgid "Confirm that you want to receive our newsletter. If it was not you, ignore this email and nothing will happen."
+msgstr ""
+
+msgid "Confirm your subscription"
+msgstr ""
+
+msgid "Confirmation"
+msgstr ""
+
+msgid "Confirmation sent"
+msgstr ""
+
+msgid "Copied"
+msgstr ""
+
+msgid "Copy"
+msgstr ""
+
+msgid "Could not connect to Amazon SES."
+msgstr ""
+
+msgid "Count clicks"
+msgstr ""
+
+msgid "Count opens"
+msgstr ""
+
+msgid "Counted again when it goes out: whoever opens the original in the meantime will not receive it."
+msgstr ""
+
+msgid "Dark"
+msgstr ""
+
+msgid "Dark with the brand glow, or light with a fine border."
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Delete list"
+msgstr ""
+
+msgid "Delete this list? The people stay in the other lists."
+msgstr ""
+
+msgid "Delete this subscriber completely? Their sends stay in the reports, without their email."
+msgstr ""
+
+msgid "Deleting a list does not delete the people: they stay in the other lists."
+msgstr ""
+
+msgid "Desktop"
+msgstr ""
+
+msgid "Discard"
+msgstr ""
+
+msgid "Divider"
+msgstr ""
+
+msgid "Do you want to unsubscribe?"
+msgstr ""
+
+msgid "Done"
+msgstr ""
+
+msgid "Done! You are subscribed."
+msgstr ""
+
+msgid "Done, you will not receive more emails"
+msgstr ""
+
+msgid "Double confirmation"
+msgstr ""
+
+msgid "Draft"
+msgstr ""
+
+msgid "Drafts"
+msgstr ""
+
+msgid "Drag to reorder"
+msgstr ""
+
+msgid "Duplicate"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Edited %s"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Email field"
+msgstr ""
+
+msgid "Email preview"
+msgstr ""
+
+msgid "Emails per hour"
+msgstr ""
+
+msgid "Everything saved"
+msgstr ""
+
+msgid "Export CSV"
+msgstr ""
+
+msgid "Failed sends"
+msgstr ""
+
+msgid "Fields: {first_name}, {last_name}, {email}. With a fallback: {first_name|friend}."
+msgstr ""
+
+msgid "File"
+msgstr ""
+
+msgid "First 24 hours"
+msgstr ""
+
+msgid "First campaign"
+msgstr ""
+
+msgid "First name"
+msgstr ""
+
+msgid "First steps"
+msgstr ""
+
+msgid "First subscribers"
+msgstr ""
+
+msgid "Fixed, can be closed"
+msgstr ""
+
+msgid "Footer of the emails"
+msgstr ""
+
+msgid "For big lists. About 0.10 USD per 1,000 emails, and it does not use up the server quota."
+msgstr ""
+
+msgid "For the «brand color» buttons and the glow of the forms."
+msgstr ""
+
+msgid "Form"
+msgstr ""
+
+msgid "Forms"
+msgstr ""
+
+msgid "From"
+msgstr ""
+
+msgid "General"
+msgstr ""
+
+msgid "Give the list a name."
+msgstr ""
+
+msgid "Gmail and the iPhone Mail app load the images by themselves when the email arrives, so some opens are not a person reading. Clicks are the reliable figure."
+msgstr ""
+
+msgid "Gmail asks to keep spam complaints below 0.3 %."
+msgstr ""
+
+msgid "Go to the website"
+msgstr ""
+
+msgid "Goes out by itself when someone confirms their subscription."
+msgstr ""
+
+msgid "Goes out through the server"
+msgstr ""
+
+msgid "Going out at %s per hour to leave room for the website emails"
+msgstr ""
+
+msgid "Good"
+msgstr ""
+
+msgid "Height"
+msgstr ""
+
+msgid "Hi {first_name|there},"
+msgstr ""
+
+msgid "How the emails go out"
+msgstr ""
+
+msgid "Image"
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+msgid "Import CSV"
+msgstr ""
+
+msgid "Import subscribers"
+msgstr ""
+
+msgid "Imported"
+msgstr ""
+
+msgid "In a page"
+msgstr ""
+
+msgid "In a page, as a pop-up or as a bottom bar."
+msgstr ""
+
+msgid "In the SES console, «SMTP settings». It depends on the region: email-smtp.us-east-2.amazonaws.com is Ohio."
+msgstr ""
+
+msgid "Interest"
+msgstr ""
+
+msgid "Interest comes from their last 5 emails: an open adds a point, a click adds two."
+msgstr ""
+
+msgid "It is saved encrypted and never shown again. When saving, the connection with Amazon is checked."
+msgstr ""
+
+msgid "It may have been used already. If you want to subscribe, use the form on the website again."
+msgstr ""
+
+msgid "It will go to %1$s. At %2$s per hour, it takes about %3$s."
+msgstr ""
+
+msgid "Italic"
+msgstr ""
+
+msgid "Join %s subscribers"
+msgstr ""
+
+msgid "Joined"
+msgstr ""
+
+msgid "Joined %1$s · %2$s"
+msgstr ""
+
+msgid "Keep an eye on it"
+msgstr ""
+
+msgid "Large"
+msgstr ""
+
+msgid "Last 90 days. Above 2 % hurts delivery."
+msgstr ""
+
+msgid "Last name"
+msgstr ""
+
+msgid "Latest campaigns"
+msgstr ""
+
+msgid "Left"
+msgstr ""
+
+msgid "Light"
+msgstr ""
+
+msgid "Link"
+msgstr ""
+
+msgid "Link address (https://…)"
+msgstr ""
+
+msgid "Link text"
+msgstr ""
+
+msgid "List"
+msgstr ""
+
+msgid "List health"
+msgstr ""
+
+msgid "List name"
+msgstr ""
+
+msgid "Lists"
+msgstr ""
+
+msgid "Live preview, with your name in the fields"
+msgstr ""
+
+msgid "Logo"
+msgstr ""
+
+msgid "Logo for the emails"
+msgstr ""
+
+msgid "Look and behavior"
+msgstr ""
+
+msgid "Main form"
+msgstr ""
+
+msgid "Mark as active"
+msgstr ""
+
+msgid "Medium"
+msgstr ""
+
+msgid "Move down"
+msgstr ""
+
+msgid "Move up"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Needs attention"
+msgstr ""
+
+msgid "New"
+msgstr ""
+
+msgid "New campaign"
+msgstr ""
+
+msgid "New form"
+msgstr ""
+
+msgid "New list"
+msgstr ""
+
+msgid "Newsletter %s"
+msgstr ""
+
+msgid "Newsletters and email campaigns from your own WordPress."
+msgstr ""
+
+msgid "Next send"
+msgstr ""
+
+msgid "No campaign has been sent yet."
+msgstr ""
+
+msgid "No campaign matches."
+msgstr ""
+
+msgid "No campaigns yet"
+msgstr ""
+
+msgid "No clicks yet."
+msgstr ""
+
+msgid "No email column was found in the file."
+msgstr ""
+
+msgid "No failures"
+msgstr ""
+
+msgid "No opens in 6 months"
+msgstr ""
+
+msgid "No opens yet. They usually start arriving a few minutes after sending."
+msgstr ""
+
+msgid "No posts found"
+msgstr ""
+
+msgid "No reason given"
+msgstr ""
+
+msgid "No reports yet"
+msgstr ""
+
+msgid "No sends yet"
+msgstr ""
+
+msgid "No subscribers yet"
+msgstr ""
+
+msgid "Nobody here"
+msgstr ""
+
+msgid "Nobody matches «%s»."
+msgstr ""
+
+msgid "Nobody new in the last 30 days."
+msgstr ""
+
+msgid "Nobody would receive it: the chosen lists have no active subscribers."
+msgstr ""
+
+msgid "Not configured"
+msgstr ""
+
+msgid "Not confirmed"
+msgstr ""
+
+msgid "Nothing scheduled."
+msgstr ""
+
+msgid "Now"
+msgstr ""
+
+msgid "Now goes out through %s"
+msgstr ""
+
+msgid "Off"
+msgstr ""
+
+msgid "Off, it is saved but nobody sees it."
+msgstr ""
+
+msgid "Off. People come in without confirming."
+msgstr ""
+
+msgid "On"
+msgstr ""
+
+msgid "On / off"
+msgstr ""
+
+msgid "On for every form. It avoids fake addresses."
+msgstr ""
+
+msgid "One click and you are in"
+msgstr ""
+
+msgid "One email a month, no filler"
+msgstr ""
+
+msgid "Only active subscribers. Whoever is on two lists receives it once. With no list checked, it goes to everyone."
+msgstr ""
+
+msgid "Only blog posts"
+msgstr ""
+
+msgid "Only from 100 subscribers on (now %s)."
+msgstr ""
+
+msgid "Only sent campaigns can be resent."
+msgstr ""
+
+msgid "Only you see it, to tell the forms apart."
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Opens"
+msgstr ""
+
+msgid "Opens per hour"
+msgstr ""
+
+msgid "Other"
+msgstr ""
+
+msgid "Others"
+msgstr ""
+
+msgid "Overview"
+msgstr ""
+
+msgid "Pages"
+msgstr ""
+
+msgid "Paste it in any page or post. In Elementor, look for the «Dox Newsletter» widget."
+msgstr ""
+
+msgid "Pause"
+msgstr ""
+
+msgid "Paused"
+msgstr ""
+
+msgid "Paused «%s»"
+msgstr ""
+
+msgid "Person"
+msgstr ""
+
+msgid "Phone"
+msgstr ""
+
+msgid "Pop-up"
+msgstr ""
+
+msgid "Port"
+msgstr ""
+
+msgid "Post"
+msgstr ""
+
+msgid "Postal address"
+msgstr ""
+
+msgid "Prepare the next one"
+msgstr ""
+
+msgid "Preview text"
+msgstr ""
+
+msgid "Put a form on the website"
+msgstr ""
+
+msgid "Read more"
+msgstr ""
+
+msgid "Ready to send?"
+msgstr ""
+
+msgid "Received 3 or more and opened none. Worth cleaning from time to time."
+msgstr ""
+
+msgid "Recipients"
+msgstr ""
+
+msgid "Recommended: leave at least 50 free per hour."
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Reply to"
+msgstr ""
+
+msgid "Report"
+msgstr ""
+
+msgid "Reports"
+msgstr ""
+
+msgid "Resend"
+msgstr ""
+
+msgid "Resend confirmation"
+msgstr ""
+
+msgid "Rest of the website %s"
+msgstr ""
+
+msgid "Resume"
+msgstr ""
+
+msgid "Review it"
+msgstr ""
+
+msgid "SMTP password"
+msgstr ""
+
+msgid "SMTP server"
+msgstr ""
+
+msgid "SMTP user"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Save form"
+msgstr ""
+
+msgid "Save the form to get its shortcode."
+msgstr ""
+
+msgid "Saved"
+msgstr ""
+
+msgid "Saved. Leave it empty to keep it."
+msgstr ""
+
+msgid "Saving…"
+msgstr ""
+
+msgid "Schedule"
+msgstr ""
+
+msgid "Scheduled"
+msgstr ""
+
+msgid "Scheduled for %s"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Search by email"
+msgstr ""
+
+msgid "Search by name"
+msgstr ""
+
+msgid "Search by subject"
+msgstr ""
+
+msgid "Search posts…"
+msgstr ""
+
+msgid "See all"
+msgstr ""
+
+msgid "See the report"
+msgstr ""
+
+msgid "Send a test"
+msgstr ""
+
+msgid "Send me a test"
+msgstr ""
+
+msgid "Send now"
+msgstr ""
+
+msgid "Send or schedule"
+msgstr ""
+
+msgid "Send test"
+msgstr ""
+
+msgid "Send test email"
+msgstr ""
+
+msgid "Send the welcome email"
+msgstr ""
+
+msgid "Send yourself a test before it goes out."
+msgstr ""
+
+msgid "Sender and address"
+msgstr ""
+
+msgid "Sender and brand"
+msgstr ""
+
+msgid "Sending"
+msgstr ""
+
+msgid "Sending at up to %s per hour."
+msgstr ""
+
+msgid "Sending speed"
+msgstr ""
+
+msgid "Sending «%s»"
+msgstr ""
+
+msgid "Sends the confirmation email with these settings, even if they are not saved yet."
+msgstr ""
+
+msgid "Sent"
+msgstr ""
+
+msgid "Server limit:"
+msgstr ""
+
+msgid "Set up the form"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Shortcode or Elementor widget"
+msgstr ""
+
+msgid "Show how many we are"
+msgstr ""
+
+msgid "Show it on the website"
+msgstr ""
+
+msgid "Size"
+msgstr ""
+
+msgid "Small"
+msgstr ""
+
+msgid "Something went wrong. Reload the page and try again."
+msgstr ""
+
+msgid "Something went wrong. Try again."
+msgstr ""
+
+msgid "Space"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Style"
+msgstr ""
+
+msgid "Subject"
+msgstr ""
+
+msgid "Subscribe"
+msgstr ""
+
+msgid "Subscriber"
+msgstr ""
+
+msgid "Subscribers"
+msgstr ""
+
+msgid "Test"
+msgstr ""
+
+msgid "Test email"
+msgstr ""
+
+msgid "Test sent to %s"
+msgstr ""
+
+msgid "Test sent to %s. Check the inbox (and spam)."
+msgstr ""
+
+msgid "Text"
+msgstr ""
+
+msgid "Texts"
+msgstr ""
+
+msgid "Texts, colors and the list are changed in Dox Plugins > Newsletter > Forms."
+msgstr ""
+
+msgid "Thanks for confirming. The next email will reach your inbox."
+msgstr ""
+
+msgid "Thanks for subscribing. Once a month you will receive what we learn and what we publish, without filler."
+msgstr ""
+
+msgid "That campaign no longer exists."
+msgstr ""
+
+msgid "That date is not valid."
+msgstr ""
+
+msgid "That email does not look right."
+msgstr ""
+
+msgid "That email does not look right. Check it and try again."
+msgstr ""
+
+msgid "That subscriber no longer exists."
+msgstr ""
+
+msgid "That time has already passed."
+msgstr ""
+
+msgid "The CAN-SPAM law in the US requires it in every marketing email. City and state is enough for many."
+msgstr ""
+
+msgid "The WordPress email"
+msgstr ""
+
+msgid "The campaign and its report will be deleted. This cannot be undone."
+msgstr ""
+
+msgid "The confirmation email"
+msgstr ""
+
+msgid "The draft will be deleted. This cannot be undone."
+msgstr ""
+
+msgid "The email could not be sent."
+msgstr ""
+
+msgid "The email could not be sent. Check the sending settings."
+msgstr ""
+
+msgid "The email is empty: add a title, a text or an image."
+msgstr ""
+
+msgid "The links go through your website for an instant before reaching their destination."
+msgstr ""
+
+msgid "The number is who joined through each form in 30 days"
+msgstr ""
+
+msgid "The page after confirming"
+msgstr ""
+
+msgid "The reply-to email is not valid."
+msgstr ""
+
+msgid "The same email"
+msgstr ""
+
+msgid "The same one WooCommerce and the forms use. No cost and no new accounts. For lists of up to a few thousand."
+msgstr ""
+
+msgid "The sender email in Settings is not valid."
+msgstr ""
+
+msgid "The sender email is not valid."
+msgstr ""
+
+msgid "The whole website"
+msgstr ""
+
+msgid "There are unsaved changes."
+msgstr ""
+
+msgid "There is already a subscriber with that email."
+msgstr ""
+
+msgid "There must be at least one form."
+msgstr ""
+
+msgid "There must be at least one list."
+msgstr ""
+
+msgid "These fields cannot be filled: %s. The ones that work are {first_name}, {last_name} and {email}."
+msgstr ""
+
+msgid "These people agreed to receive my emails"
+msgstr ""
+
+msgid "They come in as active, without a confirmation email. Whoever is already unsubscribed or bounced is skipped."
+msgstr ""
+
+msgid "This address is no longer on our list."
+msgstr ""
+
+msgid "This address unsubscribed. To come back, use the form on the website."
+msgstr ""
+
+msgid "This campaign cannot be deleted while it is sending."
+msgstr ""
+
+msgid "This campaign cannot be sent from its current state."
+msgstr ""
+
+msgid "This campaign has already been sent and cannot be edited."
+msgstr ""
+
+msgid "This campaign has already gone out and cannot be edited. You can duplicate it to send a new version."
+msgstr ""
+
+msgid "This email is no longer available"
+msgstr ""
+
+msgid "This link is no longer valid"
+msgstr ""
+
+msgid "This person agreed to receive my emails"
+msgstr ""
+
+msgid "This person is not waiting for confirmation."
+msgstr ""
+
+msgid "This person unsubscribed. Only they can subscribe again, from a form."
+msgstr ""
+
+msgid "Three steps and you can send your first newsletter. Everything stays in your WordPress."
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "To the lists"
+msgstr ""
+
+msgid "To who did not click (%s)"
+msgstr ""
+
+msgid "To who did not open it (%s)"
+msgstr ""
+
+msgid "To write «Hi, Ana» in the emails."
+msgstr ""
+
+msgid "Too many attempts. Try again in a few minutes."
+msgstr ""
+
+msgid "Tracking and footer"
+msgstr ""
+
+msgid "Unsaved changes"
+msgstr ""
+
+msgid "Unsubscribe"
+msgstr ""
+
+msgid "Unsubscribed"
+msgstr ""
+
+msgid "Unsubscribes"
+msgstr ""
+
+msgid "Unsubscribes per send"
+msgstr ""
+
+msgid "Use this image"
+msgstr ""
+
+msgid "View in browser"
+msgstr ""
+
+msgid "Visit the blog"
+msgstr ""
+
+msgid "Waiting for confirmation"
+msgstr ""
+
+msgid "Welcome email"
+msgstr ""
+
+msgid "Welcome to %s"
+msgstr ""
+
+msgid "Welcome, {first_name|friend}"
+msgstr ""
+
+msgid "What is seen next to the subject in the inbox"
+msgstr ""
+
+msgid "What is this email about?"
+msgstr ""
+
+msgid "What the image shows, in a few words."
+msgstr ""
+
+msgid "What they see while the confirmation email is on its way."
+msgstr ""
+
+msgid "What we learn and what we publish. You can unsubscribe with one click."
+msgstr ""
+
+msgid "What you will receive and how often."
+msgstr ""
+
+msgid "When"
+msgstr ""
+
+msgid "When a campaign goes out, its opens, clicks and unsubscribes appear here."
+msgstr ""
+
+msgid "When scrolling down"
+msgstr ""
+
+msgid "When scrolling or after a few seconds"
+msgstr ""
+
+msgid "Where it appears"
+msgstr ""
+
+msgid "Where replies arrive, if it is a different address."
+msgstr ""
+
+msgid "Where they clicked"
+msgstr ""
+
+msgid "Where they come from"
+msgstr ""
+
+msgid "Who did not click «%s»"
+msgstr ""
+
+msgid "Who did not open «%s»"
+msgstr ""
+
+msgid "Who it comes from"
+msgstr ""
+
+msgid "Who receives it"
+msgstr ""
+
+msgid "Whoever closes it does not see it again for 14 days, and whoever subscribes does not see it again."
+msgstr ""
+
+msgid "Whoever has not received it yet will not get it. This cannot be undone."
+msgstr ""
+
+msgid "Whoever subscribes receives an email to confirm. It keeps fake and mistyped addresses out, which is what protects your reputation with Gmail. Recommended."
+msgstr ""
+
+msgid "Why some failed"
+msgstr ""
+
+msgid "Why they receive it"
+msgstr ""
+
+msgid "With Amazon SES the server quota is not used: the speed only spreads the send."
+msgstr ""
+
+msgid "With an invisible image. Gmail and the iPhone load it by themselves, so it is a figure on the high side."
+msgstr ""
+
+msgid "With less than 50 free, order emails may have to wait."
+msgstr ""
+
+msgid "With your name in the fields and «[Test]» in the subject. It does not count in the report."
+msgstr ""
+
+msgid "WordPress could not send the email."
+msgstr ""
+
+msgid "WordPress email"
+msgstr ""
+
+msgid "Write a subject."
+msgstr ""
+
+msgid "Write a valid email for the test."
+msgstr ""
+
+msgid "Write the first campaign"
+msgstr ""
+
+msgid "Write the first one"
+msgstr ""
+
+msgid "Write the first one. It saves by itself as you type, and you can send yourself a test before it goes out."
+msgstr ""
+
+msgid "Yes, subscribe me"
+msgstr ""
+
+msgid "You are already unsubscribed"
+msgstr ""
+
+msgid "You are receiving this email because you subscribed at %s."
+msgstr ""
+
+msgid "You are subscribed"
+msgstr ""
+
+msgid "You are unsubscribed"
+msgstr ""
+
+msgid "You have not sent yourself a test yet."
+msgstr ""
+
+msgid "You were already subscribed. Thanks!"
+msgstr ""
+
+msgid "Your list starts here"
+msgstr ""
+
+msgid "Your name"
+msgstr ""
+
+msgid "Your readers open most around %s."
+msgstr ""
+
+msgid "Your server lets out <b>%s emails per hour</b> per website. Whatever the newsletter does not use stays free for orders, passwords and forms."
+msgstr ""
+
+msgid "Your session expired. Reload the page."
+msgstr ""
+
+msgid "clicked"
+msgstr ""
+
+msgid "delivered"
+msgstr ""
+
+msgid "finishes %1$s around %2$s"
+msgstr ""
+
+msgid "finishes today around %s"
+msgstr ""
+
+msgid "hour"
+msgstr ""
+
+msgid "just now"
+msgstr ""
+
+msgid "opened"
+msgstr ""
+
+msgid "opened it"
+msgstr ""
+
+msgid "seconds"
+msgstr ""
+
+msgid "sent"
+msgstr ""
+
+msgid "unsubscribed"
+msgstr ""
+
+msgid "you@email.com"
+msgstr ""
+
+msgid "%s active subscriber"
+msgid_plural "%s active subscribers"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "%s failed"
+msgid_plural "%s failed"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "%s person"
+msgid_plural "%s people"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "%s person in the last one"
+msgid_plural "%s people in the last one"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "%s waiting to confirm"
+msgid_plural "%s waiting to confirm"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Last campaign · Gmail and iPhone open some by themselves"
+msgid_plural "Last %d campaigns · Gmail and iPhone open some by themselves"
+msgstr[0] ""
+msgstr[1] ""
+

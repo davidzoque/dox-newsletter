@@ -1,0 +1,12 @@
+# SO / editores
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+
+# Builds locales
+build/
+*.zip
+
+# Capturas de revisión de la maqueta
+maqueta/revision/

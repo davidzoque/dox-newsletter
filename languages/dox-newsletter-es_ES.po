@@ -1,0 +1,1435 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Dox Newsletter\n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Domain: dox-newsletter\n"
+
+msgid "%1$s in %2$d days"
+msgstr "%1$s en %2$d días"
+
+msgid "%1$s new, %2$s already there, %3$s skipped, %4$s invalid"
+msgstr "%1$s nuevos, %2$s ya estaban, %3$s omitidos, %4$s no válidos"
+
+msgid "%1$s new, %2$s unsubscribed"
+msgstr "Altas: %1$s · bajas: %2$s"
+
+msgid "%1$s of %2$s"
+msgstr "%1$s de %2$s"
+
+msgid "%1$s people take about %2$s hours"
+msgstr "%1$s personas tardan unas %2$s horas"
+
+msgid "%1$s people take about %2$s minutes"
+msgstr "%1$s personas tardan unos %2$s minutos"
+
+msgid "%1$s–%2$s of %3$s"
+msgstr "%1$s–%2$s de %3$s"
+
+msgid "%d characters"
+msgstr "%d caracteres"
+
+msgid "%d days"
+msgstr "%d días"
+
+msgid "%d of 5"
+msgstr "%d de 5"
+
+msgid "%s ago"
+msgstr "hace %s"
+
+msgid "%s has been removed from the list. If it was a mistake, you can subscribe again from the website."
+msgstr "%s ya no está en la lista. Si fue un error, puedes volver a suscribirte desde la web."
+
+msgid "%s hours"
+msgstr "%s horas"
+
+msgid "%s left. Nothing goes out until you resume it."
+msgstr "Quedan %s. No sale nada hasta que lo reanudes."
+
+msgid "%s minutes"
+msgstr "%s minutos"
+
+msgid "%s of the opens came in the first 3 hours."
+msgstr "El %s de las aperturas llegó en las 3 primeras horas."
+
+msgid "%s per hour"
+msgstr "%s por hora"
+
+msgid "%s points above your average"
+msgstr "%s puntos por encima de tu media"
+
+msgid "%s points below your average"
+msgstr "%s puntos por debajo de tu media"
+
+msgid "%s will not receive more emails from us."
+msgstr "%s no recibirá más correos nuestros."
+
+msgid "%s will stop receiving our newsletter."
+msgstr "%s dejará de recibir nuestro boletín."
+
+msgid "(empty)"
+msgstr "(vacío)"
+
+msgid "(no subject)"
+msgstr "(sin asunto)"
+
+msgid "+%s"
+msgstr "+%s"
+
+msgid "30 days"
+msgstr "30 días"
+
+msgid "<b>All images</b> have alternative text"
+msgstr "<b>Todas las imágenes</b> tienen texto alternativo"
+
+msgid "<b>No postal address.</b> Add it in Settings: CAN-SPAM requires it."
+msgstr "<b>Falta la dirección postal.</b> Ponla en Ajustes: la ley CAN-SPAM la exige."
+
+msgid "<b>No test sent yet.</b> Send yourself one before scheduling it."
+msgstr "<b>Sin prueba enviada todavía.</b> Mándate una antes de programarla."
+
+msgid "<b>Postal address</b> in the footer, as required by CAN-SPAM"
+msgstr "<b>Dirección postal</b> en el pie, como pide la ley CAN-SPAM"
+
+msgid "<b>Some image has no alternative text.</b> It is what is read when images are blocked."
+msgstr "<b>Alguna imagen no tiene texto alternativo.</b> Es lo que se lee cuando las imágenes están bloqueadas."
+
+msgid "<b>Test sent.</b> Check it on your phone too."
+msgstr "<b>Prueba enviada.</b> Mírala también en el móvil."
+
+msgid "<b>Unsubscribe link</b> and the one-click unsubscribe header that Gmail and Yahoo require"
+msgstr "<b>Enlace de baja</b> y la cabecera de baja con un clic que piden Gmail y Yahoo"
+
+msgid "A CSV from Mailchimp, Excel or wherever you have it."
+msgstr "Un CSV de Mailchimp, de Excel o de donde la tengas."
+
+msgid "A CSV with a column for the email. If it has columns for the name (first name, last name or name), they are used too. Exports from Mailchimp, Excel or Google Sheets work as they are."
+msgstr "Un CSV con una columna para el correo. Si trae columnas de nombre (nombre, apellido o nombre completo), también se usan. Lo que exportan Mailchimp, Excel o Google Sheets sirve tal cual."
+
+msgid "A form on the website"
+msgstr "Un formulario en la web"
+
+msgid "A line that invites to open it"
+msgstr "Una línea que invite a abrirlo"
+
+msgid "A person's name is opened more than a company's: «Ana from Acme» better than «Acme Newsletter»."
+msgstr "Un nombre de persona se abre más que uno de empresa: mejor «Ana de Acme» que «Boletín Acme»."
+
+msgid "Actions"
+msgstr "Acciones"
+
+msgid "Active"
+msgstr "Activos"
+
+msgid "Active subscribers"
+msgstr "Suscriptores activos"
+
+msgid "Add"
+msgstr "Añadir"
+
+msgid "Add subscriber"
+msgstr "Añadir suscriptor"
+
+msgid "Added by hand"
+msgstr "Añadidos a mano"
+
+msgid "Address"
+msgstr "Dirección"
+
+msgid "After sending"
+msgstr "Al enviar"
+
+msgid "After some seconds"
+msgstr "A los pocos segundos"
+
+msgid "Align"
+msgstr "Alinear"
+
+msgid "All"
+msgstr "Todas"
+
+msgid "All lists"
+msgstr "Todas las listas"
+
+msgid "All subscribers"
+msgstr "Todos los suscriptores"
+
+msgid "Almost done! Check your inbox and confirm with one click."
+msgstr "¡Casi listo! Revisa tu correo y confirma con un clic."
+
+msgid "Alt text"
+msgstr "Texto alternativo"
+
+msgid "Amazon SES did not accept the connection: %s"
+msgstr "Amazon SES no aceptó la conexión: %s"
+
+msgid "Amazon SES is missing the SMTP user or password."
+msgstr "A Amazon SES le falta el usuario o la contraseña SMTP."
+
+msgid "Apply"
+msgstr "Aplicar"
+
+msgid "Ask for the name"
+msgstr "Pedir el nombre"
+
+msgid "At the top if there is no logo, and in the footer."
+msgstr "Arriba si no hay logo, y en el pie."
+
+msgid "Average open rate"
+msgstr "Apertura media"
+
+msgid "Back to campaigns"
+msgstr "Volver a campañas"
+
+msgid "Back to draft"
+msgstr "Volver a borrador"
+
+msgid "Before sending"
+msgstr "Antes de enviar"
+
+msgid "Below 0.5 % is considered healthy"
+msgstr "Por debajo del 0,5 % se considera sano"
+
+msgid "Below it always go the unsubscribe link and the postal address."
+msgstr "Debajo siempre van el enlace de baja y la dirección postal."
+
+msgid "Better an address @%s: Gmail checks that the sender matches the domain."
+msgstr "Mejor una dirección @%s: Gmail comprueba que el remitente coincida con el dominio."
+
+msgid "Between 30 and 50 characters is read in full on a phone"
+msgstr "Entre 30 y 50 caracteres se lee entero en el móvil"
+
+msgid "Black"
+msgstr "Negro"
+
+msgid "Blocks"
+msgstr "Bloques"
+
+msgid "Blog post"
+msgstr "Entrada del blog"
+
+msgid "Bold"
+msgstr "Negrita"
+
+msgid "Bottom bar"
+msgstr "Barra inferior"
+
+msgid "Bounced"
+msgstr "Rebotados"
+
+msgid "Brand color"
+msgstr "Color de marca"
+
+msgid "Brand in the email"
+msgstr "La marca en el correo"
+
+msgid "Bring your list"
+msgstr "Trae tu lista"
+
+msgid "Bring your list in a CSV or put a form on the website. They will appear here."
+msgstr "Trae tu lista en un CSV o pon un formulario en la web. Aparecerán aquí."
+
+msgid "Button"
+msgstr "Botón"
+
+msgid "Came from"
+msgstr "Llegó por"
+
+msgid "Campaign"
+msgstr "Campaña"
+
+msgid "Campaign not found"
+msgstr "No se encontró la campaña"
+
+msgid "Campaigns"
+msgstr "Campañas"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Cancel sending"
+msgstr "Cancelar el envío"
+
+msgid "Cancelled"
+msgstr "Cancelada"
+
+msgid "Center"
+msgstr "Centro"
+
+msgid "Change"
+msgstr "Cambiar"
+
+msgid "Change date"
+msgstr "Cambiar fecha"
+
+msgid "Change it in Settings"
+msgstr "Cámbialo en Ajustes"
+
+msgid "Check the forms"
+msgstr "Revisa los formularios"
+
+msgid "Checking with Amazon…"
+msgstr "Comprobando con Amazon…"
+
+msgid "Choose"
+msgstr "Elegir"
+
+msgid "Choose a CSV file."
+msgstr "Elige un archivo CSV."
+
+msgid "Choose a date"
+msgstr "Elegir fecha"
+
+msgid "Choose an image"
+msgstr "Elige una imagen"
+
+msgid "City, state, country"
+msgstr "Ciudad, estado, país"
+
+msgid "Clear the search"
+msgstr "Quitar la búsqueda"
+
+msgid "Clicks"
+msgstr "Clics"
+
+msgid "Close"
+msgstr "Cerrar"
+
+msgid "Color"
+msgstr "Color"
+
+msgid "Company"
+msgstr "Empresa"
+
+msgid "Configured"
+msgstr "Configurado"
+
+msgid "Confirm"
+msgstr "Confirmar"
+
+msgid "Confirm that these people agreed to receive your emails."
+msgstr "Confirma que estas personas aceptaron recibir tus correos."
+
+msgid "Confirm that this person agreed to receive your emails."
+msgstr "Confirma que esta persona aceptó recibir tus correos."
+
+msgid "Confirm that you want to receive our newsletter. If it was not you, ignore this email and nothing will happen."
+msgstr "Confirma que quieres recibir nuestro boletín. Si no fuiste tú, ignora este correo y no pasará nada."
+
+msgid "Confirm your subscription"
+msgstr "Confirma tu suscripción"
+
+msgid "Confirmation"
+msgstr "Confirmación"
+
+msgid "Confirmation sent"
+msgstr "Confirmación enviada"
+
+msgid "Copied"
+msgstr "Copiado"
+
+msgid "Copy"
+msgstr "Copiar"
+
+msgid "Could not connect to Amazon SES."
+msgstr "No se pudo conectar con Amazon SES."
+
+msgid "Count clicks"
+msgstr "Contar los clics"
+
+msgid "Count opens"
+msgstr "Contar las aperturas"
+
+msgid "Counted again when it goes out: whoever opens the original in the meantime will not receive it."
+msgstr "Se vuelve a contar al enviarla: quien abra la original mientras tanto ya no la recibe."
+
+msgid "Dark"
+msgstr "Oscuro"
+
+msgid "Dark with the brand glow, or light with a fine border."
+msgstr "Oscuro con el brillo de la marca, o claro con un borde fino."
+
+msgid "Delete"
+msgstr "Borrar"
+
+msgid "Delete list"
+msgstr "Borrar la lista"
+
+msgid "Delete this list? The people stay in the other lists."
+msgstr "¿Borrar esta lista? Las personas siguen en las demás listas."
+
+msgid "Delete this subscriber completely? Their sends stay in the reports, without their email."
+msgstr "¿Borrar del todo a este suscriptor? Sus envíos se quedan en los informes, sin su correo."
+
+msgid "Deleting a list does not delete the people: they stay in the other lists."
+msgstr "Borrar una lista no borra a la gente: siguen en las demás listas."
+
+msgid "Desktop"
+msgstr "Ordenador"
+
+msgid "Discard"
+msgstr "Descartar"
+
+msgid "Divider"
+msgstr "Separador"
+
+msgid "Do you want to unsubscribe?"
+msgstr "¿Quieres darte de baja?"
+
+msgid "Done"
+msgstr "Hecho"
+
+msgid "Done! You are subscribed."
+msgstr "¡Listo! Ya estás suscrito."
+
+msgid "Done, you will not receive more emails"
+msgstr "Listo, no recibirás más correos"
+
+msgid "Double confirmation"
+msgstr "Doble confirmación"
+
+msgid "Draft"
+msgstr "Borrador"
+
+msgid "Drafts"
+msgstr "Borradores"
+
+msgid "Drag to reorder"
+msgstr "Arrastra para ordenar"
+
+msgid "Duplicate"
+msgstr "Duplicar"
+
+msgid "Edit"
+msgstr "Editar"
+
+msgid "Edited %s"
+msgstr "Editada %s"
+
+msgid "Email"
+msgstr "Correo"
+
+msgid "Email field"
+msgstr "Campo de correo"
+
+msgid "Email preview"
+msgstr "Vista previa del correo"
+
+msgid "Emails per hour"
+msgstr "Correos por hora"
+
+msgid "Everything saved"
+msgstr "Todo guardado"
+
+msgid "Export CSV"
+msgstr "Exportar CSV"
+
+msgid "Failed sends"
+msgstr "Envíos fallidos"
+
+msgid "Fields: {first_name}, {last_name}, {email}. With a fallback: {first_name|friend}."
+msgstr "Campos: {first_name}, {last_name}, {email}. Con respaldo: {first_name|amigo}."
+
+msgid "File"
+msgstr "Archivo"
+
+msgid "First 24 hours"
+msgstr "Primeras 24 horas"
+
+msgid "First campaign"
+msgstr "Primera campaña"
+
+msgid "First name"
+msgstr "Nombre"
+
+msgid "First steps"
+msgstr "Primeros pasos"
+
+msgid "First subscribers"
+msgstr "Primeros suscriptores"
+
+msgid "Fixed, can be closed"
+msgstr "Fija, se puede cerrar"
+
+msgid "Footer of the emails"
+msgstr "Pie de los correos"
+
+msgid "For big lists. About 0.10 USD per 1,000 emails, and it does not use up the server quota."
+msgstr "Para listas grandes. Unos 0,10 USD por cada 1.000 correos, y no gasta el cupo del servidor."
+
+msgid "For the «brand color» buttons and the glow of the forms."
+msgstr "Para los botones «color de marca» y el brillo de los formularios."
+
+msgid "Form"
+msgstr "Formulario"
+
+msgid "Forms"
+msgstr "Formularios"
+
+msgid "From"
+msgstr "Remitente"
+
+msgid "General"
+msgstr "General"
+
+msgid "Give the list a name."
+msgstr "Ponle un nombre a la lista."
+
+msgid "Gmail and the iPhone Mail app load the images by themselves when the email arrives, so some opens are not a person reading. Clicks are the reliable figure."
+msgstr "Gmail y Mail del iPhone cargan las imágenes solos al llegar el correo, así que algunas aperturas no son una persona leyendo. Los clics son la cifra fiable."
+
+msgid "Gmail asks to keep spam complaints below 0.3 %."
+msgstr "Gmail pide que las quejas de spam no pasen del 0,3 %."
+
+msgid "Go to the website"
+msgstr "Ir a la web"
+
+msgid "Goes out by itself when someone confirms their subscription."
+msgstr "Sale sola cuando alguien confirma su suscripción."
+
+msgid "Goes out through the server"
+msgstr "Sale por el servidor"
+
+msgid "Going out at %s per hour to leave room for the website emails"
+msgstr "Sale a %s por hora para dejar sitio a los correos de la web"
+
+msgid "Good"
+msgstr "Buena"
+
+msgid "Height"
+msgstr "Alto"
+
+msgid "Hi {first_name|there},"
+msgstr "Hola, {first_name|amigo}:"
+
+msgid "How the emails go out"
+msgstr "Cómo salen los correos"
+
+msgid "Image"
+msgstr "Imagen"
+
+msgid "Import"
+msgstr "Importar"
+
+msgid "Import CSV"
+msgstr "Importar CSV"
+
+msgid "Import subscribers"
+msgstr "Importar suscriptores"
+
+msgid "Imported"
+msgstr "Importados"
+
+msgid "In a page"
+msgstr "En la página"
+
+msgid "In a page, as a pop-up or as a bottom bar."
+msgstr "En una página, como ventana emergente o como barra inferior."
+
+msgid "In the SES console, «SMTP settings». It depends on the region: email-smtp.us-east-2.amazonaws.com is Ohio."
+msgstr "En la consola de SES, «SMTP settings». Depende de la región: email-smtp.us-east-2.amazonaws.com es Ohio."
+
+msgid "Interest"
+msgstr "Interés"
+
+msgid "Interest comes from their last 5 emails: an open adds a point, a click adds two."
+msgstr "El interés sale de sus últimos 5 correos: abrir suma un punto y hacer clic suma dos."
+
+msgid "It is saved encrypted and never shown again. When saving, the connection with Amazon is checked."
+msgstr "Se guarda cifrada y no se vuelve a enseñar. Al guardar se comprueba la conexión con Amazon."
+
+msgid "It may have been used already. If you want to subscribe, use the form on the website again."
+msgstr "Puede que ya se haya usado. Si quieres suscribirte, usa otra vez el formulario de la web."
+
+msgid "It will go to %1$s. At %2$s per hour, it takes about %3$s."
+msgstr "Le llegará a %1$s. A %2$s por hora, tarda unas %3$s."
+
+msgid "Italic"
+msgstr "Cursiva"
+
+msgid "Join %s subscribers"
+msgstr "Ya somos %s"
+
+msgid "Joined"
+msgstr "Alta"
+
+msgid "Joined %1$s · %2$s"
+msgstr "Alta %1$s · %2$s"
+
+msgid "Keep an eye on it"
+msgstr "Vigílala"
+
+msgid "Large"
+msgstr "Grande"
+
+msgid "Last 90 days. Above 2 % hurts delivery."
+msgstr "Últimos 90 días. Por encima del 2 % perjudica la entrega."
+
+msgid "Last name"
+msgstr "Apellido"
+
+msgid "Latest campaigns"
+msgstr "Últimas campañas"
+
+msgid "Left"
+msgstr "Izquierda"
+
+msgid "Light"
+msgstr "Claro"
+
+msgid "Link"
+msgstr "Enlace"
+
+msgid "Link address (https://…)"
+msgstr "Dirección del enlace (https://…)"
+
+msgid "Link text"
+msgstr "Texto del enlace"
+
+msgid "List"
+msgstr "Lista"
+
+msgid "List health"
+msgstr "Salud de la lista"
+
+msgid "List name"
+msgstr "Nombre de la lista"
+
+msgid "Lists"
+msgstr "Listas"
+
+msgid "Live preview, with your name in the fields"
+msgstr "Vista previa en vivo, con tu nombre en los campos"
+
+msgid "Logo"
+msgstr "Logo"
+
+msgid "Logo for the emails"
+msgstr "Logo para los correos"
+
+msgid "Look and behavior"
+msgstr "Aspecto y comportamiento"
+
+msgid "Main form"
+msgstr "Formulario principal"
+
+msgid "Mark as active"
+msgstr "Marcar como activo"
+
+msgid "Medium"
+msgstr "Mediano"
+
+msgid "Move down"
+msgstr "Bajar"
+
+msgid "Move up"
+msgstr "Subir"
+
+msgid "Name"
+msgstr "Nombre"
+
+msgid "Needs attention"
+msgstr "Necesita atención"
+
+msgid "New"
+msgstr "Nuevo"
+
+msgid "New campaign"
+msgstr "Nueva campaña"
+
+msgid "New form"
+msgstr "Nuevo formulario"
+
+msgid "New list"
+msgstr "Nueva lista"
+
+msgid "Newsletter %s"
+msgstr "Boletín %s"
+
+msgid "Newsletters and email campaigns from your own WordPress."
+msgstr "Boletines y campañas de correo desde tu propio WordPress."
+
+msgid "Next send"
+msgstr "Próximo envío"
+
+msgid "No campaign has been sent yet."
+msgstr "Todavía no se ha enviado ninguna campaña."
+
+msgid "No campaign matches."
+msgstr "Ninguna campaña coincide."
+
+msgid "No campaigns yet"
+msgstr "Aún no hay campañas"
+
+msgid "No clicks yet."
+msgstr "Aún no hay clics."
+
+msgid "No email column was found in the file."
+msgstr "No se encontró ninguna columna de correo en el archivo."
+
+msgid "No failures"
+msgstr "Sin fallos"
+
+msgid "No opens in 6 months"
+msgstr "Sin abrir en 6 meses"
+
+msgid "No opens yet. They usually start arriving a few minutes after sending."
+msgstr "Aún no hay aperturas. Suelen empezar a llegar a los pocos minutos del envío."
+
+msgid "No posts found"
+msgstr "No se encontraron entradas"
+
+msgid "No reason given"
+msgstr "Sin motivo"
+
+msgid "No reports yet"
+msgstr "Aún no hay informes"
+
+msgid "No sends yet"
+msgstr "Sin envíos aún"
+
+msgid "No subscribers yet"
+msgstr "Aún no hay suscriptores"
+
+msgid "Nobody here"
+msgstr "No hay nadie aquí"
+
+msgid "Nobody matches «%s»."
+msgstr "Nadie coincide con «%s»."
+
+msgid "Nobody new in the last 30 days."
+msgstr "Nadie nuevo en los últimos 30 días."
+
+msgid "Nobody would receive it: the chosen lists have no active subscribers."
+msgstr "No le llegaría a nadie: las listas elegidas no tienen suscriptores activos."
+
+msgid "Not configured"
+msgstr "Sin configurar"
+
+msgid "Not confirmed"
+msgstr "Sin confirmar"
+
+msgid "Nothing scheduled."
+msgstr "Nada programado."
+
+msgid "Now"
+msgstr "Ahora"
+
+msgid "Now goes out through %s"
+msgstr "Ahora sale por %s"
+
+msgid "Off"
+msgstr "Apagada"
+
+msgid "Off, it is saved but nobody sees it."
+msgstr "Apagado, se guarda pero nadie lo ve."
+
+msgid "Off. People come in without confirming."
+msgstr "Apagada. La gente entra sin confirmar."
+
+msgid "On"
+msgstr "Encendida"
+
+msgid "On / off"
+msgstr "Encender / apagar"
+
+msgid "On for every form. It avoids fake addresses."
+msgstr "Encendida para todos los formularios. Evita direcciones falsas."
+
+msgid "One click and you are in"
+msgstr "Un clic y estás dentro"
+
+msgid "One email a month, no filler"
+msgstr "Un correo al mes, sin relleno"
+
+msgid "Only active subscribers. Whoever is on two lists receives it once. With no list checked, it goes to everyone."
+msgstr "Solo suscriptores activos. Quien esté en dos listas la recibe una vez. Sin ninguna lista marcada, va a todos."
+
+msgid "Only blog posts"
+msgstr "Solo las entradas del blog"
+
+msgid "Only from 100 subscribers on (now %s)."
+msgstr "Solo a partir de 100 suscriptores (ahora %s)."
+
+msgid "Only sent campaigns can be resent."
+msgstr "Solo se pueden reenviar campañas ya enviadas."
+
+msgid "Only you see it, to tell the forms apart."
+msgstr "Solo lo ves tú, para distinguir los formularios."
+
+msgid "Open"
+msgstr "Abrir"
+
+msgid "Opens"
+msgstr "Aperturas"
+
+msgid "Opens per hour"
+msgstr "Aperturas por hora"
+
+msgid "Other"
+msgstr "Otro"
+
+msgid "Others"
+msgstr "Otros"
+
+msgid "Overview"
+msgstr "Resumen"
+
+msgid "Pages"
+msgstr "Páginas"
+
+msgid "Paste it in any page or post. In Elementor, look for the «Dox Newsletter» widget."
+msgstr "Pégalo en cualquier página o entrada. En Elementor, busca el widget «Dox Newsletter»."
+
+msgid "Pause"
+msgstr "Pausar"
+
+msgid "Paused"
+msgstr "En pausa"
+
+msgid "Paused «%s»"
+msgstr "En pausa «%s»"
+
+msgid "Person"
+msgstr "Persona"
+
+msgid "Phone"
+msgstr "Móvil"
+
+msgid "Pop-up"
+msgstr "Ventana emergente"
+
+msgid "Port"
+msgstr "Puerto"
+
+msgid "Post"
+msgstr "Entrada"
+
+msgid "Postal address"
+msgstr "Dirección postal"
+
+msgid "Prepare the next one"
+msgstr "Preparar la siguiente"
+
+msgid "Preview text"
+msgstr "Texto previo"
+
+msgid "Put a form on the website"
+msgstr "Pon un formulario en la web"
+
+msgid "Read more"
+msgstr "Leer más"
+
+msgid "Ready to send?"
+msgstr "¿Lista para enviar?"
+
+msgid "Received 3 or more and opened none. Worth cleaning from time to time."
+msgstr "Recibieron 3 o más y no abrieron ninguno. Conviene limpiarlos de vez en cuando."
+
+msgid "Recipients"
+msgstr "Destinatarios"
+
+msgid "Recommended: leave at least 50 free per hour."
+msgstr "Recomendado: dejar al menos 50 libres por hora."
+
+msgid "Remove"
+msgstr "Quitar"
+
+msgid "Reply to"
+msgstr "Responder a"
+
+msgid "Report"
+msgstr "Informe"
+
+msgid "Reports"
+msgstr "Informes"
+
+msgid "Resend"
+msgstr "Reenviar"
+
+msgid "Resend confirmation"
+msgstr "Reenviar confirmación"
+
+msgid "Rest of the website %s"
+msgstr "Resto de la web %s"
+
+msgid "Resume"
+msgstr "Reanudar"
+
+msgid "Review it"
+msgstr "Revisarla"
+
+msgid "SMTP password"
+msgstr "Contraseña SMTP"
+
+msgid "SMTP server"
+msgstr "Servidor SMTP"
+
+msgid "SMTP user"
+msgstr "Usuario SMTP"
+
+msgid "Save"
+msgstr "Guardar"
+
+msgid "Save form"
+msgstr "Guardar formulario"
+
+msgid "Save the form to get its shortcode."
+msgstr "Guarda el formulario para tener su shortcode."
+
+msgid "Saved"
+msgstr "Guardado"
+
+msgid "Saved. Leave it empty to keep it."
+msgstr "Guardada. Déjala vacía para mantenerla."
+
+msgid "Saving…"
+msgstr "Guardando…"
+
+msgid "Schedule"
+msgstr "Programar"
+
+msgid "Scheduled"
+msgstr "Programada"
+
+msgid "Scheduled for %s"
+msgstr "Programada para el %s"
+
+msgid "Search"
+msgstr "Buscar"
+
+msgid "Search by email"
+msgstr "Buscar por correo"
+
+msgid "Search by name"
+msgstr "Buscar por nombre"
+
+msgid "Search by subject"
+msgstr "Buscar por asunto"
+
+msgid "Search posts…"
+msgstr "Buscar entradas…"
+
+msgid "See all"
+msgstr "Ver todas"
+
+msgid "See the report"
+msgstr "Ver el informe"
+
+msgid "Send a test"
+msgstr "Enviar una prueba"
+
+msgid "Send me a test"
+msgstr "Enviarme una prueba"
+
+msgid "Send now"
+msgstr "Enviar ahora"
+
+msgid "Send or schedule"
+msgstr "Enviar o programar"
+
+msgid "Send test"
+msgstr "Enviar prueba"
+
+msgid "Send test email"
+msgstr "Enviar correo de prueba"
+
+msgid "Send the welcome email"
+msgstr "Enviar el correo de bienvenida"
+
+msgid "Send yourself a test before it goes out."
+msgstr "Mándate una prueba antes de que salga."
+
+msgid "Sender and address"
+msgstr "Remitente y dirección"
+
+msgid "Sender and brand"
+msgstr "Remitente y marca"
+
+msgid "Sending"
+msgstr "Enviando"
+
+msgid "Sending at up to %s per hour."
+msgstr "Envía hasta %s por hora."
+
+msgid "Sending speed"
+msgstr "Velocidad de envío"
+
+msgid "Sending «%s»"
+msgstr "Enviando «%s»"
+
+msgid "Sends the confirmation email with these settings, even if they are not saved yet."
+msgstr "Manda el correo de confirmación con estos ajustes, aunque aún no estén guardados."
+
+msgid "Sent"
+msgstr "Enviada"
+
+msgid "Server limit:"
+msgstr "Límite del servidor:"
+
+msgid "Set up the form"
+msgstr "Configurar el formulario"
+
+msgid "Settings"
+msgstr "Ajustes"
+
+msgid "Shortcode or Elementor widget"
+msgstr "Shortcode o widget de Elementor"
+
+msgid "Show how many we are"
+msgstr "Enseñar cuántos somos"
+
+msgid "Show it on the website"
+msgstr "Mostrarlo en la web"
+
+msgid "Size"
+msgstr "Tamaño"
+
+msgid "Small"
+msgstr "Pequeño"
+
+msgid "Something went wrong. Reload the page and try again."
+msgstr "Algo salió mal. Recarga la página e inténtalo otra vez."
+
+msgid "Something went wrong. Try again."
+msgstr "Algo salió mal. Inténtalo otra vez."
+
+msgid "Space"
+msgstr "Espacio"
+
+msgid "Status"
+msgstr "Estado"
+
+msgid "Style"
+msgstr "Estilo"
+
+msgid "Subject"
+msgstr "Asunto"
+
+msgid "Subscribe"
+msgstr "Suscribirme"
+
+msgid "Subscriber"
+msgstr "Suscriptor"
+
+msgid "Subscribers"
+msgstr "Suscriptores"
+
+msgid "Test"
+msgstr "Prueba"
+
+msgid "Test email"
+msgstr "Correo de prueba"
+
+msgid "Test sent to %s"
+msgstr "Prueba enviada a %s"
+
+msgid "Test sent to %s. Check the inbox (and spam)."
+msgstr "Prueba enviada a %s. Revisa la bandeja de entrada (y el spam)."
+
+msgid "Text"
+msgstr "Texto"
+
+msgid "Texts"
+msgstr "Textos"
+
+msgid "Texts, colors and the list are changed in Dox Plugins > Newsletter > Forms."
+msgstr "Los textos, los colores y la lista se cambian en Dox Plugins > Newsletter > Formularios."
+
+msgid "Thanks for confirming. The next email will reach your inbox."
+msgstr "Gracias por confirmar. El próximo correo te llegará a la bandeja de entrada."
+
+msgid "Thanks for subscribing. Once a month you will receive what we learn and what we publish, without filler."
+msgstr "Gracias por suscribirte. Una vez al mes recibirás lo que aprendemos y lo que publicamos, sin relleno."
+
+msgid "That campaign no longer exists."
+msgstr "Esa campaña ya no existe."
+
+msgid "That date is not valid."
+msgstr "Esa fecha no es válida."
+
+msgid "That email does not look right."
+msgstr "Ese correo no parece correcto."
+
+msgid "That email does not look right. Check it and try again."
+msgstr "Ese correo no parece correcto. Revísalo e inténtalo otra vez."
+
+msgid "That subscriber no longer exists."
+msgstr "Ese suscriptor ya no existe."
+
+msgid "That time has already passed."
+msgstr "Esa hora ya pasó."
+
+msgid "The CAN-SPAM law in the US requires it in every marketing email. City and state is enough for many."
+msgstr "La ley CAN-SPAM de EE. UU. la exige en cada correo de marketing. A muchos les basta con ciudad y estado."
+
+msgid "The WordPress email"
+msgstr "El correo de WordPress"
+
+msgid "The campaign and its report will be deleted. This cannot be undone."
+msgstr "Se borrarán la campaña y su informe. No se puede deshacer."
+
+msgid "The confirmation email"
+msgstr "El correo de confirmación"
+
+msgid "The draft will be deleted. This cannot be undone."
+msgstr "Se borrará el borrador. No se puede deshacer."
+
+msgid "The email could not be sent."
+msgstr "No se pudo enviar el correo."
+
+msgid "The email could not be sent. Check the sending settings."
+msgstr "No se pudo enviar el correo. Revisa los ajustes de envío."
+
+msgid "The email is empty: add a title, a text or an image."
+msgstr "El correo está vacío: añade un título, un texto o una imagen."
+
+msgid "The links go through your website for an instant before reaching their destination."
+msgstr "Los enlaces pasan un instante por tu web antes de llegar a su destino."
+
+msgid "The number is who joined through each form in 30 days"
+msgstr "El número es quién entró por cada formulario en 30 días"
+
+msgid "The page after confirming"
+msgstr "La página después de confirmar"
+
+msgid "The reply-to email is not valid."
+msgstr "El correo de respuesta no es válido."
+
+msgid "The same email"
+msgstr "El mismo correo"
+
+msgid "The same one WooCommerce and the forms use. No cost and no new accounts. For lists of up to a few thousand."
+msgstr "El mismo que usan WooCommerce y los formularios. Sin coste y sin cuentas nuevas. Para listas de hasta unos pocos miles."
+
+msgid "The sender email in Settings is not valid."
+msgstr "El correo del remitente en Ajustes no es válido."
+
+msgid "The sender email is not valid."
+msgstr "El correo del remitente no es válido."
+
+msgid "The whole website"
+msgstr "Toda la web"
+
+msgid "There are unsaved changes."
+msgstr "Hay cambios sin guardar."
+
+msgid "There is already a subscriber with that email."
+msgstr "Ya hay un suscriptor con ese correo."
+
+msgid "There must be at least one form."
+msgstr "Tiene que haber al menos un formulario."
+
+msgid "There must be at least one list."
+msgstr "Tiene que haber al menos una lista."
+
+msgid "These fields cannot be filled: %s. The ones that work are {first_name}, {last_name} and {email}."
+msgstr "Estos campos no se pueden rellenar: %s. Los que funcionan son {first_name}, {last_name} y {email}."
+
+msgid "These people agreed to receive my emails"
+msgstr "Estas personas aceptaron recibir mis correos"
+
+msgid "They come in as active, without a confirmation email. Whoever is already unsubscribed or bounced is skipped."
+msgstr "Entran como activos, sin correo de confirmación. Quien ya se dio de baja o rebotó se salta."
+
+msgid "This address is no longer on our list."
+msgstr "Esta dirección ya no está en nuestra lista."
+
+msgid "This address unsubscribed. To come back, use the form on the website."
+msgstr "Esta dirección se dio de baja. Para volver, usa el formulario de la web."
+
+msgid "This campaign cannot be deleted while it is sending."
+msgstr "No se puede borrar una campaña mientras se envía."
+
+msgid "This campaign cannot be sent from its current state."
+msgstr "Esta campaña no se puede enviar en el estado en que está."
+
+msgid "This campaign has already been sent and cannot be edited."
+msgstr "Esta campaña ya se envió y no se puede editar."
+
+msgid "This campaign has already gone out and cannot be edited. You can duplicate it to send a new version."
+msgstr "Esta campaña ya salió y no se puede editar. Puedes duplicarla para enviar una versión nueva."
+
+msgid "This email is no longer available"
+msgstr "Este correo ya no está disponible"
+
+msgid "This link is no longer valid"
+msgstr "Este enlace ya no es válido"
+
+msgid "This person agreed to receive my emails"
+msgstr "Esta persona aceptó recibir mis correos"
+
+msgid "This person is not waiting for confirmation."
+msgstr "Esta persona no está pendiente de confirmar."
+
+msgid "This person unsubscribed. Only they can subscribe again, from a form."
+msgstr "Esta persona se dio de baja. Solo ella puede volver a suscribirse, desde un formulario."
+
+msgid "Three steps and you can send your first newsletter. Everything stays in your WordPress."
+msgstr "Tres pasos y puedes enviar tu primer boletín. Todo se queda en tu WordPress."
+
+msgid "Title"
+msgstr "Título"
+
+msgid "To the lists"
+msgstr "A las listas"
+
+msgid "To who did not click (%s)"
+msgstr "A quien no hizo clic (%s)"
+
+msgid "To who did not open it (%s)"
+msgstr "A quien no la abrió (%s)"
+
+msgid "To write «Hi, Ana» in the emails."
+msgstr "Para escribir «Hola, Ana» en los correos."
+
+msgid "Too many attempts. Try again in a few minutes."
+msgstr "Demasiados intentos. Inténtalo dentro de unos minutos."
+
+msgid "Tracking and footer"
+msgstr "Seguimiento y pie"
+
+msgid "Unsaved changes"
+msgstr "Cambios sin guardar"
+
+msgid "Unsubscribe"
+msgstr "Darme de baja"
+
+msgid "Unsubscribed"
+msgstr "Dados de baja"
+
+msgid "Unsubscribes"
+msgstr "Bajas"
+
+msgid "Unsubscribes per send"
+msgstr "Bajas por envío"
+
+msgid "Use this image"
+msgstr "Usar esta imagen"
+
+msgid "View in browser"
+msgstr "Ver en el navegador"
+
+msgid "Visit the blog"
+msgstr "Visitar el blog"
+
+msgid "Waiting for confirmation"
+msgstr "Pendiente de confirmar"
+
+msgid "Welcome email"
+msgstr "Correo de bienvenida"
+
+msgid "Welcome to %s"
+msgstr "Bienvenido a %s"
+
+msgid "Welcome, {first_name|friend}"
+msgstr "Te damos la bienvenida, {first_name|amigo}"
+
+msgid "What is seen next to the subject in the inbox"
+msgstr "Lo que se ve junto al asunto en la bandeja"
+
+msgid "What is this email about?"
+msgstr "¿De qué va este correo?"
+
+msgid "What the image shows, in a few words."
+msgstr "Lo que muestra la imagen, en pocas palabras."
+
+msgid "What they see while the confirmation email is on its way."
+msgstr "Lo que ven mientras les llega el correo de confirmación."
+
+msgid "What we learn and what we publish. You can unsubscribe with one click."
+msgstr "Lo que aprendemos y lo que publicamos. Te das de baja con un clic."
+
+msgid "What you will receive and how often."
+msgstr "Qué vas a recibir y cada cuánto."
+
+msgid "When"
+msgstr "Cuándo"
+
+msgid "When a campaign goes out, its opens, clicks and unsubscribes appear here."
+msgstr "Cuando salga una campaña, aquí aparecerán sus aperturas, clics y bajas."
+
+msgid "When scrolling down"
+msgstr "Al bajar por la página"
+
+msgid "When scrolling or after a few seconds"
+msgstr "Al bajar o a los pocos segundos"
+
+msgid "Where it appears"
+msgstr "Dónde aparece"
+
+msgid "Where replies arrive, if it is a different address."
+msgstr "Dónde llegan las respuestas, si es otra dirección."
+
+msgid "Where they clicked"
+msgstr "Dónde hicieron clic"
+
+msgid "Where they come from"
+msgstr "De dónde llegan"
+
+msgid "Who did not click «%s»"
+msgstr "Quien no hizo clic en «%s»"
+
+msgid "Who did not open «%s»"
+msgstr "Quien no abrió «%s»"
+
+msgid "Who it comes from"
+msgstr "De quién viene"
+
+msgid "Who receives it"
+msgstr "A quién le llega"
+
+msgid "Whoever closes it does not see it again for 14 days, and whoever subscribes does not see it again."
+msgstr "Quien la cierra no la vuelve a ver en 14 días, y quien se suscribe no la vuelve a ver."
+
+msgid "Whoever has not received it yet will not get it. This cannot be undone."
+msgstr "Quien aún no la haya recibido ya no la recibirá. No se puede deshacer."
+
+msgid "Whoever subscribes receives an email to confirm. It keeps fake and mistyped addresses out, which is what protects your reputation with Gmail. Recommended."
+msgstr "Quien se suscribe recibe un correo para confirmar. Deja fuera las direcciones falsas o mal escritas, que es lo que protege tu reputación con Gmail. Recomendado."
+
+msgid "Why some failed"
+msgstr "Por qué fallaron algunos"
+
+msgid "Why they receive it"
+msgstr "Por qué lo reciben"
+
+msgid "With Amazon SES the server quota is not used: the speed only spreads the send."
+msgstr "Con Amazon SES no se gasta el cupo del servidor: la velocidad solo reparte el envío."
+
+msgid "With an invisible image. Gmail and the iPhone load it by themselves, so it is a figure on the high side."
+msgstr "Con una imagen invisible. Gmail y el iPhone la cargan solos, así que es una cifra al alza."
+
+msgid "With less than 50 free, order emails may have to wait."
+msgstr "Con menos de 50 libres, los correos de pedidos pueden quedarse esperando."
+
+msgid "With your name in the fields and «[Test]» in the subject. It does not count in the report."
+msgstr "Con tu nombre en los campos y «[Prueba]» en el asunto. No cuenta en el informe."
+
+msgid "WordPress could not send the email."
+msgstr "WordPress no pudo enviar el correo."
+
+msgid "WordPress email"
+msgstr "Correo de WordPress"
+
+msgid "Write a subject."
+msgstr "Escribe un asunto."
+
+msgid "Write a valid email for the test."
+msgstr "Escribe un correo válido para la prueba."
+
+msgid "Write the first campaign"
+msgstr "Escribe la primera campaña"
+
+msgid "Write the first one"
+msgstr "Escribe la primera"
+
+msgid "Write the first one. It saves by itself as you type, and you can send yourself a test before it goes out."
+msgstr "Escribe la primera. Se guarda sola mientras escribes, y puedes mandarte una prueba antes de que salga."
+
+msgid "Yes, subscribe me"
+msgstr "Sí, suscribirme"
+
+msgid "You are already unsubscribed"
+msgstr "Ya te habías dado de baja"
+
+msgid "You are receiving this email because you subscribed at %s."
+msgstr "Recibes este correo porque te suscribiste en %s."
+
+msgid "You are subscribed"
+msgstr "Ya estás suscrito"
+
+msgid "You are unsubscribed"
+msgstr "Estás dado de baja"
+
+msgid "You have not sent yourself a test yet."
+msgstr "Aún no te has mandado una prueba."
+
+msgid "You were already subscribed. Thanks!"
+msgstr "Ya estabas suscrito. ¡Gracias!"
+
+msgid "Your list starts here"
+msgstr "Tu lista empieza aquí"
+
+msgid "Your name"
+msgstr "Tu nombre"
+
+msgid "Your readers open most around %s."
+msgstr "Tus lectores abren sobre todo hacia las %s."
+
+msgid "Your server lets out <b>%s emails per hour</b> per website. Whatever the newsletter does not use stays free for orders, passwords and forms."
+msgstr "Tu servidor deja salir <b>%s correos por hora</b> por web. Lo que no use el boletín queda libre para pedidos, contraseñas y formularios."
+
+msgid "Your session expired. Reload the page."
+msgstr "Tu sesión caducó. Recarga la página."
+
+msgid "clicked"
+msgstr "hizo clic"
+
+msgid "delivered"
+msgstr "entregados"
+
+msgid "finishes %1$s around %2$s"
+msgstr "termina el %1$s hacia las %2$s"
+
+msgid "finishes today around %s"
+msgstr "termina hoy hacia las %s"
+
+msgid "hour"
+msgstr "hora"
+
+msgid "just now"
+msgstr "ahora mismo"
+
+msgid "opened"
+msgstr "abrió"
+
+msgid "opened it"
+msgstr "la abrió"
+
+msgid "seconds"
+msgstr "segundos"
+
+msgid "sent"
+msgstr "enviados"
+
+msgid "unsubscribed"
+msgstr "se dieron de baja"
+
+msgid "you@email.com"
+msgstr "tu@correo.com"
+
+msgid "%s active subscriber"
+msgid_plural "%s active subscribers"
+msgstr[0] "%s suscriptor activo"
+msgstr[1] "%s suscriptores activos"
+
+msgid "%s failed"
+msgid_plural "%s failed"
+msgstr[0] "%s falló"
+msgstr[1] "%s fallaron"
+
+msgid "%s person"
+msgid_plural "%s people"
+msgstr[0] "%s persona"
+msgstr[1] "%s personas"
+
+msgid "%s person in the last one"
+msgid_plural "%s people in the last one"
+msgstr[0] "%s persona en la última"
+msgstr[1] "%s personas en la última"
+
+msgid "%s waiting to confirm"
+msgid_plural "%s waiting to confirm"
+msgstr[0] "%s pendiente de confirmar"
+msgstr[1] "%s pendientes de confirmar"
+
+msgid "Last campaign · Gmail and iPhone open some by themselves"
+msgid_plural "Last %d campaigns · Gmail and iPhone open some by themselves"
+msgstr[0] "Última campaña · Gmail y el iPhone abren algunas solos"
+msgstr[1] "Últimas %d campañas · Gmail y el iPhone abren algunas solos"
+
