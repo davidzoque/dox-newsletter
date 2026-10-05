@@ -145,6 +145,17 @@ class DXO_Admin {
 		include DXO_PATH . 'admin/views/layout.php';
 	}
 
+	/**
+	 * El logo "dox orbit": el isotipo y el "dox" del logo de Dox Studio tal cual
+	 * (del lockup "dox plugins" que dibujó David) y "orbit" en Poppins Regular
+	 * naranja, con la misma escala, línea de base y espaciado, ya en curvas.
+	 */
+	public static function logo() {
+		$file = DXO_PATH . 'assets/logo-orbit.svg';
+		if ( ! file_exists( $file ) ) return '<b>Dox Orbit</b>';
+		return str_replace( '<svg ', '<svg class="dxo-logo" ', (string) file_get_contents( $file ) );
+	}
+
 	/** Un icono de línea (los de la maqueta), por nombre. */
 	public static function icon( $name ) {
 		$p = [

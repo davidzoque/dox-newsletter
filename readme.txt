@@ -4,7 +4,7 @@ Tags: email marketing, newsletter, woocommerce, subscribe form, double opt-in
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.2.0
+Stable tag: 0.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,6 +23,9 @@ Dox Orbit keeps your list inside your WordPress:
 * Automatic welcome email.
 
 == Changelog ==
+
+= 0.2.1 =
+* The Dox Orbit logo in the panel.
 
 = 0.2.0 =
 * New name: Dox Newsletter is now Dox Orbit. Shortcode [dox_orbit].

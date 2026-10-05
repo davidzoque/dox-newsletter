@@ -36,10 +36,10 @@ body.dxo-screen .update-nag, body.dxo-screen #wpbody-content > .notice { margin:
 
 /* ─── Navegación ─── */
 .dxo-nav { width: 212px; flex: none; border-right: 1px solid var(--line); padding: 18px 12px; display: flex; flex-direction: column; gap: 2px; position: sticky; top: 32px; height: calc(100vh - 32px); overflow-y: auto; }
-.dxo-brand { display: flex; align-items: center; gap: 10px; padding: 4px 8px 18px; }
-.dxo-brand .mark { width: 30px; height: 30px; border-radius: 9px; background: var(--ink); display: grid; place-items: center; color: var(--accent); }
-.dxo-brand b { color: var(--t1); font-size: 15px; letter-spacing: -.02em; display: block; line-height: 1.1; }
-.dxo-brand small { font-size: 11px; color: var(--t3); }
+.dxo-brand { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 6px 10px 20px; }
+/* El logo lleva sus colores en cada forma: sin el trazo ni el tamaño de los iconos. */
+.dxo-app svg.dxo-logo { width: auto; height: 27px; stroke: none; stroke-width: 0; display: block; }
+.dxo-brand small { font-size: 11px; color: var(--t3); padding-left: 2px; }
 .dxo-nav a { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; color: var(--t2); font-weight: 500; transition: background .3s var(--ease), color .3s var(--ease); }
 .dxo-nav a svg { width: 17px; height: 17px; }
 .dxo-nav a:hover { background: var(--line2); color: var(--t1); }

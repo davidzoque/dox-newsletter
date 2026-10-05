@@ -32,8 +32,8 @@ $steps_left = count( array_filter( $steps, function ( $s ) { return ! $s[1]; } )
 	<script>document.getElementById('dxo-app').classList.add('dxo-js');</script>
 	<nav class="dxo-nav" aria-label="Dox Orbit">
 		<div class="dxo-brand">
-			<div class="mark"><?php echo DXO_Admin::icon( 'mail' ); // phpcs:ignore ?></div>
-			<div><b>Orbit</b><small>Dox Plugins · <?php echo esc_html( DXO_VERSION ); ?></small></div>
+			<?php echo DXO_Admin::logo(); // phpcs:ignore -- SVG propio del plugin ?>
+			<small>Dox Plugins · <?php echo esc_html( DXO_VERSION ); ?></small>
 		</div>
 		<?php foreach ( $nav as $key => $n ) : ?>
 			<a href="<?php echo esc_url( DXO_Admin::url( $key ) ); ?>" class="<?php echo $current === $key ? 'on' : ''; ?>">
